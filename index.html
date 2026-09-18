@@ -1,0 +1,3139 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, viewport-fit=cover">
+<title>ຄັງເສື້ອຜ້າ - ຈັດການສະຕັອກ</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1C2B33">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="ຄັງເສື້ອຜ້າ">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F6F4EF; --dark:#1C2B33; --accent:#E8A33D; --danger:#B94A3D; --success:#4C7A5E;
+    --dark-5:rgba(28,43,51,.05); --dark-8:rgba(28,43,51,.08); --dark-10:rgba(28,43,51,.10);
+    --dark-15:rgba(28,43,51,.15); --dark-40:rgba(28,43,51,.40); --dark-50:rgba(28,43,51,.50);
+    --dark-60:rgba(28,43,51,.60); --danger-10:rgba(185,74,61,.10); --success-10:rgba(76,122,94,.10);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:#E7E3D8; font-family:'Noto Sans Lao','Noto Sans',system-ui,-apple-system,sans-serif;
+    -webkit-font-smoothing:antialiased; color:var(--dark);
+  }
+  #app{max-width:480px; margin:0 auto; min-height:100vh; background:var(--bg); position:relative; padding-bottom:150px; box-shadow:0 0 40px rgba(0,0,0,.06);}
+  .header{background:var(--dark); color:#fff; padding:28px 20px 20px; border-radius:0 0 24px 24px; box-shadow:0 4px 14px rgba(0,0,0,.15); background-size:cover; background-position:center; transition:background .2s;}
+  .header-top{display:flex; align-items:center; gap:8px; margin-bottom:16px;}
+  .logo{width:36px; height:36px; border-radius:12px; background:var(--accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--dark); overflow:hidden;}
+  .logo img{width:100%; height:100%; object-fit:cover; display:block;}
+  .header h1{font-size:18px; font-weight:700; margin:0; line-height:1.2;}
+  .header p{font-size:11px; color:rgba(255,255,255,.6); margin:2px 0 0;}
+  .header-actions{display:flex; gap:8px; margin-left:auto; flex-shrink:0;}
+  .header-icon-btn{width:36px; height:36px; border-radius:12px; background:rgba(255,255,255,.12); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; color:#fff; flex-shrink:0;}
+  .header-icon-btn svg{width:17px; height:17px;}
+  .stats{display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;}
+  .stat{background:rgba(255,255,255,.1); border-radius:12px; padding:8px 6px; text-align:center;}
+  .stat.warn{background:var(--accent);}
+  .stat-label{font-size:10px; color:rgba(255,255,255,.6);}
+  .stat.warn .stat-label{color:rgba(28,43,51,.7);}
+  .stat-value{font-size:18px; font-weight:700; font-variant-numeric:tabular-nums;}
+  .stat.warn .stat-value{color:var(--dark);}
+  .tabs{display:flex; gap:8px; padding:16px 20px 0;}
+  .tab-btn{flex:1; display:flex; align-items:center; justify-content:center; gap:5px; padding:10px 4px; border-radius:12px; font-size:12.5px; font-weight:600; border:1px solid var(--dark-10); background:#fff; color:var(--dark-60); cursor:pointer; white-space:nowrap;}
+  .tab-btn.active{background:var(--dark); color:#fff; border-color:var(--dark);}
+  .tab-btn svg{width:16px; height:16px;}
+  .content{padding:16px 20px 0;}
+  .search-wrap{position:relative; margin-bottom:12px;}
+  .search-wrap svg{position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--dark-40);}
+  .search-wrap input{width:100%; background:#fff; border:1px solid var(--dark-10); border-radius:12px; padding:10px 40px 10px 34px; font-size:14px; outline:none; font-family:inherit;}
+  .search-scan-btn{position:absolute; right:6px; top:50%; transform:translateY(-50%); width:28px; height:28px; border-radius:8px; background:var(--dark-5); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+  .search-scan-btn svg{width:14px; height:14px; color:var(--dark-60);}
+  .search-wrap input:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(232,163,61,.25);}
+  .search-row{display:flex; gap:8px; align-items:center; margin-bottom:12px;}
+  .search-row .search-wrap{flex:1; margin-bottom:0;}
+  .view-toggle{display:flex; gap:6px; flex-shrink:0;}
+  .view-btn{width:38px; height:38px; border-radius:12px; border:1px solid var(--dark-10); background:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--dark-60);}
+  .view-btn.active{background:var(--dark); color:#fff; border-color:var(--dark);}
+  .view-btn svg{width:16px; height:16px;}
+  .grid-container{display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+  .grid-card{background:#fff; border-radius:16px; border:1px solid var(--dark-8); box-shadow:0 1px 2px rgba(0,0,0,.04); overflow:hidden; text-align:left; cursor:pointer; padding:0; font-family:inherit; display:block; width:100%; position:relative;}
+  .grid-img{width:100%; aspect-ratio:1/1; background:var(--dark-5); display:flex; align-items:center; justify-content:center; overflow:hidden; position:relative; cursor:pointer;}
+  .grid-img img{width:100%; height:100%; object-fit:cover;}
+  .grid-img svg{width:24px; height:24px; color:var(--dark-15);}
+  .grid-low-badge{position:absolute; top:6px; right:6px; width:20px; height:20px; border-radius:50%; background:var(--danger); display:flex; align-items:center; justify-content:center;}
+  .grid-dup-btn{position:absolute; left:8px; bottom:8px; top:auto; transform:none; opacity:.85; background:#9AC93B; color:#1B4D2E; border:none; border-radius:999px; padding:6px 10px; font-size:11px; font-weight:700; cursor:pointer; font-family:inherit; box-shadow:0 2px 8px rgba(0,0,0,.25); display:flex; align-items:center; gap:4px; z-index:2;}
+  .grid-dup-btn svg{width:12px; height:12px;}
+  .buy-btn, .sell-btn{background:var(--success); color:#fff; border:none; border-radius:999px; padding:8px 13px; font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; box-shadow:0 3px 10px rgba(0,0,0,.28); display:flex; align-items:center; gap:5px; white-space:nowrap;}
+  .buy-btn{background:var(--accent); color:var(--dark);}
+  .buy-btn svg, .sell-btn svg{width:14px; height:14px;}
+  .sell-row{display:flex; align-items:center; justify-content:space-between; gap:10px; padding:8px 0; border-bottom:1px solid var(--dark-5);}
+  .sell-row:last-child{border-bottom:none;}
+  .sell-row-info{display:flex; flex-direction:column; gap:1px;}
+  .sell-size{font-size:13px; font-weight:600; color:var(--dark);}
+  .sell-qty-input{width:68px; background:#fff; border:1px solid var(--dark-10); border-radius:10px; padding:8px 10px; font-size:14px; text-align:center; outline:none; font-family:inherit;}
+  .sell-qty-input:focus{border-color:var(--success); box-shadow:0 0 0 3px rgba(76,122,94,.2);}
+  .grid-low-badge svg{width:11px; height:11px; color:#fff;}
+  .grid-body{padding:10px 10px 40px; cursor:pointer;}
+  .grid-title{font-size:13px; font-weight:600; color:var(--dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .grid-sub{font-size:10px; color:var(--dark-40); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .grid-tags{display:flex; flex-wrap:wrap; gap:4px; margin-top:6px; min-height:18px;}
+  .grid-qty-badge{position:absolute; right:8px; bottom:8px; background:var(--accent); color:var(--dark); font-weight:700; font-size:13px; font-family:monospace; padding:4px 12px; border-radius:999px; box-shadow:0 2px 6px rgba(0,0,0,.18); display:flex; align-items:baseline; gap:3px; z-index:2;}
+  .grid-qty-badge small{font-family:'Noto Sans Lao','Noto Sans',system-ui,sans-serif; font-weight:600; font-size:10px;}
+  .grid-copy-btn{position:absolute; right:8px; bottom:40px; width:28px; height:28px; border-radius:50%; background:var(--dark); color:#fff; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.25); z-index:2;}
+  .grid-copy-btn svg{width:14px; height:14px;}
+  .grid-copy-btn:active{filter:brightness(1.2);}
+  .grid-cart-btn{position:absolute; left:8px; bottom:8px; width:32px; height:32px; border-radius:50%; background:#2F6FED; color:#fff; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 2px 10px rgba(47,111,237,.5); z-index:2;}
+  .grid-cart-btn svg{width:16px; height:16px;}
+  .grid-cart-btn:active{filter:brightness(1.15);}
+  .grid-cart-btn.disabled{background:#9AA3AF; box-shadow:none; cursor:not-allowed; opacity:.65;}
+  .input-error{border:1px solid var(--danger) !important; background:rgba(217,83,79,.08);}
+  .card-copy-btn{width:32px; height:32px; border-radius:10px; background:var(--dark); color:#fff; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;}
+  .card-copy-btn svg{width:15px; height:15px;}
+  .icon-btn-sm{width:32px; height:32px; border-radius:10px; background:var(--danger-10); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;}
+  .order-icon-btn{background:none; border:none; padding:2px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .order-icon-btn svg{width:20px; height:20px;}
+  .icon-btn-sm svg{width:14px; height:14px; color:var(--danger);}
+  .detail-img{width:100%; aspect-ratio:1/1; max-height:260px; border-radius:16px; background:var(--dark-5); overflow:hidden; display:flex; align-items:center; justify-content:center; margin-bottom:12px;}
+  .detail-img img{width:100%; height:100%; object-fit:cover;}
+  .detail-img svg{width:40px; height:40px; color:var(--dark-15);}
+  .empty{text-align:center; padding:60px 0;}
+  .empty svg{width:36px; height:36px; color:var(--dark-15); margin-bottom:8px;}
+  .empty p{font-size:13px; color:var(--dark-50); margin:0;}
+  .card{position:relative; background:#fff; border-radius:16px; border:1px solid var(--dark-8); box-shadow:0 1px 2px rgba(0,0,0,.04); overflow:hidden; margin-bottom:10px;}
+  .card-strip{position:absolute; left:0; top:0; bottom:0; width:6px;}
+  .card-row{padding:12px 12px 12px 16px; display:flex; align-items:center; gap:12px;}
+  .thumb{width:56px; height:56px; border-radius:12px; background:var(--dark-5); overflow:hidden; flex-shrink:0; border:none; padding:0; cursor:pointer; display:flex; align-items:center; justify-content:center;}
+  .thumb img{width:100%; height:100%; object-fit:cover;}
+  .thumb svg{width:20px; height:20px; color:var(--dark-15);}
+  .card-main{flex:1; min-width:0; text-align:left; background:none; border:none; padding:0; cursor:pointer; font-family:inherit;}
+  .card-title{display:flex; align-items:center; gap:6px;}
+  .card-title span{font-weight:600; font-size:14px; color:var(--dark); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .card-title svg{width:13px; height:13px; color:var(--danger); flex-shrink:0;}
+  .card-sub{font-size:11px; color:var(--dark-40); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; margin-top:1px;}
+  .tags{display:flex; flex-wrap:wrap; gap:5px; margin-top:6px;}
+  .tag{font-size:10px; font-weight:600; font-family:monospace; padding:2px 6px; border-radius:6px; background:var(--success-10); color:var(--success);}
+  .tag.low{background:var(--danger-10); color:var(--danger);}
+  .card-right{display:flex; flex-direction:column; align-items:flex-end; gap:6px; flex-shrink:0;}
+  .card-total{font-family:monospace; font-weight:700; font-size:18px; color:var(--dark);}
+  .chevron-btn{background:none; border:none; cursor:pointer; padding:2px;}
+  .chevron-btn svg{width:16px; height:16px; color:var(--dark-40); transition:transform .2s;}
+  .chevron-btn.open svg{transform:rotate(180deg);}
+  .expand-panel{padding:2px 16px 12px; border-top:1px solid var(--dark-5);}
+  .variant-row{display:flex; align-items:center; justify-content:space-between; background:var(--bg); border-radius:10px; padding:6px 10px; margin-top:6px;}
+  .variant-size{font-size:12px; font-weight:600; width:56px;}
+  .stepper{display:flex; align-items:center; gap:8px;}
+  .step-btn{width:24px; height:24px; border-radius:6px; background:#fff; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+  .step-btn svg{width:12px; height:12px; color:var(--dark);}
+  .step-val{font-family:monospace; font-size:13px; width:22px; text-align:center;}
+  .row-actions{display:flex; gap:8px; margin-top:10px;}
+  .row-actions button{flex:1; display:flex; align-items:center; justify-content:center; gap:6px; padding:8px; border-radius:10px; font-size:12px; font-weight:600; border:none; cursor:pointer; font-family:inherit;}
+  .row-actions button svg{width:12px; height:12px;}
+  .btn-edit{background:var(--dark); color:#fff;}
+  .btn-del{background:var(--danger); color:#fff;}
+  .report-card{background:#fff; border-radius:16px; border:1px solid var(--dark-8); padding:16px; margin-bottom:12px; overflow:hidden;}
+  .report-label{font-size:12px; color:var(--dark-50); margin:0 0 4px;}
+  .report-value{font-size:24px; font-weight:700; font-family:monospace; margin:0;}
+  .report-value small{font-size:13px; font-weight:400; color:var(--dark-50); font-family:inherit;}
+  .report-sub{display:flex; gap:16px; margin-top:10px; font-size:12px; color:var(--dark-60);}
+  .report-head{display:flex; align-items:center; gap:6px; margin-bottom:12px;}
+  .report-card-header{margin:-16px -16px 12px; padding:13px 16px; border-radius:15px 15px 0 0; background:var(--dark); display:flex; align-items:center; justify-content:space-between; gap:6px; flex-wrap:wrap; row-gap:8px;}
+  .report-card-header .report-head{margin-bottom:0; color:#fff; font-weight:600; font-size:14px;}
+  .report-card-header .report-head svg{color:var(--accent);}
+  .report-card-header p{color:#fff; margin:0; font-size:14px; font-weight:600;}
+  .report-card-header .pdf-btn{background:#9AC93B; color:var(--dark);}
+  .report-card-header .header-select{background:rgba(255,255,255,.15); color:#fff; border:none; border-radius:8px; padding:4px 4px; font-size:10px; font-weight:600; font-family:inherit; outline:none; max-width:78px; flex-shrink:1;}
+  .report-card-header .header-select option{color:var(--dark);}
+  .report-card-header-row{display:flex; align-items:center; gap:6px; min-width:0; flex:1 1 auto;}
+  .report-card-header-row span{color:#fff; font-weight:600; font-size:14px; white-space:nowrap; flex-shrink:0;}
+  .report-head svg{width:15px; height:15px; color:var(--danger);}
+  .report-head span{font-size:14px; font-weight:600;}
+  .low-item, .stock-item{display:flex; align-items:center; justify-content:space-between; font-size:13px; border-bottom:1px solid var(--dark-5); padding:8px 0;}
+  .low-item:last-child, .stock-item:last-child{border-bottom:none; padding-bottom:0;}
+  .muted{color:var(--dark-40); font-size:11px;}
+  .fab, .fab-manage, .fab-cat-add{position:fixed; bottom:30px; width:58px; height:58px; border-radius:50%; border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 0 0 6px #fff, 0 8px 18px rgba(0,0,0,.28); transition:left .45s cubic-bezier(.34,1.3,.64,1), right .45s cubic-bezier(.34,1.3,.64,1), transform .45s cubic-bezier(.34,1.3,.64,1), box-shadow .3s ease;}
+  .fab{left:50%; transform:translateX(-50%); background:var(--accent); z-index:20;}
+  .fab:disabled{opacity:.55; cursor:not-allowed;}
+  .fab-manage{left:50%; right:auto; transform:translateX(-50%) translate(6px,4px) scale(.92); background:var(--danger); z-index:19; display:none;}
+  .fab-cat-add{left:50%; right:auto; transform:translateX(-50%) translate(-6px,4px) scale(.92); background:#9AC93B; z-index:19; display:none;}
+  .fab-manage.show, .fab-cat-add.show{display:flex;}
+  .fab-anchor.expanded .fab-manage{left:auto; right:24px; transform:none;}
+  .fab-anchor.expanded .fab-cat-add{left:24px; right:auto; transform:none;}
+  @keyframes fabIdleGlow{
+    0%, 100%{ box-shadow:0 6px 16px rgba(0,0,0,.25); }
+    50%{ box-shadow:0 9px 22px rgba(0,0,0,.35); }
+  }
+  .fab-manage:active, .fab-cat-add:active{ filter:brightness(.9); }
+  .fab-manage svg, .fab-cat-add svg{width:20px; height:20px; color:#fff;}
+  .fab-label{position:fixed; left:-48px; bottom:30px; pointer-events:none; z-index:14; display:none; opacity:0; transition:opacity .25s ease;}
+  .fab-manage-label{position:fixed; right:-48px; left:auto; bottom:30px; pointer-events:none; z-index:14; display:none; opacity:0; transition:opacity .25s ease;}
+  .fab-label.show, .fab-manage-label.show{display:block;}
+  .fab-anchor.expanded .fab-label.show, .fab-anchor.expanded .fab-manage-label.show{opacity:1; transition-delay:.2s;}
+  .fab svg{width:26px; height:26px; color:var(--dark);}
+  .fab svg{transition:transform .3s ease;}
+  .fab.menu-open svg{transform:rotate(45deg);}
+  .fab-anchor{max-width:480px; margin:0 auto; position:relative;}
+
+  /* ---------- HOME-TAB RADIAL SPEED-DIAL MENU ---------- */
+  .home-fab-menu{display:none;}
+  .home-fab-menu.show{display:block;}
+  .home-fab-backdrop{position:fixed; inset:0; background:rgba(0,0,0,.15); z-index:18; opacity:0; pointer-events:none; transition:opacity .25s ease;}
+  .home-fab-menu.open .home-fab-backdrop{opacity:1; pointer-events:auto;}
+  .arc-btn{position:fixed; left:50%; bottom:37px; width:44px; height:44px; border-radius:50%; background:var(--accent); border:none; box-shadow:0 4px 14px rgba(0,0,0,.28); display:flex; align-items:center; justify-content:center; cursor:pointer; color:var(--dark); z-index:19; opacity:0; pointer-events:none; transform:translate(-50%,0) scale(0); transition:transform .35s cubic-bezier(.34,1.56,.64,1), opacity .2s ease;}
+  .arc-btn svg{width:19px; height:19px;}
+  .home-fab-menu.open .arc-btn{opacity:1; pointer-events:auto;}
+  .home-fab-menu.open .arc-btn.arc-1{transform:translate(calc(-50% - 95px), 0) scale(1); transition-delay:.02s;}
+  .home-fab-menu.open .arc-btn.arc-2{transform:translate(calc(-50% - 67px), -67px) scale(1); transition-delay:.06s;}
+  .home-fab-menu.open .arc-btn.arc-3{transform:translate(-50%, -95px) scale(1); transition-delay:.10s;}
+  .home-fab-menu.open .arc-btn.arc-4{transform:translate(calc(-50% + 67px), -67px) scale(1); transition-delay:.06s;}
+  .home-fab-menu.open .arc-btn.arc-5{transform:translate(calc(-50% + 95px), 0) scale(1); transition-delay:.02s;}
+  .bottom-nav{position:fixed; left:0; right:0; bottom:0; max-width:480px; margin:0 auto; background:#fff; border-radius:22px 22px 0 0; box-shadow:0 -6px 20px rgba(0,0,0,.10); border-top:2px solid var(--accent); padding:9px 10px calc(9px + env(safe-area-inset-bottom)); display:flex; align-items:flex-start; justify-content:space-between; z-index:17;}
+  .bn-item{background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:3px; padding:5px 2px; cursor:pointer; color:var(--dark-40); font-family:inherit; flex:1; min-width:0;}
+  .bn-item svg{width:21px; height:21px;}
+  .bn-item span{font-size:9.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;}
+  .bn-item.active{color:var(--accent);}
+  .bn-spacer{width:64px; flex-shrink:0;}
+  @media (min-width:860px){ .bottom-nav{ display:none; } }
+  .overlay{position:fixed; inset:0; background:rgba(0,0,0,.45); display:flex; align-items:flex-end; justify-content:center; z-index:30;}
+  .overlay.center{align-items:center; padding:0 24px;}
+  .modal{width:100%; max-width:480px; background:var(--bg); border-radius:24px 24px 0 0; padding:20px; padding-bottom:32px; max-height:90vh; overflow-y:auto;}
+  .modal-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px;}
+  .modal-head h2{font-size:16px; margin:0;}
+  .icon-x{width:32px; height:32px; border-radius:10px; background:var(--dark-5); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+  .icon-x svg{width:16px; height:16px; color:var(--dark-60);}
+  .field{margin-bottom:12px;}
+  .field label{font-size:12px; color:var(--dark-50); display:block; margin-bottom:4px;}
+  .field input, .field select{width:100%; background:#fff; border:1px solid var(--dark-10); border-radius:12px; padding:10px 12px; font-size:14px; outline:none; font-family:inherit;}
+  .field input:focus{border-color:var(--accent); box-shadow:0 0 0 3px rgba(232,163,61,.25);}
+  .grid2{display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+  .img-picker{display:flex; align-items:center; gap:12px; margin-bottom:14px;}
+  .img-box{width:80px; height:80px; border-radius:14px; background:#fff; border:2px dashed var(--dark-15); display:flex; align-items:center; justify-content:center; overflow:hidden; cursor:pointer; flex-shrink:0; padding:0;}
+  .img-box img{width:100%; height:100%; object-fit:cover;}
+  .img-box svg{width:22px; height:22px; color:var(--dark-15);}
+  .img-btn{font-size:12px; font-weight:600; color:var(--dark); background:var(--dark-5); border:none; padding:8px 12px; border-radius:10px; cursor:pointer; font-family:inherit;}
+  .img-remove{display:block; margin-top:6px; font-size:11px; color:var(--danger); background:none; border:none; cursor:pointer; padding:0; font-family:inherit;}
+  .cover-box{width:100%; aspect-ratio:16/6; border-radius:14px; background:var(--dark); border:2px dashed var(--dark-15); display:flex; align-items:center; justify-content:center; overflow:hidden; cursor:pointer; padding:0; margin-bottom:8px;}
+  .cover-box img{width:100%; height:100%; object-fit:cover;}
+  .cover-box svg{width:22px; height:22px; color:rgba(255,255,255,.3);}
+  .chips{display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px;}
+  .chip{font-size:11px; font-weight:600; padding:5px 10px; border-radius:999px; background:var(--dark-5); color:var(--dark-60); border:none; cursor:pointer; font-family:inherit;}
+  .vrow{display:flex; align-items:center; gap:8px; margin-top:8px;}
+  .vrow input[type=text]{width:88px; background:#fff; border:1px solid var(--dark-10); border-radius:10px; padding:8px 10px; font-size:13px; outline:none; font-family:inherit;}
+  .vrow select{width:100px; background:#fff; border:1px solid var(--dark-10); border-radius:10px; padding:8px 10px; font-size:13px; outline:none; font-family:inherit; flex-shrink:0;}
+  .vrow input[type=number]{flex:1; background:#fff; border:1px solid var(--dark-10); border-radius:10px; padding:8px 10px; font-size:13px; outline:none; font-family:inherit;}
+  .vrow button{width:32px; height:32px; border-radius:10px; background:var(--danger-10); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0;}
+  .vrow button svg{width:13px; height:13px; color:var(--danger);}
+  .vrow button:disabled{opacity:.3; cursor:default;}
+  .add-size-link{font-size:12px; font-weight:600; color:var(--dark-60); background:none; border:none; margin-top:10px; display:flex; align-items:center; gap:4px; cursor:pointer; padding:0; font-family:inherit;}
+  .add-size-link svg{width:13px; height:13px;}
+  .submit-btn{width:100%; background:var(--dark); color:#fff; border:none; border-radius:12px; padding:13px; font-size:14px; font-weight:600; margin-top:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; font-family:inherit;}
+  .submit-btn svg{width:16px; height:16px;}
+  .confirm-box{background:#fff; border-radius:16px; padding:20px; width:100%; max-width:320px;}
+  .confirm-box p{margin:0;}
+  .confirm-box .title{font-weight:600; margin-bottom:4px;}
+  .confirm-box .desc{font-size:12px; color:var(--dark-50); margin-bottom:16px;}
+  .confirm-actions{display:flex; gap:8px;}
+  .po-lookup-status{display:flex; align-items:center; gap:8px; padding:10px 12px; border-radius:12px; font-size:12.5px; margin-top:6px;}
+  .po-lookup-status.ok{background:var(--success-10); color:var(--success);}
+  .po-lookup-status.err{background:var(--danger-10); color:var(--danger);}
+  .po-lookup-status svg{width:15px; height:15px; flex-shrink:0;}
+  .po-match-card{background:var(--dark-5); border-radius:12px; padding:12px; margin-top:10px;}
+  .po-match-name{font-size:13px; font-weight:700; color:var(--dark); margin-bottom:8px;}
+  .po-readonly-field label{font-size:11px; color:var(--dark-50); display:block; margin-bottom:3px;}
+  .po-readonly-field select{width:100%; background:#fff; border:1px solid var(--dark-10); border-radius:10px; padding:9px 10px; font-size:13px; outline:none; font-family:inherit; color:var(--dark);}
+  .po-readonly-field .po-static{width:100%; background:#fff; border:1px solid var(--dark-10); border-radius:10px; padding:9px 10px; font-size:13px; color:var(--dark-60);}
+  .low-item{position:relative;}
+  .low-cart-badge{display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; background:#4C7A5E; margin-left:6px; cursor:pointer; border:none; flex-shrink:0; vertical-align:middle;}
+  .low-cart-badge svg{width:11px; height:11px; color:#fff;}
+  .confirm-actions button{flex:1; padding:10px; border-radius:12px; font-size:13px; font-weight:600; border:none; cursor:pointer; font-family:inherit;}
+  .btn-cancel{background:var(--dark-5); color:var(--dark);}
+  .btn-confirm{background:var(--danger); color:#fff;}
+  .toast{position:fixed; bottom:150px; left:50%; transform:translateX(-50%); background:var(--dark); color:#fff; font-size:12px; font-weight:500; padding:10px 16px; border-radius:999px; box-shadow:0 6px 16px rgba(0,0,0,.25); z-index:50;}
+  ::-webkit-scrollbar{width:6px;}
+  ::-webkit-scrollbar-thumb{background:var(--dark-15); border-radius:3px;}
+
+  /* ---------- DESKTOP / WIDE SCREEN LAYOUT ---------- */
+  @media (min-width: 860px){
+    body{ background:#E2DED2; }
+    #app{ max-width:1240px; padding-bottom:60px; box-shadow:none; }
+    .header{ border-radius:20px; max-width:1240px; margin:20px auto 0; padding:26px 32px 22px; }
+    .header-top{ max-width:1000px; }
+    .stats{ max-width:640px; }
+    .tabs{ max-width:1240px; margin:16px auto 0; padding:0 32px; }
+    .content{ max-width:1240px; margin:0 auto; padding:0 32px; }
+    .search-row{ max-width:520px; }
+
+    #list-items{ display:grid; grid-template-columns:repeat(auto-fill, minmax(300px,1fr)); gap:12px; align-items:start; }
+    #list-items .card{ margin-bottom:0; }
+    .grid-container{ grid-template-columns:repeat(auto-fill, minmax(190px,1fr)) !important; }
+
+    .report-grid{ display:grid; grid-template-columns:1fr 1fr; gap:12px; align-items:start; }
+    .report-grid > .report-card{ margin-bottom:0; }
+    .report-grid > .report-card:last-child{ grid-column:1 / -1; }
+
+    .fab-anchor{ max-width:1240px; margin:0 auto; position:relative; height:0; }
+    .fab{ position:absolute; left:auto; right:32px; bottom:24px; transform:none; }
+    .fab-label{ display:none !important; }
+    .fab-manage{ position:absolute; left:auto; right:96px; bottom:24px; }
+    .fab-cat-add{ position:absolute; left:auto; right:160px; bottom:24px; }
+    .fab-manage-label{ display:none !important; }
+
+    .overlay{ align-items:center; padding:24px; }
+    .modal{ border-radius:20px; max-height:85vh; }
+    #scanner-overlay{ padding:24px; }
+    #scanner-overlay > div{ border-radius:20px; overflow:hidden; max-height:88vh; }
+
+    .install-banner-wide{ text-align:center; }
+  }
+  @media (min-width: 860px) and (max-width: 1279px){
+    .fab{ right:24px; }
+  }
+
+  /* ---------- PDF EXPORT (print) ---------- */
+  .pdf-btn{ display:flex; align-items:center; gap:5px; background:#9AC93B; color:var(--dark); border:none; padding:7px 12px; border-radius:10px; font-size:11px; font-weight:600; cursor:pointer; font-family:inherit; flex-shrink:0; white-space:nowrap; }
+  .pdf-btn svg{ width:13px; height:13px; }
+  .print-only{ display:none; }
+  .print-header{ display:flex; align-items:center; gap:14px; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #1C2B33; }
+  .print-logo{ width:56px; height:56px; border-radius:10px; object-fit:cover; }
+  .print-header h1{ margin:0; font-size:18px; }
+  .print-header p{ margin:2px 0 0; font-size:12px; color:#555; }
+  .print-date{ color:#999 !important; }
+  .print-summary{ display:flex; gap:24px; margin-bottom:14px; }
+  .print-summary span{ display:block; color:#777; font-size:11px; }
+  .print-summary b{ font-size:16px; }
+  .print-table{ width:100%; border-collapse:collapse; font-size:12px; }
+  .print-table th, .print-table td{ border:1px solid #ccc; padding:6px 8px; text-align:left; }
+  .print-table th{ background:#f0eee7; }
+  .print-table td.num, .print-table th.num{ text-align:right; font-family:monospace; }
+  @media print{
+    body *{ visibility:hidden; }
+    #print-area, #print-area *{ visibility:visible; }
+    #print-area{ position:absolute; left:0; top:0; width:100%; display:block !important; }
+  }
+</style>
+</head>
+<body>
+<div id="install-banner-root"></div>
+<div id="print-area" class="print-only"></div>
+<div id="app">
+  <div class="header">
+    <div class="header-top">
+      <div class="logo"></div>
+      <div>
+        <h1>ຄັງເສື້ອຜ້າ</h1>
+        <p>ຈັດການສະຕັອກຕາມຂະໜາດ</p>
+      </div>
+      <div class="header-actions">
+        <button class="header-icon-btn" id="brand-open-btn"></button>
+        <button class="header-icon-btn" id="backup-open-btn"></button>
+      </div>
+    </div>
+    <div class="stats" id="stats"></div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-list-btn" data-tab="list"></button>
+    <button class="tab-btn" id="tab-report-btn" data-tab="report"></button>
+    <button class="tab-btn" id="tab-barcode-btn" data-tab="barcode"></button>
+  </div>
+
+  <div class="content" id="content"></div>
+</div>
+
+<div class="fab-anchor">
+  <svg id="fab-label" class="fab-label" viewBox="0 0 200 190" width="200" height="190" aria-hidden="true">
+    <path id="fabLabelPath" d="M 67,135 Q 100,113 133,135" fill="none" stroke="none"/>
+    <text font-size="12" font-weight="700" fill="#9AC93B" style="font-family:'Noto Sans Lao','Noto Sans',system-ui,sans-serif;">
+      <textPath href="#fabLabelPath" startOffset="2%">ເພີ່ມໝວດໝູ່</textPath>
+    </text>
+  </svg>
+  <svg id="fab-manage-label" class="fab-manage-label" viewBox="0 0 200 190" width="200" height="190" aria-hidden="true">
+    <path id="fabManageLabelPath" d="M 67,135 Q 100,113 133,135" fill="none" stroke="none"/>
+    <text font-size="12" font-weight="700" style="fill:var(--danger); font-family:'Noto Sans Lao','Noto Sans',system-ui,sans-serif;">
+      <textPath href="#fabManageLabelPath" startOffset="2%">ແກ້ໄຂໝວດໝູ່</textPath>
+    </text>
+  </svg>
+  <button class="fab-manage" id="fab-manage-categories"></button>
+  <button class="fab-cat-add" id="fab-cat-add"></button>
+  <button class="fab" id="fab-add"></button>
+</div>
+
+<div id="home-fab-menu" class="home-fab-menu">
+  <div class="home-fab-backdrop" id="home-fab-backdrop"></div>
+  <button type="button" class="arc-btn arc-1" id="arc-btn-1" title="ເພີ່ມສິນຄ້າໃໝ່"></button>
+  <button type="button" class="arc-btn arc-2" id="arc-btn-2" title="ສະແກນ"></button>
+  <button type="button" class="arc-btn arc-3" id="arc-btn-3" title="ຮັບອໍເດີ້"></button>
+  <button type="button" class="arc-btn arc-4" id="arc-btn-4" title="ສັ່ງຊື້ສິນຄ້າ"></button>
+  <button type="button" class="arc-btn arc-5" id="arc-btn-5" title="ອື່ນໆ"></button>
+</div>
+
+<div class="bottom-nav" id="bottom-nav">
+  <button type="button" class="bn-item" id="bn-home"></button>
+  <button type="button" class="bn-item" id="bn-categories"></button>
+  <div class="bn-spacer"></div>
+  <button type="button" class="bn-item" id="bn-report"></button>
+  <button type="button" class="bn-item" id="bn-orders"></button>
+</div>
+
+<div id="modal-root"></div>
+<div id="detail-root"></div>
+<div id="brand-root"></div>
+<div id="backup-root"></div>
+<div id="scanner-root"></div>
+<div id="category-modal-root"></div>
+<div id="manage-categories-root"></div>
+<div id="sell-root"></div>
+<div id="buy-root"></div>
+<div id="cart-root"></div>
+<div id="edit-order-root"></div>
+<div id="order-confirm-root"></div>
+<div id="confirm-root"></div>
+<div id="po-root"></div>
+<div id="order-action-root"></div>
+<div id="toast-root"></div>
+
+<script>
+const STORAGE_KEY = 'khang-sinkha-products-v1';
+const SIZE_OPTIONS = ['S','M','L','XL','XXL','3XL','4XL','Free'];
+const CATEGORIES_KEY = 'khang-sinkha-categories-v1';
+let CATEGORIES = [];
+try{ CATEGORIES = JSON.parse(localStorage.getItem(CATEGORIES_KEY) || 'null') || ['ໝວດຊຸດໂຮງງານ', 'ໝວດຊຸດເຊບຕີ້']; }
+catch(e){ CATEGORIES = ['ໝວດຊຸດໂຮງງານ', 'ໝວດຊຸດເຊບຕີ້']; }
+function saveCategories(){ try{ localStorage.setItem(CATEGORIES_KEY, JSON.stringify(CATEGORIES)); }catch(e){} }
+
+const PURCHASE_ORDERS_KEY = 'khang-sinkha-purchase-orders-v1';
+let purchaseOrders = [];
+try{ purchaseOrders = JSON.parse(localStorage.getItem(PURCHASE_ORDERS_KEY) || '[]'); }catch(e){ purchaseOrders = []; }
+function savePurchaseOrders(){ try{ localStorage.setItem(PURCHASE_ORDERS_KEY, JSON.stringify(purchaseOrders)); }catch(e){} }
+
+const CUSTOMER_ORDERS_KEY = 'khang-sinkha-customer-orders-v1';
+let customerOrders = [];
+try{ customerOrders = JSON.parse(localStorage.getItem(CUSTOMER_ORDERS_KEY) || '[]'); }catch(e){ customerOrders = []; }
+function saveCustomerOrders(){ try{ localStorage.setItem(CUSTOMER_ORDERS_KEY, JSON.stringify(customerOrders)); }catch(e){} }
+function findPendingOrder(code, size){
+  return purchaseOrders.find(o => o.code === code && o.size === size);
+}
+
+const ICONS = {
+  plus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  minus: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="5" y1="12" x2="19" y2="12"/></svg>',
+  pencil: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>',
+  trash: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/></svg>',
+  search: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>',
+  alert: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>',
+  package: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7.5 4.27 9 5.15"/><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></svg>',
+  list: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>',
+  chart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>',
+  x: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>',
+  chevron: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>',
+  camera: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2Z"/><circle cx="12" cy="13" r="4"/></svg>',
+  image: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="m21 15-5-5L5 21"/></svg>',
+  chevronRight: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>',
+  cloud: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.5 19a4.5 4.5 0 0 0 0-9h-1.26a8 8 0 1 0-14.24 5.24"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/></svg>',
+  upload: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>',
+  grid: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/></svg>',
+  barcode: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5v14"/><path d="M7 5v14"/><path d="M11 5v14"/><path d="M13.5 5v14"/><path d="M17 5v14"/><path d="M21 5v14"/></svg>',
+  sell: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>',
+  buy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><line x1="12" y1="11" x2="12" y2="17"/><line x1="9" y1="14" x2="15" y2="14"/></svg>',
+  pdf: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/></svg>',
+  copy: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>',
+  home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>',
+  receipt: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M12 11h4"/><path d="M12 16h4"/><path d="M8 11h.01"/><path d="M8 16h.01"/></svg>',
+  inbox: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 18.76 4H5.24a2 2 0 0 0-1.79 1.11z"/></svg>',
+  cart: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>',
+  star: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>',
+  check: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>'
+};
+
+function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
+function esc(s){ return (s==null?'':String(s)).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+let products = [];
+try{ products = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); }catch(e){ products = []; }
+
+// One-time migration: old default unit "ໂຕ" renamed to "ລາຍການ"
+(function migrateUnitLabel(){
+  let changed = false;
+  products = products.map(p => {
+    if(p.unit === 'ໂຕ'){ changed = true; return { ...p, unit:'ລາຍການ' }; }
+    return p;
+  });
+  if(changed){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(products)); }catch(e){}
+  }
+})();
+
+let tab = 'list';
+let search = '';
+let expanded = {};
+let viewMode = localStorage.getItem('khang-sinkha-view-mode') || 'list';
+let detailId = null;
+let formState = null;
+let confirmDeleteId = null;
+let toastTimer = null;
+let barcodeSearch = '';
+let reportCategoryFilter = '';
+let ordersFilterDate = new Date().toISOString().slice(0,10);
+
+const SCANLOG_KEY = 'khang-sinkha-scanlog-v1';
+let scanLog = [];
+try{ scanLog = JSON.parse(localStorage.getItem(SCANLOG_KEY) || '[]'); }catch(e){ scanLog = []; }
+function saveScanLog(){ try{ localStorage.setItem(SCANLOG_KEY, JSON.stringify(scanLog)); }catch(e){} }
+
+let knownBarcodeSet = new Set();
+scanLog.forEach(r => { if(r.code && !r.isDuplicate) knownBarcodeSet.add(String(r.code).trim().toLowerCase()); });
+let barcodeSyncTimer = null;
+
+function save(){
+  try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(products)); }
+  catch(e){ showToast('ບັນທຶກບໍ່ສຳເລັດ, ອາດເປັນຍ້ອນຮູບໃຫຍ່ເກີນໄປ'); }
+  scheduleAutoSync();
+}
+
+function withTotals(p){
+  const totalQty = p.variants.reduce((s,v)=>s+v.qty,0);
+  const lowVariants = p.variants.filter(v => v.qty <= p.minQty);
+  return {...p, totalQty, lowVariants};
+}
+
+function showToast(msg){
+  const root = document.getElementById('toast-root');
+  root.innerHTML = '<div class="toast">'+esc(msg)+'</div>';
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ root.innerHTML=''; }, 1800);
+}
+
+/* ---------- HEADER / STATS ---------- */
+function renderStats(){
+  const list = products.map(withTotals);
+  const totalSKU = products.length;
+  const totalQty = list.reduce((s,p)=>s+p.totalQty,0);
+  const lowCount = list.reduce((s,p)=>s+p.lowVariants.length,0);
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><div class="stat-label">ລາຍການ</div><div class="stat-value">${totalSKU}</div></div>
+    <div class="stat"><div class="stat-label">ຈຳນວນລວມ</div><div class="stat-value">${totalQty}</div></div>
+    <div class="stat ${lowCount>0?'warn':''}"><div class="stat-label">ໃກ້ໝົດ</div><div class="stat-value">${lowCount}<span style="display:block; font-size:10px; font-weight:600; margin-top:1px;">ລາຍການ</span></div></div>
+  `;
+}
+
+/* ---------- TABS ---------- */
+function renderTabButtons(){
+  document.getElementById('tab-list-btn').innerHTML = ICONS.list + ' ລາຍການ';
+  document.getElementById('tab-report-btn').innerHTML = ICONS.chart + ' ລາຍງານ';
+  document.getElementById('tab-barcode-btn').innerHTML = ICONS.barcode + ' Barcode';
+  document.getElementById('tab-list-btn').classList.toggle('active', tab==='list');
+  document.getElementById('tab-report-btn').classList.toggle('active', tab==='report');
+  document.getElementById('tab-barcode-btn').classList.toggle('active', tab==='barcode');
+  document.querySelector('.tabs').style.display = ['list','report','barcode'].includes(tab) ? '' : 'none';
+}
+
+/* ---------- BOTTOM NAV ---------- */
+function renderBottomNav(){
+  document.getElementById('bn-home').innerHTML = ICONS.home + '<span>ໜ້າຫຼັກ</span>';
+  document.getElementById('bn-categories').innerHTML = ICONS.grid + '<span>ໝວດໝູ່</span>';
+  document.getElementById('bn-report').innerHTML = ICONS.chart + '<span>ລາຍງານ</span>';
+  document.getElementById('bn-orders').innerHTML = ICONS.receipt + '<span>ອໍເດີ້ມື້ນີ້</span>';
+  document.getElementById('bn-home').classList.toggle('active', tab==='list');
+  document.getElementById('bn-categories').classList.toggle('active', tab==='categories');
+  document.getElementById('bn-report').classList.toggle('active', tab==='report');
+  document.getElementById('bn-orders').classList.toggle('active', tab==='orders');
+}
+
+/* ---------- LIST TAB ---------- */
+function renderContent(){
+  const content = document.getElementById('content');
+  if(tab === 'list'){
+    content.innerHTML = `
+      <div class="search-row">
+        <div class="search-wrap">${ICONS.search}<input id="search-input" placeholder="ຄົ້ນຫາຊື່ ຫຼື ລະຫັດສິນຄ້າ..." value="${esc(search)}"><button type="button" class="search-scan-btn" id="search-scan-btn" title="ສະແກນ Barcode ເພື່ອຄົ້ນຫາ">${ICONS.barcode}</button></div>
+        <div class="view-toggle">
+          <button class="view-btn ${viewMode==='list'?'active':''}" id="view-list-btn">${ICONS.list}</button>
+          <button class="view-btn ${viewMode==='grid'?'active':''}" id="view-grid-btn">${ICONS.grid}</button>
+        </div>
+      </div>
+      <div id="list-items"></div>
+    `;
+    document.getElementById('search-input').addEventListener('input', e=>{
+      search = e.target.value;
+      renderListItems();
+    });
+    document.getElementById('search-scan-btn').addEventListener('click', ()=>openScanner('search'));
+    document.getElementById('view-list-btn').addEventListener('click', ()=>setViewMode('list'));
+    document.getElementById('view-grid-btn').addEventListener('click', ()=>setViewMode('grid'));
+    renderListItems();
+  } else if(tab === 'report'){
+    renderReport();
+  } else if(tab === 'barcode'){
+    renderBarcodeTab();
+  } else if(tab === 'categories'){
+    renderCategoriesTab();
+  } else if(tab === 'orders'){
+    renderOrdersTab();
+  }
+}
+
+/* ---------- CATEGORIES TAB ---------- */
+function renderCategoriesTab(){
+  const content = document.getElementById('content');
+  const map = {};
+  products.forEach(p=>{
+    const cat = (p.category && p.category.trim()) ? p.category.trim() : 'ອື່ນໆ';
+    if(!map[cat]) map[cat] = {count:0, qty:0};
+    map[cat].count++;
+    map[cat].qty += p.variants.reduce((s,v)=>s+v.qty,0);
+  });
+  const cats = Object.keys(map).sort((a,b)=>a.localeCompare(b,'lo'));
+  if(cats.length === 0){
+    content.innerHTML = `<div class="empty">${ICONS.grid}<p>ຍັງບໍ່ມີໝວດໝູ່ສິນຄ້າ</p></div>`;
+    return;
+  }
+  content.innerHTML = cats.map(cat => `
+    <div class="card"><div class="card-row">
+      <div class="thumb">${ICONS.grid}</div>
+      <div class="card-main">
+        <div class="card-title"><span>${esc(cat)}</span></div>
+        <div class="card-sub">${map[cat].count} ລາຍການ &middot; ${map[cat].qty} ຈຳນວນ</div>
+      </div>
+    </div></div>
+  `).join('');
+}
+
+/* ---------- ORDERS TAB (placeholder) ---------- */
+/* ---------- CART: customer order creation (per-card cart icon) ---------- */
+const SHIPPING_CARRIERS = ['ອານຸສິດ', 'ຮຸ່ງອາລຸນ', 'ມີໄຊ', 'Unitel', 'Flash'];
+let cartState = null;
+function openCartModal(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  const totalQty = p.variants.reduce((s,v)=>s+v.qty,0);
+  if(totalQty <= 0){ showToast('ສິນຄ້າໝົດ ບໍ່ສາມາດສັ່ງຊື້ໄດ້'); return; }
+  cartState = { productId:id, quantities:{}, customerName:'', phone:'', shippingCarrier:'', shippingBranch:'' };
+  p.variants.forEach(v=>{ cartState.quantities[v.id] = ''; });
+  renderCartModal();
+}
+function closeCartModal(){ cartState = null; document.getElementById('cart-root').innerHTML=''; }
+function renderCartModal(){
+  const root = document.getElementById('cart-root');
+  if(!cartState){ root.innerHTML=''; return; }
+  const p = products.find(x=>x.id===cartState.productId);
+  if(!p){ closeCartModal(); return; }
+  const rows = p.variants.map(v => `
+    <div class="sell-row">
+      <div class="sell-row-info">
+        <span class="sell-size">${esc(p.name)} (${esc(v.size)})</span>
+        <span class="muted">ຄົງເຫຼືອ: ${v.qty}</span>
+      </div>
+      <input type="number" inputmode="numeric" min="0" max="${v.qty}" data-max="${v.qty}" placeholder="0" value="${esc(cartState.quantities[v.id])}" data-vid="${v.id}" class="sell-qty-input cart-qty-input">
+    </div>
+  `).join('');
+  root.innerHTML = `
+    <div class="overlay center" id="cart-overlay">
+      <div class="confirm-box" style="max-width:360px; text-align:left;">
+        <p class="title" style="margin-bottom:2px;">ສັ່ງຊື້ໃຫ້ລູກຄ້າ</p>
+        <p class="desc" style="margin-bottom:12px;">ຊື່ສິນຄ້າ ແລະ ຂະໜາດຂ້າງລຸ່ມນີ້ບໍ່ສາມາດແກ້ໄຂໄດ້ — ໃສ່ພຽງຈຳນວນທີ່ລູກຄ້າຕ້ອງການ</p>
+        <div id="cart-rows">${rows}</div>
+        <div class="field" style="margin-top:12px;">
+          <label>ຊື່ລູກຄ້າ *</label>
+          <input id="cart-customer-name" value="${esc(cartState.customerName)}" placeholder="ຊື່ລູກຄ້າ">
+        </div>
+        <div class="field">
+          <label>ເບີໂທລະສັບ *</label>
+          <input id="cart-customer-phone" type="tel" value="${esc(cartState.phone)}" placeholder="020 xxxxxxxx">
+        </div>
+        <label style="font-size:12px; color:var(--dark-50); display:block; margin-bottom:4px;">ທີ່ຢູ່ຈັດສົ່ງ</label>
+        <div class="field">
+          <label>ເລືອກຂົນສົ່ງ *</label>
+          <select id="cart-shipping-carrier">
+            <option value="">-- ເລືອກຂົນສົ່ງ --</option>
+            ${SHIPPING_CARRIERS.map(c => `<option value="${esc(c)}" ${cartState.shippingCarrier===c?'selected':''}>${esc(c)}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field" style="margin-bottom:0;">
+          <label>ລະບຸທີ່ຢູ່ສາຂາ *</label>
+          <input id="cart-shipping-branch" value="${esc(cartState.shippingBranch)}" placeholder="ຊື່ ຫຼື ທີ່ຢູ່ສາຂາຂົນສົ່ງ">
+        </div>
+        <p id="cart-error" style="color:var(--danger); font-size:12px; margin:8px 0 0; display:none;"></p>
+        <div class="confirm-actions" style="margin-top:16px;">
+          <button class="btn-cancel" id="cart-cancel-btn">ຍົກເລີກ</button>
+          <button class="btn-confirm" id="cart-save-btn" style="background:var(--dark); color:#fff;">ບັນທຶກ</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('cart-overlay').addEventListener('click', e=>{ if(e.target.id==='cart-overlay') closeCartModal(); });
+  document.getElementById('cart-cancel-btn').addEventListener('click', closeCartModal);
+  document.querySelectorAll('#cart-rows .cart-qty-input').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      cartState.quantities[e.target.dataset.vid] = e.target.value;
+      const max = parseInt(e.target.dataset.max, 10) || 0;
+      const n = parseInt(e.target.value, 10);
+      const errorEl = document.getElementById('cart-error');
+      if(!isNaN(n) && n > max){
+        e.target.classList.add('input-error');
+        errorEl.textContent = 'ເຄື່ອງໃນສາງມີບໍ່ພໍ';
+        errorEl.style.display = 'block';
+      } else {
+        e.target.classList.remove('input-error');
+        if(errorEl.textContent === 'ເຄື່ອງໃນສາງມີບໍ່ພໍ'){ errorEl.style.display = 'none'; errorEl.textContent = ''; }
+      }
+    });
+  });
+  document.getElementById('cart-customer-name').addEventListener('input', e=>{ cartState.customerName = e.target.value; });
+  document.getElementById('cart-customer-phone').addEventListener('input', e=>{ cartState.phone = e.target.value; });
+  document.getElementById('cart-shipping-carrier').addEventListener('change', e=>{ cartState.shippingCarrier = e.target.value; });
+  document.getElementById('cart-shipping-branch').addEventListener('input', e=>{ cartState.shippingBranch = e.target.value; });
+  document.getElementById('cart-save-btn').addEventListener('click', confirmCartOrder);
+}
+function confirmCartOrder(){
+  const p = products.find(x=>x.id===cartState.productId);
+  if(!p) return;
+  const errorEl = document.getElementById('cart-error');
+  const name = cartState.customerName.trim();
+  const phone = cartState.phone.trim();
+  const shippingCarrier = (cartState.shippingCarrier || '').trim();
+  const shippingBranch = (cartState.shippingBranch || '').trim();
+  if(!name){ errorEl.textContent = 'ກະລຸນາໃສ່ຊື່ລູກຄ້າ'; errorEl.style.display = 'block'; return; }
+  if(!phone){ errorEl.textContent = 'ກະລຸນາໃສ່ເບີໂທລະສັບ'; errorEl.style.display = 'block'; return; }
+  if(!shippingCarrier){ errorEl.textContent = 'ກະລຸນາເລືອກຂົນສົ່ງ'; errorEl.style.display = 'block'; return; }
+  if(!shippingBranch){ errorEl.textContent = 'ກະລຸນາລະບຸທີ່ຢູ່ສາຂາ'; errorEl.style.display = 'block'; return; }
+
+  const items = [];
+  let insufficient = false;
+  for(const v of p.variants){
+    const n = parseInt(cartState.quantities[v.id], 10);
+    if(!isNaN(n) && n > 0){
+      if(n > v.qty){ insufficient = true; }
+      items.push({ id:uid(), productId:p.id, productName:p.name, size:v.size, qty:n });
+    }
+  }
+  if(items.length === 0){ errorEl.textContent = 'ກະລຸນາໃສ່ຈຳນວນຢ່າງໜ້ອຍ 1 ຂະໜາດ'; errorEl.style.display = 'block'; return; }
+  if(insufficient){ errorEl.textContent = 'ເຄື່ອງໃນສາງມີບໍ່ພໍ'; errorEl.style.display = 'block'; return; }
+
+  const phoneNorm = phone.toLowerCase();
+  const existing = customerOrders.find(o => o.phone.trim().toLowerCase() === phoneNorm && o.status === 'pending');
+  if(existing){
+    customerOrders = customerOrders.map(o => o === existing
+      ? { ...o, customerName:name, shippingCarrier, shippingBranch, items:[...o.items, ...items], updatedAt:new Date().toISOString() }
+      : o);
+    showToast('ເພີ່ມລາຍການເຂົ້າອໍເດີ້ເກົ່າຂອງ "' + name + '" ແລ້ວ');
+  } else {
+    customerOrders = [{
+      id: uid(), phone, customerName:name, shippingCarrier, shippingBranch, items, status:'pending',
+      createdAt: new Date().toISOString(), updatedAt: new Date().toISOString()
+    }, ...customerOrders];
+    showToast('ບັນທຶກອໍເດີ້ຂອງ "' + name + '" ແລ້ວ');
+  }
+  saveCustomerOrders();
+  closeCartModal();
+  tab = 'orders';
+  renderTabButtons();
+  renderBottomNav();
+  renderContent();
+  updateFabStyle();
+}
+
+/* ---------- ORDERS TAB (ອໍເດີ້ມື້ນີ້) ---------- */
+function renderOrdersTab(){
+  const content = document.getElementById('content');
+  const dateObj = new Date(ordersFilterDate + 'T00:00:00');
+  const dateLabel = dateObj.toLocaleDateString('lo-LA', { day:'2-digit', month:'2-digit', year:'numeric' });
+  const filtered = customerOrders.filter(o => (o.createdAt || '').slice(0,10) === ordersFilterDate);
+
+  let listHtml;
+  if(filtered.length === 0){
+    listHtml = `<div class="empty">${ICONS.receipt}<p>ບໍ່ມີອໍເດີ້ໃນວັນທີນີ້</p></div>`;
+  } else {
+    const sorted = [...filtered].sort((a,b)=> new Date(b.updatedAt) - new Date(a.updatedAt));
+    listHtml = sorted.map(o => {
+      const totalQty = o.items.reduce((s,it)=>s+it.qty, 0);
+      const freeShip = totalQty > 1;
+      return `
+      <div class="report-card" style="margin-bottom:12px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px;">
+          <div style="min-width:0;">
+            <p style="font-weight:700; font-size:15px; margin:0; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
+              <span>${esc(o.customerName)}</span>
+              ${freeShip ? `<span style="background:rgba(154,201,59,.85); color:var(--dark); font-size:9px; font-weight:700; padding:2px 7px; border-radius:999px; white-space:nowrap;">ສົ່ງຟຣີ</span>` : ''}
+            </p>
+            <p class="muted" style="margin:2px 0 0; color:var(--dark);">${esc(o.phone)}</p>
+            ${(o.shippingCarrier || o.shippingBranch) ? `<p class="muted" style="margin:2px 0 0;">${esc(o.shippingCarrier || '')}${o.shippingCarrier && o.shippingBranch ? ' - ' : ''}${esc(o.shippingBranch || '')}</p>` : ''}
+          </div>
+          <div style="display:flex; align-items:center; gap:10px; flex-shrink:0;">
+            ${o.status === 'accepted'
+              ? `<span style="color:var(--success); font-weight:700; font-size:12px; white-space:nowrap; display:flex; align-items:center; gap:4px;">${ICONS.check} ຮັບອໍເດີ້ແລ້ວ</span>`
+              : `
+                <button type="button" class="order-icon-btn" style="color:var(--dark);" data-action="edit-order" data-id="${o.id}">${ICONS.pencil}</button>
+                <button type="button" class="order-icon-btn" style="color:var(--success);" data-action="accept-order" data-id="${o.id}">${ICONS.check}</button>
+              `}
+            <button type="button" class="order-icon-btn" style="color:var(--danger);" data-action="delete-order" data-id="${o.id}">${ICONS.x}</button>
+          </div>
+        </div>
+        <div style="margin-top:10px;">
+          ${o.items.map(it => `
+            <div class="stock-item">
+              <span style="background:rgba(232,163,61,.75); color:var(--dark); font-weight:700; padding:3px 8px; border-radius:8px; display:inline-block;">${esc(it.productName)} (${esc(it.size)})</span>
+              <span style="font-family:monospace;">x${it.qty}</span>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `;
+    }).join('');
+  }
+
+  content.innerHTML = `
+    <div class="report-card">
+      <div class="report-card-header">
+        <div class="report-card-header-row">
+          <span>ອໍເດີ້ປະຈຳວັນທີ:</span>
+          <span style="position:relative; display:inline-flex; align-items:center;">
+            <span id="orders-date-label" style="text-decoration:underline; text-underline-offset:3px; white-space:nowrap;">${esc(dateLabel)}</span>
+            <input type="date" id="orders-date-input" value="${ordersFilterDate}" style="position:absolute; inset:0; opacity:0; width:100%; height:100%; cursor:pointer; border:none;">
+          </span>
+        </div>
+        <button type="button" class="pdf-btn" id="orders-export-btn">${ICONS.pdf} ສົ່ງອອກ</button>
+      </div>
+    </div>
+    ${listHtml}
+  `;
+  document.getElementById('orders-date-input').addEventListener('change', e=>{
+    ordersFilterDate = e.target.value || new Date().toISOString().slice(0,10);
+    renderOrdersTab();
+  });
+  document.getElementById('orders-export-btn').addEventListener('click', ()=>printOrdersReport(filtered, dateLabel));
+}
+
+function printOrdersReport(ordersList, dateLabel){
+  const now = new Date().toLocaleString('lo-LA');
+  const rows = [];
+  ordersList.forEach(o => {
+    o.items.forEach((it, i) => {
+      rows.push(`
+        <tr>
+          ${i===0 ? `<td rowspan="${o.items.length}">${esc(o.customerName)}</td><td rowspan="${o.items.length}">${esc(o.phone)}</td><td rowspan="${o.items.length}">${esc(o.shippingCarrier || '')}</td><td rowspan="${o.items.length}">${esc(o.shippingBranch || '')}</td>` : ''}
+          <td>${esc(it.productName)}</td>
+          <td>${esc(it.size)}</td>
+          <td class="num">${it.qty}</td>
+          ${i===0 ? `<td rowspan="${o.items.length}">${o.status==='accepted' ? 'ຮັບອໍເດີ້ແລ້ວ' : 'ລໍຖ້າ'}</td>` : ''}
+        </tr>
+      `);
+    });
+  });
+  const totalItems = ordersList.reduce((s,o)=>s+o.items.reduce((s2,it)=>s2+it.qty,0), 0);
+  const bodyHtml = `
+    <div class="print-summary">
+      <div><span>ຈຳນວນອໍເດີ້</span><b>${ordersList.length}</b></div>
+      <div><span>ຈຳນວນສິນຄ້າລວມ</span><b>${totalItems} ໂຕ</b></div>
+    </div>
+    <table class="print-table">
+      <thead><tr><th>ລູກຄ້າ</th><th>ເບີໂທ</th><th>ຂົນສົ່ງ</th><th>ທີ່ຢູ່ສາຂາ</th><th>ສິນຄ້າ</th><th>ຂະໜາດ</th><th class="num">ຈຳນວນ</th><th>ສະຖານະ</th></tr></thead>
+      <tbody>${rows.join('') || `<tr><td colspan="8" style="text-align:center; color:#888;">ບໍ່ມີອໍເດີ້ໃນວັນທີນີ້</td></tr>`}</tbody>
+    </table>
+  `;
+  const printArea = document.getElementById('print-area');
+  printArea.innerHTML = `
+    <div class="print-header">
+      ${logoImg ? `<img src="${logoImg}" class="print-logo">` : ''}
+      <div>
+        <h1>ຄັງເສື້ອຜ້າ</h1>
+        <p>ລາຍງານອໍເດີ້ປະຈຳວັນທີ ${esc(dateLabel)}</p>
+        <p class="print-date">ສ້າງເມື່ອ: ${esc(now)}</p>
+      </div>
+    </div>
+    ${bodyHtml}
+  `;
+  setTimeout(() => { window.print(); }, 50);
+}
+
+function acceptOrder(id){
+  customerOrders = customerOrders.map(o => o.id === id ? { ...o, status:'accepted', updatedAt:new Date().toISOString() } : o);
+  saveCustomerOrders();
+  showToast('ຮັບອໍເດີ້ແລ້ວ');
+  renderOrdersTab();
+}
+
+let confirmDeleteOrderId = null;
+function confirmDeleteOrder(id){ confirmDeleteOrderId = id; renderOrderConfirm(); }
+function cancelDeleteOrder(){ confirmDeleteOrderId = null; renderOrderConfirm(); }
+function doDeleteOrder(){
+  customerOrders = customerOrders.filter(o => o.id !== confirmDeleteOrderId);
+  saveCustomerOrders();
+  confirmDeleteOrderId = null;
+  renderOrderConfirm();
+  showToast('ລຶບອໍເດີ້ແລ້ວ');
+  renderOrdersTab();
+}
+function renderOrderConfirm(){
+  const root = document.getElementById('order-confirm-root');
+  if(!confirmDeleteOrderId){ root.innerHTML=''; return; }
+  const o = customerOrders.find(x=>x.id===confirmDeleteOrderId);
+  if(!o){ root.innerHTML=''; return; }
+  root.innerHTML = `
+    <div class="overlay center" id="order-confirm-overlay">
+      <div class="confirm-box">
+        <p class="title">ລຶບອໍເດີ້ຂອງ "${esc(o.customerName)}"?</p>
+        <p class="desc">ຂໍ້ມູນຈະຖືກລຶບຖາວອນ ແລະ ບໍ່ສາມາດກູ້ຄືນໄດ້</p>
+        <div class="confirm-actions">
+          <button class="btn-cancel" id="cancel-del-order-btn">ຍົກເລີກ</button>
+          <button class="btn-confirm" id="do-del-order-btn">ລຶບ</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('order-confirm-overlay').addEventListener('click', e=>{ if(e.target.id==='order-confirm-overlay') cancelDeleteOrder(); });
+  document.getElementById('cancel-del-order-btn').addEventListener('click', cancelDeleteOrder);
+  document.getElementById('do-del-order-btn').addEventListener('click', doDeleteOrder);
+}
+
+/* ---------- EDIT ORDER ---------- */
+let editOrderState = null;
+function openEditOrderModal(id){
+  const o = customerOrders.find(x=>x.id===id);
+  if(!o) return;
+  editOrderState = {
+    id: o.id,
+    customerName: o.customerName,
+    phone: o.phone,
+    shippingCarrier: o.shippingCarrier || '',
+    shippingBranch: o.shippingBranch || '',
+    items: o.items.map(it => ({ ...it, qty:String(it.qty) }))
+  };
+  renderEditOrderModal();
+}
+function closeEditOrderModal(){ editOrderState = null; document.getElementById('edit-order-root').innerHTML=''; }
+function renderEditOrderModal(){
+  const root = document.getElementById('edit-order-root');
+  if(!editOrderState){ root.innerHTML=''; return; }
+  const rows = editOrderState.items.map(it => `
+    <div class="sell-row" data-iid="${it.id}">
+      <div class="sell-row-info">
+        <span class="sell-size">${esc(it.productName)} (${esc(it.size)})</span>
+      </div>
+      <input type="number" inputmode="numeric" min="0" value="${esc(it.qty)}" data-iid="${it.id}" class="sell-qty-input edit-order-qty-input" style="width:56px;">
+      <button type="button" class="icon-btn-sm" data-remove-item="${it.id}">${ICONS.trash}</button>
+    </div>
+  `).join('');
+  root.innerHTML = `
+    <div class="overlay center" id="edit-order-overlay">
+      <div class="confirm-box" style="max-width:360px; text-align:left;">
+        <p class="title" style="margin-bottom:12px;">ແກ້ໄຂອໍເດີ້</p>
+        <div class="field">
+          <label>ຊື່ລູກຄ້າ *</label>
+          <input id="edit-order-name" value="${esc(editOrderState.customerName)}">
+        </div>
+        <div class="field">
+          <label>ເບີໂທລະສັບ *</label>
+          <input id="edit-order-phone" type="tel" value="${esc(editOrderState.phone)}">
+        </div>
+        <div class="field">
+          <label>ເລືອກຂົນສົ່ງ *</label>
+          <select id="edit-order-shipping-carrier">
+            <option value="">-- ເລືອກຂົນສົ່ງ --</option>
+            ${SHIPPING_CARRIERS.map(c => `<option value="${esc(c)}" ${editOrderState.shippingCarrier===c?'selected':''}>${esc(c)}</option>`).join('')}
+          </select>
+        </div>
+        <div class="field">
+          <label>ລະບຸທີ່ຢູ່ສາຂາ *</label>
+          <input id="edit-order-shipping-branch" value="${esc(editOrderState.shippingBranch)}" placeholder="ຊື່ ຫຼື ທີ່ຢູ່ສາຂາຂົນສົ່ງ">
+        </div>
+        <label style="font-size:12px; color:var(--dark-50); display:block; margin-bottom:4px;">ລາຍການ</label>
+        <div id="edit-order-rows">${rows}</div>
+        <p id="edit-order-error" style="color:var(--danger); font-size:12px; margin:8px 0 0; display:none;"></p>
+        <div class="confirm-actions" style="margin-top:16px;">
+          <button class="btn-cancel" id="edit-order-cancel-btn">ຍົກເລີກ</button>
+          <button class="btn-confirm" id="edit-order-save-btn" style="background:var(--dark); color:#fff;">ບັນທຶກ</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('edit-order-overlay').addEventListener('click', e=>{ if(e.target.id==='edit-order-overlay') closeEditOrderModal(); });
+  document.getElementById('edit-order-cancel-btn').addEventListener('click', closeEditOrderModal);
+  document.getElementById('edit-order-name').addEventListener('input', e=>{ editOrderState.customerName = e.target.value; });
+  document.getElementById('edit-order-phone').addEventListener('input', e=>{ editOrderState.phone = e.target.value; });
+  document.getElementById('edit-order-shipping-carrier').addEventListener('change', e=>{ editOrderState.shippingCarrier = e.target.value; });
+  document.getElementById('edit-order-shipping-branch').addEventListener('input', e=>{ editOrderState.shippingBranch = e.target.value; });
+  document.querySelectorAll('.edit-order-qty-input').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      const it = editOrderState.items.find(x=>x.id===e.target.dataset.iid);
+      if(it) it.qty = e.target.value;
+    });
+  });
+  document.querySelectorAll('[data-remove-item]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      editOrderState.items = editOrderState.items.filter(x=>x.id!==btn.dataset.removeItem);
+      renderEditOrderModal();
+    });
+  });
+  document.getElementById('edit-order-save-btn').addEventListener('click', saveEditedOrder);
+}
+function saveEditedOrder(){
+  const errorEl = document.getElementById('edit-order-error');
+  const name = editOrderState.customerName.trim();
+  const phone = editOrderState.phone.trim();
+  const shippingCarrier = (editOrderState.shippingCarrier || '').trim();
+  const shippingBranch = (editOrderState.shippingBranch || '').trim();
+  if(!name){ errorEl.textContent = 'ກະລຸນາໃສ່ຊື່ລູກຄ້າ'; errorEl.style.display = 'block'; return; }
+  if(!phone){ errorEl.textContent = 'ກະລຸນາໃສ່ເບີໂທລະສັບ'; errorEl.style.display = 'block'; return; }
+  if(!shippingCarrier){ errorEl.textContent = 'ກະລຸນາເລືອກຂົນສົ່ງ'; errorEl.style.display = 'block'; return; }
+  if(!shippingBranch){ errorEl.textContent = 'ກະລຸນາລະບຸທີ່ຢູ່ສາຂາ'; errorEl.style.display = 'block'; return; }
+  const newItems = editOrderState.items
+    .map(it => ({ ...it, qty: Math.max(0, parseInt(it.qty,10) || 0) }))
+    .filter(it => it.qty > 0);
+  if(newItems.length === 0){ errorEl.textContent = 'ອໍເດີ້ຕ້ອງມີຢ່າງໜ້ອຍ 1 ລາຍການ'; errorEl.style.display = 'block'; return; }
+
+  customerOrders = customerOrders.map(o => o.id === editOrderState.id
+    ? { ...o, customerName:name, phone, shippingCarrier, shippingBranch, items:newItems, updatedAt:new Date().toISOString() }
+    : o);
+  saveCustomerOrders();
+  closeEditOrderModal();
+  showToast('ບັນທຶກການແກ້ໄຂອໍເດີ້ແລ້ວ');
+  renderOrdersTab();
+}
+
+function setViewMode(m){
+  viewMode = m;
+  localStorage.setItem('khang-sinkha-view-mode', m);
+  renderContent();
+}
+
+function renderListItems(){
+  const container = document.getElementById('list-items');
+  const filtered = products.map(withTotals).filter(p =>
+    p.name.toLowerCase().includes(search.toLowerCase()) || (p.code||'').toLowerCase().includes(search.toLowerCase())
+  );
+  if(filtered.length === 0){
+    container.className = '';
+    container.innerHTML = `<div class="empty">${ICONS.package}<p>${products.length===0 ? 'ຍັງບໍ່ມີສິນຄ້າ, ກົດ + ເພື່ອເພີ່ມລາຍການທຳອິດ' : 'ບໍ່ພົບສິນຄ້າທີ່ຄົ້ນຫາ'}</p></div>`;
+    return;
+  }
+  if(viewMode === 'grid'){
+    container.className = 'grid-container';
+    container.innerHTML = filtered.map(p => gridCardHtml(p)).join('');
+  } else {
+    container.className = '';
+    container.innerHTML = filtered.map(p => cardHtml(p)).join('');
+  }
+}
+
+function gridCardHtml(p){
+  const low = p.lowVariants.length > 0;
+  const outOfStock = p.totalQty <= 0;
+  const imgHtml = p.image ? `<img src="${p.image}" alt="">` : ICONS.image;
+  const tagsHtml = p.variants.slice(0,4).map(v => `<span class="tag ${v.qty<=p.minQty?'low':''}">${esc(v.size)}:${v.qty}</span>`).join('');
+  return `
+    <div class="grid-card">
+      <div class="grid-img" data-action="open-detail" data-id="${p.id}">
+        ${imgHtml}
+        ${low ? `<span class="grid-low-badge">${ICONS.alert}</span>` : ''}
+        <button type="button" class="grid-dup-btn" data-action="duplicate-product" data-id="${p.id}">${ICONS.copy} ສ້າງຊ້ຳ</button>
+      </div>
+      <div class="grid-body" data-action="open-detail" data-id="${p.id}">
+        <div class="grid-title">${esc(p.name)}</div>
+        <div class="grid-sub">${p.code?('#'+esc(p.code)+' &middot; '):''}${p.price>0?(Number(p.price).toLocaleString()+' ກີບ'):''}</div>
+        <div class="grid-tags">${tagsHtml}</div>
+      </div>
+      <span class="grid-qty-badge">${p.totalQty} <small>${esc(p.unit)}</small></span>
+      ${p.code ? `<button type="button" class="grid-copy-btn" data-action="copy-code" data-id="${p.id}" title="ກ໋ອບປີ້ລະຫັດສິນຄ້າ">${ICONS.copy}</button>` : ''}
+      <button type="button" class="grid-cart-btn${outOfStock?' disabled':''}" data-action="open-cart" data-id="${p.id}" ${outOfStock?'disabled':''} title="${outOfStock?'ສິນຄ້າໝົດ ບໍ່ສາມາດສັ່ງຊື້ໄດ້':'ສັ່ງຊື້ໃຫ້ລູກຄ້າ'}">${ICONS.cart}</button>
+    </div>
+  `;
+}
+
+function cardHtml(p){
+  const low = p.lowVariants.length > 0;
+  const isOpen = !!expanded[p.id];
+  const tagsHtml = p.variants.map(v => `<span class="tag ${v.qty<=p.minQty?'low':''}">${esc(v.size)}:${v.qty}</span>`).join('');
+  const imgHtml = p.image ? `<img src="${p.image}" alt="">` : ICONS.image;
+  return `
+    <div class="card">
+      <div class="card-strip" style="background:${low?'#B94A3D':'#4C7A5E'}"></div>
+      <div class="card-row">
+        <button class="thumb" data-action="toggle-expand" data-id="${p.id}">${imgHtml}</button>
+        <button class="card-main" data-action="toggle-expand" data-id="${p.id}">
+          <div class="card-title"><span>${esc(p.name)}</span>${low?ICONS.alert:''}</div>
+          <div class="card-sub">${p.code?('#'+esc(p.code)+' &middot; '):''}${p.price>0?(Number(p.price).toLocaleString()+' ກີບ'):''}</div>
+          <div class="tags">${tagsHtml}</div>
+        </button>
+        <div class="card-right">
+          <span class="card-total">${p.totalQty}</span>
+          ${p.code ? `<button type="button" class="card-copy-btn" data-action="copy-code" data-id="${p.id}" title="ກ໋ອບປີ້ລະຫັດສິນຄ້າ">${ICONS.copy}</button>` : ''}
+          <button class="chevron-btn ${isOpen?'open':''}" data-action="toggle-expand" data-id="${p.id}">${ICONS.chevron}</button>
+        </div>
+      </div>
+      ${isOpen ? expandHtml(p) : ''}
+    </div>
+  `;
+}
+
+function variantRowsHtml(p){
+  return p.variants.map(v => `
+    <div class="variant-row">
+      <span class="variant-size">${esc(v.size)}</span>
+      <div class="stepper">
+        <button class="step-btn" data-action="adjust-variant" data-id="${p.id}" data-vid="${v.id}" data-delta="-1">${ICONS.minus}</button>
+        <span class="step-val">${v.qty}</span>
+        <button class="step-btn" data-action="adjust-variant" data-id="${p.id}" data-vid="${v.id}" data-delta="1">${ICONS.plus}</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function expandHtml(p){
+  return `
+    <div class="expand-panel">
+      ${variantRowsHtml(p)}
+      <div class="row-actions">
+        <button class="btn-edit" data-action="open-edit" data-id="${p.id}">${ICONS.pencil} ແກ້ໄຂ</button>
+        <button class="btn-del" data-action="confirm-delete" data-id="${p.id}">${ICONS.trash} ລຶບ</button>
+      </div>
+    </div>
+  `;
+}
+
+/* ---------- SELL OUT (deduct stock) ---------- */
+let sellState = null;
+let buyState = null;
+
+function openSellModal(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  sellState = { productId:id, quantities:{} };
+  p.variants.forEach(v => { sellState.quantities[v.id] = ''; });
+  renderSellModal();
+}
+function closeSellModal(){ sellState = null; document.getElementById('sell-root').innerHTML=''; }
+
+function renderSellModal(){
+  const root = document.getElementById('sell-root');
+  if(!sellState){ root.innerHTML=''; return; }
+  const p = products.find(x=>x.id===sellState.productId);
+  if(!p){ closeSellModal(); return; }
+  const rows = p.variants.map(v => `
+    <div class="sell-row">
+      <div class="sell-row-info">
+        <span class="sell-size">${esc(v.size)}</span>
+        <span class="muted">ຄົງເຫຼືອ: ${v.qty}</span>
+      </div>
+      <input type="number" inputmode="numeric" min="0" max="${v.qty}" placeholder="0" value="${esc(sellState.quantities[v.id])}" data-vid="${v.id}" class="sell-qty-input">
+    </div>
+  `).join('');
+  root.innerHTML = `
+    <div class="overlay center" id="sell-overlay">
+      <div class="confirm-box" style="max-width:360px; text-align:left;">
+        <p class="title" style="margin-bottom:2px;">ຂາຍອອກ: ${esc(p.name)}</p>
+        <p class="desc" style="margin-bottom:12px;">ໃສ່ຈຳນວນທີ່ຂາຍອອກແຕ່ລະຂະໜາດ (ຫ້າມເກີນຈຳນວນຄົງເຫຼືອ)</p>
+        <div id="sell-rows">${rows}</div>
+        <p id="sell-error" style="color:var(--danger); font-size:12px; margin:8px 0 0; display:none;"></p>
+        <div class="confirm-actions" style="margin-top:16px;">
+          <button class="btn-cancel" id="sell-cancel-btn">ຍົກເລີກ</button>
+          <button class="btn-confirm" id="sell-confirm-btn" style="background:var(--success);">ຢືນຢັນຂາຍອອກ</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('sell-overlay').addEventListener('click', e=>{ if(e.target.id==='sell-overlay') closeSellModal(); });
+  document.getElementById('sell-cancel-btn').addEventListener('click', closeSellModal);
+  document.querySelectorAll('.sell-qty-input').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      sellState.quantities[e.target.dataset.vid] = e.target.value;
+    });
+  });
+  document.getElementById('sell-confirm-btn').addEventListener('click', confirmSell);
+}
+
+function confirmSell(){
+  const p = products.find(x=>x.id===sellState.productId);
+  if(!p) return;
+  const errorEl = document.getElementById('sell-error');
+  let totalSold = 0;
+  const updates = {};
+  for(const v of p.variants){
+    const raw = sellState.quantities[v.id];
+    const n = parseInt(raw, 10);
+    const qty = isNaN(n) ? 0 : n;
+    if(qty < 0){ errorEl.textContent = 'ຈຳນວນຕ້ອງບໍ່ຕິດລົບ'; errorEl.style.display = 'block'; return; }
+    if(qty > v.qty){ errorEl.textContent = `ຂາຍອອກ "${v.size}" ເກີນຈຳນວນຄົງເຫຼືອ (ມີ ${v.qty})`; errorEl.style.display = 'block'; return; }
+    updates[v.id] = qty;
+    totalSold += qty;
+  }
+  if(totalSold <= 0){ errorEl.textContent = 'ກະລຸນາໃສ່ຈຳນວນຢ່າງໜ້ອຍ 1 ຂະໜາດ'; errorEl.style.display = 'block'; return; }
+
+  products = products.map(pr => pr.id === p.id
+    ? { ...pr, variants: pr.variants.map(v => ({ ...v, qty: Math.max(0, v.qty - (updates[v.id] || 0)) })) }
+    : pr
+  );
+  save();
+  closeSellModal();
+  renderAll();
+  if(detailId === p.id) renderDetailSheet();
+  showToast(`ຂາຍອອກສຳເລັດ: ${totalSold} ລາຍການ`);
+}
+
+/* ---------- BUY-IN (restock) MODAL — mirrors sell, adds to stock ---------- */
+function openBuyModal(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  buyState = { productId:id, quantities:{} };
+  p.variants.forEach(v => { buyState.quantities[v.id] = ''; });
+  renderBuyModal();
+}
+function closeBuyModal(){ buyState = null; document.getElementById('buy-root').innerHTML=''; }
+
+function renderBuyModal(){
+  const root = document.getElementById('buy-root');
+  if(!buyState){ root.innerHTML=''; return; }
+  const p = products.find(x=>x.id===buyState.productId);
+  if(!p){ closeBuyModal(); return; }
+  const rows = p.variants.map(v => `
+    <div class="sell-row">
+      <div class="sell-row-info">
+        <span class="sell-size">${esc(v.size)}</span>
+        <span class="muted">ຄົງເຫຼືອ: ${v.qty}</span>
+      </div>
+      <input type="number" inputmode="numeric" min="0" placeholder="0" value="${esc(buyState.quantities[v.id])}" data-vid="${v.id}" class="sell-qty-input">
+    </div>
+  `).join('');
+  root.innerHTML = `
+    <div class="overlay center" id="buy-overlay">
+      <div class="confirm-box" style="max-width:360px; text-align:left;">
+        <p class="title" style="margin-bottom:2px;">ຊື້ເຂົ້າ: ${esc(p.name)}</p>
+        <p class="desc" style="margin-bottom:12px;">ໃສ່ຈຳນວນທີ່ຊື້ເຂົ້າແຕ່ລະຂະໜາດ, ຈະບວກເພີ່ມເຂົ້າສະຕັອກທີ່ມີຢູ່ທັນທີ</p>
+        <div id="buy-rows">${rows}</div>
+        <p id="buy-error" style="color:var(--danger); font-size:12px; margin:8px 0 0; display:none;"></p>
+        <div class="confirm-actions" style="margin-top:16px;">
+          <button class="btn-cancel" id="buy-cancel-btn">ຍົກເລີກ</button>
+          <button class="btn-confirm" id="buy-confirm-btn" style="background:var(--accent); color:var(--dark);">ຢືນຢັນຊື້ເຂົ້າ</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('buy-overlay').addEventListener('click', e=>{ if(e.target.id==='buy-overlay') closeBuyModal(); });
+  document.getElementById('buy-cancel-btn').addEventListener('click', closeBuyModal);
+  document.querySelectorAll('#buy-rows .sell-qty-input').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      buyState.quantities[e.target.dataset.vid] = e.target.value;
+    });
+  });
+  document.getElementById('buy-confirm-btn').addEventListener('click', confirmBuy);
+}
+
+function confirmBuy(){
+  const p = products.find(x=>x.id===buyState.productId);
+  if(!p) return;
+  const errorEl = document.getElementById('buy-error');
+  let totalBought = 0;
+  const updates = {};
+  for(const v of p.variants){
+    const raw = buyState.quantities[v.id];
+    const n = parseInt(raw, 10);
+    const qty = isNaN(n) ? 0 : n;
+    if(qty < 0){ errorEl.textContent = 'ຈຳນວນຕ້ອງບໍ່ຕິດລົບ'; errorEl.style.display = 'block'; return; }
+    updates[v.id] = qty;
+    totalBought += qty;
+  }
+  if(totalBought <= 0){ errorEl.textContent = 'ກະລຸນາໃສ່ຈຳນວນຢ່າງໜ້ອຍ 1 ຂະໜາດ'; errorEl.style.display = 'block'; return; }
+
+  products = products.map(pr => pr.id === p.id
+    ? { ...pr, variants: pr.variants.map(v => ({ ...v, qty: v.qty + (updates[v.id] || 0) })) }
+    : pr
+  );
+  save();
+  closeBuyModal();
+  renderAll();
+  if(detailId === p.id) renderDetailSheet();
+  showToast(`ຊື້ເຂົ້າສຳເລັດ: ${totalBought} ລາຍການ, ອັບເດດສະຕັອກແລ້ວ`);
+}
+
+/* ---------- PURCHASE ORDER (arc-btn-4: ສັ່ງຊື້ສິນຄ້າ) ---------- */
+let poState = null;
+
+function openPurchaseOrderModal(){
+  poState = { code:'', product:null, size:'', qty:'' };
+  renderPurchaseOrderModal();
+}
+function closePurchaseOrderModal(){ poState = null; document.getElementById('po-root').innerHTML = ''; }
+
+// Product name is stored as "Base name (color)" e.g. "ຊຸດເຊບຕີ້ (ສີກົມ)" — extract color for display.
+function splitNameColor(name){
+  const m = /^(.*?)\s*\(([^)]+)\)\s*$/.exec(name || '');
+  if(m) return { base: m[1].trim(), color: m[2].trim() };
+  return { base: (name||'').trim(), color: '-' };
+}
+
+function poLookupCode(raw){
+  const code = raw.trim();
+  poState.code = raw;
+  if(!code){ poState.product = null; poState.size = ''; renderPurchaseOrderModal(); return; }
+  const match = products.find(p => (p.code||'').trim().toLowerCase() === code.toLowerCase() && (p.code||'').trim() !== '');
+  poState.product = match || null;
+  poState.size = match && match.variants.length ? match.variants[0].size : '';
+  renderPurchaseOrderModal();
+}
+
+function renderPurchaseOrderModal(){
+  const root = document.getElementById('po-root');
+  if(!poState){ root.innerHTML = ''; return; }
+  const s = poState;
+  const codeTyped = s.code.trim() !== '';
+  const matched = !!s.product;
+
+  let statusHtml = '';
+  if(codeTyped && !matched){
+    statusHtml = `<div class="po-lookup-status err">${ICONS.alert}<span>ບໍ່ພົບລະຫັດສິນຄ້ານີ້ໃນຖານຂໍ້ມູນ, ກະລຸນາກວດສອບລະຫັດອີກຄັ້ງ</span></div>`;
+  } else if(matched){
+    statusHtml = `<div class="po-lookup-status ok">${ICONS.chevronRight}<span>ພົບລະຫັດສິນຄ້າ, ຂໍ້ມູນກົງກັນ 100%</span></div>`;
+  }
+
+  let matchCardHtml = '';
+  if(matched){
+    const { base, color } = splitNameColor(s.product.name);
+    const sizeOptions = s.product.variants.map(v => `<option value="${esc(v.size)}" ${v.size===s.size?'selected':''}>${esc(v.size)} (ຄົງເຫຼືອ ${v.qty})</option>`).join('');
+    matchCardHtml = `
+      <div class="po-match-card">
+        <div class="po-match-name">${esc(base)}</div>
+        <div class="grid2">
+          <div class="po-readonly-field">
+            <label>ຂະໜາດ (ດຶງຈາກລະບົບ)</label>
+            <select id="po-size-select">${sizeOptions}</select>
+          </div>
+          <div class="po-readonly-field">
+            <label>ສີ (ດຶງຈາກລະບົບ)</label>
+            <div class="po-static">${esc(color)}</div>
+          </div>
+        </div>
+      </div>
+    `;
+  }
+
+  root.innerHTML = `
+    <div class="overlay" id="po-overlay">
+      <div class="modal" id="po-modal">
+        <div class="modal-head">
+          <h2>ສ້າງຄຳສັ່ງຊື້ສິນຄ້າ</h2>
+          <button class="icon-x" id="po-close">${ICONS.x}</button>
+        </div>
+        <p class="muted" style="margin:-8px 0 14px; font-size:12px;">ບັນທຶກລາຍການທີ່ຕ້ອງສັ່ງຊື້ເພີ່ມ, ຈະບໍ່ບວກເຂົ້າສະຕັອກທັນທີ</p>
+        <div class="field">
+          <label>ລະຫັດສິນຄ້າ *</label>
+          <input id="po-code" value="${esc(s.code)}" placeholder="ພິມ ຫຼື ວາງລະຫັດສິນຄ້າ" autofocus>
+        </div>
+        ${statusHtml}
+        ${matchCardHtml}
+        <div class="field" style="margin-top:12px;">
+          <label>ຈຳນວນທີ່ຕ້ອງການສັ່ງຊື້ *</label>
+          <input id="po-qty" type="number" inputmode="numeric" min="1" value="${esc(s.qty)}" placeholder="0" ${matched?'':'disabled'}>
+        </div>
+        <p id="po-error" style="color:var(--danger); font-size:12px; margin:4px 0 0; display:none;"></p>
+        <div class="confirm-actions" style="margin-top:16px;">
+          <button type="button" class="btn-cancel" id="po-cancel-btn">ຍົກເລີກ</button>
+          <button type="button" class="btn-confirm" id="po-save-btn" style="background:var(--success); color:#fff;" ${matched?'':'disabled'}>ບັນທຶກຄຳສັ່ງຊື້</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('po-overlay').addEventListener('click', e=>{ if(e.target.id==='po-overlay') closePurchaseOrderModal(); });
+  document.getElementById('po-close').addEventListener('click', closePurchaseOrderModal);
+  document.getElementById('po-cancel-btn').addEventListener('click', closePurchaseOrderModal);
+  document.getElementById('po-code').addEventListener('input', e=>{ poLookupCode(e.target.value); });
+  const sizeSel = document.getElementById('po-size-select');
+  if(sizeSel) sizeSel.addEventListener('change', e=>{ poState.size = e.target.value; });
+  document.getElementById('po-qty').addEventListener('input', e=>{ poState.qty = e.target.value; });
+  document.getElementById('po-save-btn').addEventListener('click', confirmPurchaseOrder);
+}
+
+function confirmPurchaseOrder(){
+  const errorEl = document.getElementById('po-error');
+  const s = poState;
+  if(!s.product){ errorEl.textContent = 'ກະລຸນາໃສ່ລະຫັດສິນຄ້າທີ່ຖືກຕ້ອງ ແລະ ມີໃນຖານຂໍ້ມູນ'; errorEl.style.display='block'; return; }
+  if(!s.size){ errorEl.textContent = 'ບໍ່ພົບຂະໜາດຂອງສິນຄ້ານີ້'; errorEl.style.display='block'; return; }
+  const n = parseInt(s.qty, 10);
+  if(isNaN(n) || n <= 0){ errorEl.textContent = 'ກະລຸນາໃສ່ຈຳນວນສັ່ງຊື້ໃຫ້ຖືກຕ້ອງ (ຫຼາຍກວ່າ 0)'; errorEl.style.display='block'; return; }
+
+  const code = (s.product.code||'').trim();
+  const { base, color } = splitNameColor(s.product.name);
+  const existing = findPendingOrder(code, s.size);
+  if(existing){
+    purchaseOrders = purchaseOrders.map(o => o === existing ? { ...o, qty: o.qty + n, createdAt: new Date().toISOString() } : o);
+  } else {
+    purchaseOrders = [...purchaseOrders, {
+      id: uid(), code, productId: s.product.id, productName: base, color, size: s.size,
+      qty: n, createdAt: new Date().toISOString()
+    }];
+  }
+  savePurchaseOrders();
+  closePurchaseOrderModal();
+  showToast(`ບັນທຶກຄຳສັ່ງຊື້ສຳເລັດ: ${esc(base)} (${esc(s.size)}) x${n}`);
+  if(tab === 'report') renderReport();
+}
+
+function removePendingOrder(code, size){
+  purchaseOrders = purchaseOrders.filter(o => !(o.code === code && o.size === size));
+  savePurchaseOrders();
+  renderReport();
+  showToast('ຍົກເລີກຄຳສັ່ງຊື້ແລ້ວ');
+}
+
+/* ---------- ORDER ACTION POPUP (low-stock cart icon: cancel order / receive into warehouse) ---------- */
+function openOrderActionModal(code, size){
+  const order = findPendingOrder(code, size);
+  if(!order){ return; }
+  const p = products.find(pr => (pr.code||'').trim() === code);
+  const root = document.getElementById('order-action-root');
+  const displayName = p ? p.name : (order.productName || '');
+  root.innerHTML = `
+    <div class="overlay center" id="order-action-overlay">
+      <div class="confirm-box" style="max-width:340px; text-align:left;">
+        <p class="title" style="margin-bottom:2px;">${esc(displayName)} <span style="font-weight:700;">(${esc(size)})</span></p>
+        <p class="desc" style="margin-bottom:2px;">ລະຫັດສິນຄ້າ: ${esc(code || '-')}</p>
+        <p class="desc" style="margin-bottom:12px;">ສັ່ງຊື້ແລ້ວ ${order.qty} ລາຍການ — ເລືອກການດຳເນີນການ</p>
+        <div class="confirm-actions" style="margin-top:16px; flex-direction:column; gap:8px;">
+          <button type="button" class="btn-cancel" id="order-action-cancel-btn" style="width:100%; background:var(--danger); color:#fff;">ຍົກເລີກການຈັດຊື້</button>
+          <button type="button" class="btn-confirm" id="order-action-receive-btn" style="width:100%; background:var(--success); color:#fff;">ນຳເຂົ້າສາງ</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('order-action-overlay').addEventListener('click', e=>{ if(e.target.id==='order-action-overlay') closeOrderActionModal(); });
+  document.getElementById('order-action-cancel-btn').addEventListener('click', ()=>{ confirmCancelOrder(code, size); });
+  document.getElementById('order-action-receive-btn').addEventListener('click', ()=>{ confirmReceiveIntoWarehouse(code, size); });
+}
+function closeOrderActionModal(){ document.getElementById('order-action-root').innerHTML = ''; }
+
+function confirmCancelOrder(code, size){
+  purchaseOrders = purchaseOrders.filter(o => !(o.code === code && o.size === size));
+  savePurchaseOrders();
+  closeOrderActionModal();
+  renderReport();
+  showToast('ຍົກເລີກການຈັດຊື້ສຳເລັດ');
+}
+
+function confirmReceiveIntoWarehouse(code, size){
+  const order = findPendingOrder(code, size);
+  if(!order) { closeOrderActionModal(); return; }
+  const p = products.find(pr => (pr.code||'').trim() === code);
+  if(!p){ closeOrderActionModal(); showToast('ບໍ່ພົບສິນຄ້າຕາມລະຫັດນີ້'); return; }
+  const variant = p.variants.find(v => v.size === size);
+  if(!variant){ closeOrderActionModal(); showToast('ບໍ່ພົບຂະໜາດສິນຄ້ານີ້'); return; }
+
+  products = products.map(pr => pr.id === p.id
+    ? { ...pr, variants: pr.variants.map(v => v.id === variant.id ? { ...v, qty: v.qty + order.qty } : v) }
+    : pr
+  );
+  save();
+
+  purchaseOrders = purchaseOrders.filter(o => !(o.code === code && o.size === size));
+  savePurchaseOrders();
+
+  closeOrderActionModal();
+  renderAll();
+  if(detailId === p.id) renderDetailSheet();
+  showToast('ເພີ່ມສິນຄ້າເຂົ້າສາງຮຽບຮ້ອຍແລ້ວ');
+}
+
+/* ---------- PRODUCT DETAIL SHEET (grid view tap) ---------- */
+function openDetail(id){ detailId = id; renderDetailSheet(); }
+function closeDetail(){ detailId = null; document.getElementById('detail-root').innerHTML=''; }
+function renderDetailSheet(){
+  const root = document.getElementById('detail-root');
+  if(!detailId){ root.innerHTML=''; return; }
+  const raw = products.find(x=>x.id===detailId);
+  if(!raw){ detailId=null; root.innerHTML=''; return; }
+  const p = withTotals(raw);
+  root.innerHTML = `
+    <div class="overlay" id="detail-overlay">
+      <div class="modal" id="detail-modal">
+        <div class="modal-head">
+          <h2>${esc(p.name)}</h2>
+          <button class="icon-x" id="detail-close">${ICONS.x}</button>
+        </div>
+        <div class="detail-img">${p.image ? '<img src="'+p.image+'" alt="">' : ICONS.image}</div>
+        <p class="muted" style="margin:0 0 12px; font-size:12px;">${p.code?('#'+esc(p.code)+' &middot; '):''}${p.price>0?(Number(p.price).toLocaleString()+' ກີບ'):''}</p>
+        <div>${variantRowsHtml(p)}</div>
+        <div class="row-actions" style="margin-top:14px;">
+          <button type="button" class="sell-btn" data-action="open-sell" data-id="${p.id}" style="flex:1; justify-content:center; padding:10px;">${ICONS.sell} ຂາຍອອກ</button>
+          <button type="button" class="buy-btn" data-action="open-buy" data-id="${p.id}" style="flex:1; justify-content:center; padding:10px;">${ICONS.buy} ຊື້ເຂົ້າ</button>
+        </div>
+        <div class="row-actions" style="margin-top:8px;">
+          <button class="btn-edit" data-action="open-edit" data-id="${p.id}">${ICONS.pencil} ແກ້ໄຂ</button>
+          <button class="btn-del" data-action="confirm-delete" data-id="${p.id}">${ICONS.trash} ລຶບ</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('detail-overlay').addEventListener('click', e=>{ if(e.target.id==='detail-overlay') closeDetail(); });
+  document.getElementById('detail-close').addEventListener('click', closeDetail);
+}
+
+/* ---------- REPORT TAB ---------- */
+/* ---------- BARCODE TAB (standalone: scan + duplicate check + log to Google Sheet only) ---------- */
+function renderBarcodeTab(){
+  const content = document.getElementById('content');
+  const lastSheetSync = localStorage.getItem(SHEET_LAST_SYNC_KEY);
+  const lastSheetSyncText = lastSheetSync ? new Date(lastSheetSync).toLocaleString('lo-LA') : 'ຍັງບໍ່ເຄີຍ';
+  const unsyncedCount = scanLog.filter(r=>!r.syncedToSheet).length;
+  content.innerHTML = `
+    <button type="button" class="submit-btn" id="open-scanner-btn" style="margin-top:0; margin-bottom:12px;">${ICONS.barcode} ສະແກນຮັບພັດສະດຸ</button>
+    <div class="search-wrap"><span style="position:absolute; left:12px; top:50%; transform:translateY(-50%); width:16px; height:16px; color:var(--dark-40); display:flex;">${ICONS.search}</span><input id="barcode-search-input" placeholder="ຄົ້ນຫາຕາມລະຫັດ Barcode..." value="${esc(barcodeSearch)}"></div>
+    <div class="report-card" style="display:flex; align-items:center; justify-content:space-between; gap:10px; margin-top:12px;">
+      <div style="min-width:0;">
+        <p style="font-size:12px; font-weight:600; margin:0;">Google Sheet</p>
+        <p class="muted" style="margin:2px 0 0;">Sync ລ່າສຸດ: ${esc(lastSheetSyncText)}${unsyncedCount>0 ? ' &middot; '+unsyncedCount+' ລາຍການໃໝ່' : ''}</p>
+      </div>
+      <button type="button" id="sync-sheet-btn" style="background:var(--dark-5); color:var(--dark); border:none; padding:8px 14px; border-radius:10px; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit; flex-shrink:0; display:flex; align-items:center; gap:5px;">${ICONS.upload} Sync</button>
+    </div>
+    <div id="barcode-list" style="margin-top:12px;"></div>
+  `;
+  document.getElementById('open-scanner-btn').addEventListener('click', ()=>openScanner('receive'));
+  document.getElementById('barcode-search-input').addEventListener('input', e=>{ barcodeSearch = e.target.value; renderBarcodeList(); });
+  document.getElementById('sync-sheet-btn').addEventListener('click', ()=>syncScanLogToSheet(false));
+  if(unsyncedCount > 0 && localStorage.getItem(GDRIVE_CONNECTED_KEY)){
+    syncScanLogToSheet(true);
+  }
+  renderBarcodeList();
+}
+
+function renderBarcodeList(){
+  const container = document.getElementById('barcode-list');
+  if(!container) return;
+  const filtered = scanLog.filter(r => r.code.toLowerCase().includes(barcodeSearch.toLowerCase()));
+  if(filtered.length === 0){
+    container.innerHTML = `<div class="empty">${ICONS.barcode}<p>${scanLog.length===0 ? 'ຍັງບໍ່ມີການສະແກນ, ກົດປຸ່ມເທິງເພື່ອເລີ່ມ' : 'ບໍ່ພົບລະຫັດທີ່ຄົ້ນຫາ'}</p></div>`;
+    return;
+  }
+  container.innerHTML = filtered.map(r => `
+    <div class="card">
+      <div class="card-strip" style="background:${r.isDuplicate ? '#B94A3D' : '#4C7A5E'}"></div>
+      <div class="card-row">
+        <div class="card-main">
+          <div class="card-title"><span style="font-family:monospace;">${esc(r.code)}</span></div>
+          <div class="card-sub">${new Date(r.scannedAt).toLocaleString('lo-LA')}</div>
+          <div class="tags">
+            <span class="tag ${r.isDuplicate ? 'low' : ''}">${r.isDuplicate ? 'ຊ້ຳ - ຮັບແລ້ວ' : 'ໃໝ່'}</span>
+            ${r.syncedToSheet ? '<span class="tag">Synced</span>' : ''}
+          </div>
+        </div>
+        <button type="button" class="icon-btn-sm" data-action="delete-scan" data-scan-id="${r.id}">${ICONS.trash}</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+/* ---------- BARCODE CAMERA SCANNER ---------- */
+let scannerStream = null;
+let scannerActive = false;
+let scannerRAF = null;
+let scannerCooldown = false;
+let scannerMode = 'receive';
+let scannerNewCount = 0;
+
+function openScanner(mode){
+  scannerMode = mode || 'receive';
+  scannerNewCount = 0;
+  renderScannerModal();
+  startScanner();
+  if(scannerMode === 'receive') refreshKnownBarcodesFromSheet();
+}
+function closeScanner(){ stopScanner(); document.getElementById('scanner-root').innerHTML=''; }
+
+function renderScannerModal(){
+  const root = document.getElementById('scanner-root');
+  const supported = 'BarcodeDetector' in window;
+  const isSearch = scannerMode === 'search';
+  root.innerHTML = `
+    <div class="overlay" id="scanner-overlay" style="align-items:stretch; padding:0;">
+      <div style="width:100%; max-width:480px; margin:0 auto; background:#0a0a0a; position:relative; display:flex; flex-direction:column;">
+        <div style="display:flex; align-items:center; justify-content:space-between; padding:16px;">
+          <span style="color:#fff; font-weight:600; font-size:14px;">${isSearch ? 'ສະແກນເພື່ອຄົ້ນຫາ' : 'ສະແກນຮັບພັດສະດຸ'}</span>
+          <button class="icon-x" id="scanner-close" style="background:rgba(255,255,255,.15);">${ICONS.x}</button>
+        </div>
+        ${supported ? `
+        <div style="position:relative; overflow:hidden; background:#000; aspect-ratio:3/4;">
+          <video id="scanner-video" autoplay playsinline muted style="width:100%; height:100%; object-fit:cover; display:block;"></video>
+          <div id="scanner-frame" style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center; pointer-events:none;">
+            <div style="width:78%; aspect-ratio:2/1; border:3px solid var(--accent); border-radius:16px; transition:border-color .15s;"></div>
+          </div>
+        </div>
+        ` : `<div style="padding:30px 20px; text-align:center;"><p style="color:rgba(255,255,255,.55); font-size:13px;">ອຸປະກອນ ຫຼື browser ນີ້ບໍ່ຮອງຮັບການສະແກນອັດຕະໂນມັດ, ພິມລະຫັດດ້ານລຸ່ມແທນໄດ້</p></div>`}
+        <div id="scanner-hint" style="color:rgba(255,255,255,.7); font-size:13px; text-align:center; padding:12px 16px; min-height:20px; font-weight:600;">${isSearch ? 'ວາງ Barcode ໃຫ້ຢູ່ໃນກອບ, ຈະສະແກນອັດຕະໂນມັດ' : 'ວາງ Barcode ໃຫ້ຢູ່ໃນກອບ, ສະແກນຕໍ່ໄດ້ເລື່ອຍໆ'}</div>
+        <div style="padding:16px; background:#111; display:flex; gap:8px;">
+          <input id="manual-code-input" placeholder="ຫຼືພິມລະຫັດ Barcode ເອງ" style="flex:1; background:#222; border:1px solid rgba(255,255,255,.15); border-radius:12px; padding:10px 12px; font-size:14px; color:#fff; outline:none; font-family:inherit;">
+          <button id="manual-code-btn" style="background:var(--accent); color:var(--dark); border:none; border-radius:12px; padding:0 16px; font-weight:600; font-size:13px; cursor:pointer; font-family:inherit;">${isSearch ? 'ຄົ້ນຫາ' : 'ບັນທຶກ'}</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('scanner-close').addEventListener('click', closeScanner);
+  function submitManualCode(){
+    const inputEl = document.getElementById('manual-code-input');
+    const val = inputEl.value.trim();
+    if(!val) return;
+    handleScanResult(val);
+    if(scannerMode !== 'search'){ inputEl.value = ''; inputEl.focus(); }
+  }
+  document.getElementById('manual-code-btn').addEventListener('click', submitManualCode);
+  document.getElementById('manual-code-input').addEventListener('keydown', e=>{
+    if(e.key === 'Enter') submitManualCode();
+  });
+}
+
+async function startScanner(){
+  if(!('BarcodeDetector' in window)) return;
+  let stream;
+  try{
+    stream = await navigator.mediaDevices.getUserMedia({ video:{ facingMode:{ ideal:'environment' } } });
+  }catch(e1){
+    try{
+      stream = await navigator.mediaDevices.getUserMedia({ video:true });
+    }catch(e2){
+      handleCameraError(e2);
+      return;
+    }
+  }
+  scannerStream = stream;
+  try{
+    const video = document.getElementById('scanner-video');
+    if(!video){ stopScanner(); return; }
+    video.srcObject = scannerStream;
+    await video.play();
+    const detector = new BarcodeDetector();
+    scannerActive = true;
+    scannerCooldown = false;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    const loop = async () => {
+      if(!scannerActive) return;
+      if(!scannerCooldown && video.videoWidth){
+        canvas.width = video.videoWidth; canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0);
+        try{
+          const codes = await detector.detect(canvas);
+          if(codes && codes.length){ handleScanResult(codes[0].rawValue); }
+        }catch(e){}
+      }
+      scannerRAF = requestAnimationFrame(loop);
+    };
+    loop();
+  }catch(e){
+    handleCameraError(e);
+  }
+}
+
+function handleCameraError(e){
+  const name = e && e.name;
+  let msg = 'ເປີດກ້ອງບໍ່ສຳເລັດ, ກວດການອະນຸຍາດກ້ອງ';
+  if(name === 'NotAllowedError' || name === 'PermissionDeniedError'){
+    msg = 'ບໍ່ໄດ້ຮັບອະນຸຍາດໃຊ້ກ້ອງ — ໄປອະນຸຍາດກ້ອງໃຫ້ browser ນີ້ໃນການຕັ້ງຄ່າ ແລ້ວກັບມາລອງໃໝ່';
+  } else if(name === 'NotFoundError' || name === 'DevicesNotFoundError'){
+    msg = 'ບໍ່ພົບກ້ອງໃນອຸປະກອນນີ້';
+  } else if(name === 'NotReadableError' || name === 'TrackStartError'){
+    msg = 'ກ້ອງກຳລັງຖືກໃຊ້ໂດຍແອັບອື່ນຢູ່ — ປິດແອັບກ້ອງ/ວິດີໂອອື່ນແລ້ວລອງໃໝ່';
+  } else if(name === 'SecurityError'){
+    msg = 'ໜ້ານີ້ຕ້ອງເປີດຜ່ານ https ຈຶ່ງຈະໃຊ້ກ້ອງໄດ້';
+  }
+  showToast(msg);
+  const hint = document.getElementById('scanner-hint');
+  if(hint){
+    hint.innerHTML = `${esc(msg)}<br><button type="button" id="camera-retry-btn" style="margin-top:8px; background:var(--accent); color:var(--dark); border:none; border-radius:999px; padding:6px 16px; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit;">ລອງໃໝ່</button>`;
+    hint.style.color = '#E8926B';
+    const retryBtn = document.getElementById('camera-retry-btn');
+    if(retryBtn) retryBtn.addEventListener('click', ()=>{
+      hint.textContent = scannerMode === 'search' ? 'ວາງ Barcode ໃຫ້ຢູ່ໃນກອບ, ຈະສະແກນອັດຕະໂນມັດ' : 'ວາງ Barcode ໃຫ້ຢູ່ໃນກອບ, ສະແກນຕໍ່ໄດ້ເລື່ອຍໆ';
+      hint.style.color = 'rgba(255,255,255,.7)';
+      startScanner();
+    });
+  }
+  const frame = document.getElementById('scanner-frame');
+  if(frame && frame.firstElementChild) frame.firstElementChild.style.borderColor = '#B94A3D';
+}
+
+function stopScanner(){
+  scannerActive = false;
+  scannerCooldown = false;
+  if(scannerRAF) cancelAnimationFrame(scannerRAF);
+  scannerRAF = null;
+  if(scannerStream){ scannerStream.getTracks().forEach(t=>t.stop()); scannerStream = null; }
+}
+
+function isKnownBarcode(codeNorm){ return knownBarcodeSet.has(codeNorm); }
+
+async function refreshKnownBarcodesFromSheet(){
+  try{
+    if(!localStorage.getItem(GDRIVE_CONNECTED_KEY)) return;
+    const ok = await ensureToken();
+    if(!ok) return;
+    const sheetId = await findOrCreateSheet();
+    const res = await driveRequest(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Log!A2:A100000`);
+    const data = await res.json();
+    (data.values || []).forEach(row => {
+      if(row[0]) knownBarcodeSet.add(String(row[0]).trim().toLowerCase());
+    });
+  }catch(e){ /* best-effort, ignore */ }
+}
+
+function setScannerHint(text, colorHex){
+  const hint = document.getElementById('scanner-hint');
+  if(hint){ hint.textContent = text; hint.style.color = colorHex || 'rgba(255,255,255,.7)'; }
+  const frame = document.getElementById('scanner-frame');
+  if(frame && frame.firstElementChild){ frame.firstElementChild.style.borderColor = colorHex || 'var(--accent)'; }
+}
+
+function scheduleBarcodeSync(){
+  if(!localStorage.getItem(GDRIVE_CONNECTED_KEY)) return;
+  clearTimeout(barcodeSyncTimer);
+  barcodeSyncTimer = setTimeout(()=>{ syncScanLogToSheet(true); }, 1200);
+}
+
+function handleScanResult(rawCode){
+  const code = (rawCode || '').trim();
+  if(!code) return;
+
+  if(scannerMode === 'search'){
+    stopScanner();
+    if(navigator.vibrate) navigator.vibrate(120);
+    closeScanner();
+    search = code;
+    const si = document.getElementById('search-input');
+    if(si) si.value = code;
+    renderListItems();
+    showToast('ຄົ້ນຫາ: ' + code);
+    return;
+  }
+
+  // receive mode: duplicate check + log-to-sheet only — camera stays open for continuous scanning
+  const norm = code.toLowerCase();
+  const isDup = isKnownBarcode(norm);
+
+  if(navigator.vibrate) navigator.vibrate(isDup ? [80,60,80] : 120);
+
+  if(isDup){
+    showToast('ພັດສະດຸໄດ້ຮັບແລ້ວ');
+    setScannerHint('⚠ ພັດສະດຸໄດ້ຮັບແລ້ວ: ' + code, '#E8A33D');
+  } else {
+    knownBarcodeSet.add(norm);
+    const entry = { id:uid(), code, scannedAt:new Date().toISOString(), isDuplicate:false, syncedToSheet:false };
+    scanLog = [entry, ...scanLog];
+    saveScanLog();
+    scannerNewCount++;
+    showToast('ບັນທຶກແລ້ວ: ' + code);
+    setScannerHint('✓ ບັນທຶກແລ້ວ: ' + code, '#4C7A5E');
+    scheduleBarcodeSync();
+  }
+
+  if(tab === 'barcode') renderBarcodeList();
+
+  scannerCooldown = true;
+  setTimeout(()=>{
+    scannerCooldown = false;
+    setScannerHint(scannerNewCount>0 ? 'ສະແກນແລ້ວ ' + scannerNewCount + ' ພັດສະດຸໃໝ່' : 'ວາງ Barcode ໃຫ້ຢູ່ໃນກອບ, ສະແກນຕໍ່ໄດ້ເລື່ອຍໆ', 'var(--accent)');
+  }, 1400);
+}
+
+/* ---------- ADD CATEGORY (report tab FAB) ---------- */
+function openCategoryModal(){
+  const root = document.getElementById('category-modal-root');
+  root.innerHTML = `
+    <div class="overlay center" id="category-modal-overlay">
+      <div class="confirm-box" style="max-width:340px; text-align:left;">
+        <p class="title" style="margin-bottom:2px;">ເພີ່ມໝວດໝູ່ໃໝ່</p>
+        <p class="desc" style="margin-bottom:12px;">ພິມຊື່ໝວດໝູ່ສິນຄ້າທີ່ຕ້ອງການເພີ່ມ</p>
+        <input type="text" id="new-category-input" placeholder="ເຊັ່ນ: ໝວດຊຸດກັນຝົນ" style="width:100%; background:#fff; border:1px solid var(--dark-10); border-radius:12px; padding:10px 12px; font-size:14px; outline:none; font-family:inherit; box-sizing:border-box;">
+        <p id="category-error" style="color:var(--danger); font-size:12px; margin:8px 0 0; display:none;"></p>
+        <div class="confirm-actions" style="margin-top:16px;">
+          <button class="btn-cancel" id="category-cancel-btn">ຍົກເລີກ</button>
+          <button class="btn-confirm" id="category-save-btn" style="background:var(--dark); color:#fff;">ບັນທຶກ</button>
+        </div>
+      </div>
+    </div>
+  `;
+  const input = document.getElementById('new-category-input');
+  input.focus();
+  document.getElementById('category-modal-overlay').addEventListener('click', e=>{ if(e.target.id==='category-modal-overlay') closeCategoryModal(); });
+  document.getElementById('category-cancel-btn').addEventListener('click', closeCategoryModal);
+  document.getElementById('category-save-btn').addEventListener('click', submitNewCategory);
+  input.addEventListener('keydown', e=>{ if(e.key === 'Enter') submitNewCategory(); });
+}
+function closeCategoryModal(){ document.getElementById('category-modal-root').innerHTML=''; collapseFabs(); setFabBusy(false); }
+
+function submitNewCategory(){
+  const input = document.getElementById('new-category-input');
+  const errorEl = document.getElementById('category-error');
+  const name = input.value.trim();
+  if(!name){ errorEl.textContent = 'ກະລຸນາພິມຊື່ໝວດໝູ່'; errorEl.style.display = 'block'; return; }
+  if(CATEGORIES.some(c => c.toLowerCase() === name.toLowerCase())){
+    errorEl.textContent = 'ມີໝວດໝູ່ນີ້ຢູ່ແລ້ວ'; errorEl.style.display = 'block'; return;
+  }
+  CATEGORIES.push(name);
+  saveCategories();
+  reportCategoryFilter = name;
+  closeCategoryModal();
+  showToast('ເພີ່ມໝວດໝູ່ "' + name + '" ແລ້ວ');
+  renderReport();
+}
+
+/* ---------- MANAGE CATEGORIES (rename / delete) ---------- */
+let manageCategoriesState = null;
+
+function openManageCategoriesModal(){
+  manageCategoriesState = CATEGORIES.map(c => ({ id: uid(), original: c, current: c, editing: false, deleted: false }));
+  renderManageCategoriesModal();
+}
+function closeManageCategoriesModal(){ manageCategoriesState = null; document.getElementById('manage-categories-root').innerHTML=''; collapseFabs(); setFabBusy(false); }
+
+function renderManageCategoriesModal(){
+  const root = document.getElementById('manage-categories-root');
+  if(!manageCategoriesState){ root.innerHTML=''; return; }
+  const visible = manageCategoriesState.filter(c => !c.deleted);
+  const rows = visible.length ? visible.map(c => `
+    <div class="sell-row" data-cid="${c.id}">
+      ${c.editing
+        ? `<input type="text" class="manage-cat-input" data-cid="${c.id}" value="${esc(c.current)}" style="flex:1; background:#fff; border:1px solid var(--dark-10); border-radius:10px; padding:8px 10px; font-size:14px; outline:none; font-family:inherit;">`
+        : `<span class="sell-size" style="flex:1;">${esc(c.current)}</span>`}
+      <button type="button" class="icon-btn-sm" data-action-cat="edit" data-cid="${c.id}" style="background:var(--dark-5);">${ICONS.pencil}</button>
+      <button type="button" class="icon-btn-sm" data-action-cat="delete" data-cid="${c.id}">${ICONS.trash}</button>
+    </div>
+  `).join('') : '<p class="muted">ຍັງບໍ່ມີໝວດໝູ່</p>';
+
+  root.innerHTML = `
+    <div class="overlay center" id="manage-cat-overlay">
+      <div class="confirm-box" style="max-width:360px; text-align:left;">
+        <p class="title" style="margin-bottom:2px;">ຈັດການໝວດໝູ່ສິນຄ້າ</p>
+        <p class="desc" style="margin-bottom:12px;">ແກ້ໄຂຊື່ ຫຼື ລຶບໝວດໝູ່, ແລ້ວກົດບັນທຶກເພື່ອຢືນຢັນ</p>
+        <div id="manage-cat-rows">${rows}</div>
+        <div class="confirm-actions" style="margin-top:16px;">
+          <button class="btn-cancel" id="manage-cat-cancel-btn">ຍົກເລີກ</button>
+          <button class="btn-confirm" id="manage-cat-save-btn" style="background:var(--dark); color:#fff;">ບັນທຶກ</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('manage-cat-overlay').addEventListener('click', e=>{ if(e.target.id==='manage-cat-overlay') closeManageCategoriesModal(); });
+  document.getElementById('manage-cat-cancel-btn').addEventListener('click', closeManageCategoriesModal);
+  document.getElementById('manage-cat-save-btn').addEventListener('click', saveManagedCategories);
+
+  document.querySelectorAll('[data-action-cat="edit"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const item = manageCategoriesState.find(c => c.id === btn.dataset.cid);
+      if(item){ item.editing = !item.editing; renderManageCategoriesModal(); }
+    });
+  });
+  document.querySelectorAll('[data-action-cat="delete"]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const item = manageCategoriesState.find(c => c.id === btn.dataset.cid);
+      if(item){ item.deleted = true; renderManageCategoriesModal(); }
+    });
+  });
+  document.querySelectorAll('.manage-cat-input').forEach(inp=>{
+    inp.addEventListener('input', e=>{
+      const item = manageCategoriesState.find(c => c.id === e.target.dataset.cid);
+      if(item) item.current = e.target.value;
+    });
+  });
+}
+
+function saveManagedCategories(){
+  const kept = manageCategoriesState.filter(c => !c.deleted);
+  const names = kept.map(c => c.current.trim()).filter(n => n);
+  const dedupCheck = new Set(names.map(n=>n.toLowerCase()));
+  if(dedupCheck.size !== names.length){
+    showToast('ມີຊື່ໝວດໝູ່ຊ້ຳກັນ, ກະລຸນາແກ້ໄຂ');
+    return;
+  }
+  const removedNames = manageCategoriesState.filter(c => c.deleted).map(c => c.original);
+  const renameMap = {};
+  kept.forEach(c => { if(c.current.trim() !== c.original) renameMap[c.original] = c.current.trim(); });
+
+  CATEGORIES = names;
+  saveCategories();
+
+  if(Object.keys(renameMap).length || removedNames.length){
+    products = products.map(p => {
+      if(p.category && renameMap[p.category]) return { ...p, category: renameMap[p.category] };
+      if(p.category && removedNames.includes(p.category)) return { ...p, category: '' };
+      return p;
+    });
+    save();
+  }
+  if(removedNames.includes(reportCategoryFilter) || (renameMap[reportCategoryFilter])){
+    reportCategoryFilter = renameMap[reportCategoryFilter] || '';
+  }
+
+  closeManageCategoriesModal();
+  showToast('ບັນທຶກການປ່ຽນແປງໝວດໝູ່ແລ້ວ');
+  renderReport();
+}
+
+function renderReport(){
+  const content = document.getElementById('content');
+  const list = products.map(withTotals);
+  const totalSKU = products.length;
+  const totalQty = list.reduce((s,p)=>s+p.totalQty,0);
+  const totalValue = list.reduce((s,p)=>s+p.totalQty*p.price,0);
+  const lowProducts = list.filter(p=>p.lowVariants.length>0);
+  const lowCount = list.reduce((s,p)=>s+p.lowVariants.length,0);
+
+  let lowHtml = '<p class="muted">ບໍ່ມີສິນຄ້າໃກ້ໝົດ, ສະຕັອກປົກກະຕິ</p>';
+  if(lowProducts.length>0){
+    lowHtml = lowProducts.map(p => p.lowVariants.map(v => {
+      const order = findPendingOrder((p.code||'').trim(), v.size);
+      const badge = order
+        ? `<button type="button" class="low-cart-badge" data-cancel-order-code="${esc(p.code||'')}" data-cancel-order-size="${esc(v.size)}" title="ສັ່ງຊື້ແລ້ວ ${order.qty} ລາຍການ — ກົດເພື່ອຍົກເລີກ">${ICONS.cart}</button>`
+        : '';
+      return `
+      <div class="low-item">
+        <span>${esc(p.name)} <span class="muted" style="font-weight:700; color:var(--dark);">(${esc(v.size)})</span>${badge}</span>
+        <span style="color:var(--danger); font-family:monospace; font-weight:600;">${v.qty} / ${p.minQty}</span>
+      </div>
+    `;
+    }).join('')).join('');
+  }
+
+  let stockHtml = '<p class="muted">ຍັງບໍ່ມີຂໍ້ມູນສິນຄ້າ</p>';
+  let stockRowCount = 0;
+  if(list.length>0){
+    const rows = [];
+    [...list].sort((a,b)=>a.name.localeCompare(b.name)).forEach(p => {
+      p.variants.forEach(v => {
+        if(v.qty === 0) return;
+        rows.push(`
+          <div class="stock-item">
+            <span>${esc(p.name)} <span class="muted" style="font-weight:700; color:var(--dark);">(${esc(v.size)})</span></span>
+            <span style="font-family:monospace;">${v.qty} ລາຍການ</span>
+          </div>
+        `);
+      });
+    });
+    stockRowCount = rows.length;
+    stockHtml = rows.join('') || '<p class="muted">ທຸກຂະໜາດໝົດສະຕັອກ (0)</p>';
+  }
+
+  function matchesCategory(p){
+    if(reportCategoryFilter === '') return true;
+    if(reportCategoryFilter === '__none__') return !p.category;
+    return p.category === reportCategoryFilter;
+  }
+  const categoryList = list.filter(matchesCategory);
+  let categoryHtml = '<p class="muted">ບໍ່ມີສິນຄ້າໃນໝວດໝູ່ນີ້</p>';
+  let categorySKU = 0, categoryQty = 0;
+  if(categoryList.length>0){
+    const rows = [];
+    [...categoryList].sort((a,b)=>a.name.localeCompare(b.name)).forEach(p => {
+      categorySKU++;
+      p.variants.forEach(v => {
+        categoryQty += v.qty;
+        rows.push(`
+          <div class="stock-item">
+            <span>${esc(p.name)} <span class="muted" style="font-weight:700; color:var(--dark);">(${esc(v.size)})</span></span>
+            <span style="font-family:monospace;">${v.qty} ລາຍການ</span>
+          </div>
+        `);
+      });
+    });
+    categoryHtml = rows.join('') || '<p class="muted">ບໍ່ມີສິນຄ້າໃນໝວດໝູ່ນີ້</p>';
+  }
+  const categoryOptions = `
+    <option value="" ${reportCategoryFilter===''?'selected':''}>ທັງໝົດ</option>
+    ${CATEGORIES.map(c => `<option value="${esc(c)}" ${reportCategoryFilter===c?'selected':''}>${esc(c)}</option>`).join('')}
+    <option value="__none__" ${reportCategoryFilter==='__none__'?'selected':''}>ບໍ່ໄດ້ກຳນົດ</option>
+  `;
+
+  content.innerHTML = `
+    <div class="report-grid">
+      <div class="report-card">
+        <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:8px;">
+          <div>
+            <p class="report-label">ມູນຄ່າສະຕັອກລວມ</p>
+            <p class="report-value">${totalValue.toLocaleString()} <small>ກີບ</small></p>
+            <div class="report-sub"><span>${totalSKU} ລາຍການ</span><span>${totalQty} ລາຍການລວມ</span></div>
+          </div>
+          <button type="button" class="pdf-btn" data-pdf="value">${ICONS.pdf} ສົ່ງອອກ</button>
+        </div>
+      </div>
+      <div class="report-card">
+        <div class="report-card-header">
+          <div class="report-head">${ICONS.alert}<span>ຂະໜາດໃກ້ໝົດ (${lowCount} ລາຍການ)</span></div>
+          <button type="button" class="pdf-btn" data-pdf="lowstock">${ICONS.pdf} ສົ່ງອອກ</button>
+        </div>
+        <div style="max-height:280px; overflow-y:auto;">${lowHtml}</div>
+      </div>
+      <div class="report-card">
+        <div class="report-card-header">
+          <p>ຈຳນວນຄົງເຫຼືອທັງໝົດ (${stockRowCount})</p>
+          <button type="button" class="pdf-btn" data-pdf="fullstock">${ICONS.pdf} ສົ່ງອອກ</button>
+        </div>
+        <div style="max-height:280px; overflow-y:auto;">${stockHtml}</div>
+      </div>
+      <div class="report-card">
+        <div class="report-card-header">
+          <div class="report-card-header-row">
+            <span>ລາຍງານຕາມໝວດໝູ່</span>
+            <select id="category-filter-select" class="header-select">${categoryOptions}</select>
+          </div>
+          <button type="button" class="pdf-btn" data-pdf="category">${ICONS.pdf} ສົ່ງອອກ</button>
+        </div>
+        <div class="report-sub" style="margin-bottom:8px;"><span>${categorySKU} ລາຍການ</span><span>${categoryQty} ລາຍການລວມ</span></div>
+        <div style="max-height:280px; overflow-y:auto;">${categoryHtml}</div>
+      </div>
+    </div>
+  `;
+  document.querySelectorAll('.pdf-btn').forEach(btn => {
+    btn.addEventListener('click', () => printReport(btn.dataset.pdf));
+  });
+  const catSelect = document.getElementById('category-filter-select');
+  if(catSelect) catSelect.addEventListener('change', e=>{
+    reportCategoryFilter = e.target.value;
+    renderReport();
+  });
+  document.querySelectorAll('[data-cancel-order-code]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      openOrderActionModal(btn.dataset.cancelOrderCode, btn.dataset.cancelOrderSize);
+    });
+  });
+}
+
+/* ---------- PDF EXPORT (print) ---------- */
+function printReport(kind){
+  const list = products.map(withTotals);
+  const now = new Date().toLocaleString('lo-LA');
+  let title = '';
+  let bodyHtml = '';
+
+  if(kind === 'value'){
+    title = 'ລາຍງານມູນຄ່າສະຕັອກລວມ';
+    const totalSKU = products.length;
+    const totalQty = list.reduce((s,p)=>s+p.totalQty,0);
+    const totalValue = list.reduce((s,p)=>s+p.totalQty*p.price,0);
+    const rows = [...list].sort((a,b)=>a.name.localeCompare(b.name)).map((p,i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td>${esc(p.name)}</td>
+        <td>${esc(p.code||'-')}</td>
+        <td class="num">${p.totalQty}</td>
+        <td class="num">${p.price.toLocaleString()}</td>
+        <td class="num">${(p.totalQty*p.price).toLocaleString()}</td>
+      </tr>
+    `).join('') || `<tr><td colspan="6" style="text-align:center; color:#888;">ຍັງບໍ່ມີຂໍ້ມູນສິນຄ້າ</td></tr>`;
+    bodyHtml = `
+      <div class="print-summary">
+        <div><span>ຈຳນວນລາຍການ</span><b>${totalSKU}</b></div>
+        <div><span>ຈຳນວນລວມ</span><b>${totalQty} ລາຍການ</b></div>
+        <div><span>ມູນຄ່າລວມ</span><b>${totalValue.toLocaleString()} ກີບ</b></div>
+      </div>
+      <table class="print-table">
+        <thead><tr><th>#</th><th>ຊື່ສິນຄ້າ</th><th>ລະຫັດ</th><th class="num">ຈຳນວນ</th><th class="num">ລາຄາ/ໜ່ວຍ</th><th class="num">ມູນຄ່າລວມ</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  } else if(kind === 'lowstock'){
+    title = 'ລາຍງານສິນຄ້າໃກ້ໝົດ';
+    const lowRows = [];
+    list.forEach(p => { p.lowVariants.forEach(v => { lowRows.push({p,v}); }); });
+    const rows = lowRows.map(({p,v}, i) => {
+      const order = findPendingOrder((p.code||'').trim(), v.size);
+      return `
+      <tr>
+        <td>${i+1}</td>
+        <td>${esc(p.name)}</td>
+        <td>${esc(p.code||'-')}</td>
+        <td>${esc(v.size)}</td>
+        <td class="num" style="color:#B94A3D; font-weight:700;">${v.qty}</td>
+        <td class="num">${p.minQty}</td>
+        <td>${order ? ('&#128722; ສັ່ງຊື້ແລ້ວ ('+order.qty+')') : '-'}</td>
+      </tr>
+    `;
+    }).join('') || `<tr><td colspan="7" style="text-align:center; color:#888;">ບໍ່ມີສິນຄ້າໃກ້ໝົດ</td></tr>`;
+    bodyHtml = `
+      <div class="print-summary">
+        <div><span>ຈຳນວນລາຍການໃກ້ໝົດ</span><b>${lowRows.length}</b></div>
+      </div>
+      <table class="print-table">
+        <thead><tr><th>#</th><th>ຊື່ສິນຄ້າ</th><th>ລະຫັດ</th><th>ຂະໜາດ</th><th class="num">ຄົງເຫຼືອ</th><th class="num">ຂັ້ນຕ່ຳ</th><th>ສະຖານະສັ່ງຊື້</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    `;
+  } else if(kind === 'fullstock'){
+    title = 'ລາຍງານຈຳນວນສິນຄ້າຄົງຄັງ';
+    const rows = [];
+    [...list].sort((a,b)=>a.name.localeCompare(b.name)).forEach(p => {
+      p.variants.forEach(v => { if(v.qty > 0) rows.push({p,v}); });
+    });
+    const trs = rows.map(({p,v}, i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td>${esc(p.name)}</td>
+        <td>${esc(p.code||'-')}</td>
+        <td>${esc(v.size)}</td>
+        <td class="num">${v.qty}</td>
+        <td>${esc(p.unit)}</td>
+      </tr>
+    `).join('') || `<tr><td colspan="6" style="text-align:center; color:#888;">ທຸກຂະໜາດໝົດສະຕັອກ</td></tr>`;
+    const totalQty = list.reduce((s,p)=>s+p.totalQty,0);
+    bodyHtml = `
+      <div class="print-summary">
+        <div><span>ຈຳນວນລາຍການ</span><b>${rows.length}</b></div>
+        <div><span>ຈຳນວນລວມ</span><b>${totalQty} ລາຍການ</b></div>
+      </div>
+      <table class="print-table">
+        <thead><tr><th>#</th><th>ຊື່ສິນຄ້າ</th><th>ລະຫັດ</th><th>ຂະໜາດ</th><th class="num">ຈຳນວນ</th><th>ໜ່ວຍ</th></tr></thead>
+        <tbody>${trs}</tbody>
+      </table>
+    `;
+  } else if(kind === 'category'){
+    const catLabel = reportCategoryFilter === '' ? 'ທັງໝົດ' : (reportCategoryFilter === '__none__' ? 'ບໍ່ໄດ້ກຳນົດ' : reportCategoryFilter);
+    title = 'ລາຍງານຕາມໝວດໝູ່ສິນຄ້າ - ' + catLabel;
+    const matches = p2 => reportCategoryFilter === '' ? true : (reportCategoryFilter === '__none__' ? !p2.category : p2.category === reportCategoryFilter);
+    const rows = [];
+    [...list].filter(matches).sort((a,b)=>a.name.localeCompare(b.name)).forEach(p => {
+      p.variants.forEach(v => { rows.push({p,v}); });
+    });
+    const trs = rows.map(({p,v}, i) => `
+      <tr>
+        <td>${i+1}</td>
+        <td>${esc(p.name)}</td>
+        <td>${esc(p.code||'-')}</td>
+        <td>${esc(v.size)}</td>
+        <td class="num">${v.qty}</td>
+        <td>${esc(p.unit)}</td>
+      </tr>
+    `).join('') || `<tr><td colspan="6" style="text-align:center; color:#888;">ບໍ່ມີສິນຄ້າໃນໝວດໝູ່ນີ້</td></tr>`;
+    const skuCount = new Set(rows.map(r=>r.p.id)).size;
+    const totalQty = rows.reduce((s,r)=>s+r.v.qty, 0);
+    bodyHtml = `
+      <div class="print-summary">
+        <div><span>ຈຳນວນລາຍການ</span><b>${skuCount}</b></div>
+        <div><span>ຈຳນວນລວມ</span><b>${totalQty} ລາຍການ</b></div>
+      </div>
+      <table class="print-table">
+        <thead><tr><th>#</th><th>ຊື່ສິນຄ້າ</th><th>ລະຫັດ</th><th>ຂະໜາດ</th><th class="num">ຈຳນວນ</th><th>ໜ່ວຍ</th></tr></thead>
+        <tbody>${trs}</tbody>
+      </table>
+    `;
+  } else {
+    return;
+  }
+
+  const printArea = document.getElementById('print-area');
+  printArea.innerHTML = `
+    <div class="print-header">
+      ${logoImg ? `<img src="${logoImg}" class="print-logo">` : ''}
+      <div>
+        <h1>ຄັງເສື້ອຜ້າ</h1>
+        <p>${esc(title)}</p>
+        <p class="print-date">ສ້າງເມື່ອ: ${esc(now)}</p>
+      </div>
+    </div>
+    ${bodyHtml}
+  `;
+  setTimeout(() => { window.print(); }, 50);
+}
+
+/* ---------- MODAL (ADD/EDIT) ---------- */
+function openAdd(prefillCode){
+  formState = { id:null, name:'', code:prefillCode || '', unit:'ລາຍການ', price:'', minQty:'3', category:'', image:null, variants:[{id:uid(), size:'', qty:''}] };
+  renderModal();
+}
+function openDuplicate(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  closeDetail();
+  formState = {
+    id: null,
+    name: p.name,
+    code: '',
+    unit: p.unit || 'ລາຍການ',
+    price: String(p.price),
+    minQty: String(p.minQty),
+    category: p.category || '',
+    image: p.image || null,
+    variants: [{ id: uid(), size: '', qty: '' }]
+  };
+  renderModal();
+  showToast('ສ້າງຊ້ຳຈາກ "' + p.name + '" — ກະລຸນາຕັ້ງຂະໜາດໃໝ່');
+}
+function openEdit(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  closeDetail();
+  formState = { ...p, price:String(p.price), minQty:String(p.minQty), category:p.category||'', variants: p.variants.map(v=>({...v, qty:String(v.qty)})) };
+  renderModal();
+}
+function closeModal(){ formState = null; document.getElementById('modal-root').innerHTML=''; }
+
+function renderModal(){
+  const root = document.getElementById('modal-root');
+  if(!formState){ root.innerHTML=''; return; }
+  const f = formState;
+  root.innerHTML = `
+    <div class="overlay" id="modal-overlay">
+      <div class="modal" id="modal-box">
+        <div class="modal-head">
+          <h2>${f.id ? 'ແກ້ໄຂສິນຄ້າ' : 'ເພີ່ມສິນຄ້າໃໝ່'}</h2>
+          <button class="icon-x" id="modal-close">${ICONS.x}</button>
+        </div>
+        <form id="product-form">
+          <div class="img-picker">
+            <button type="button" class="img-box" id="img-pick-btn">${f.image ? '<img src="'+f.image+'" alt="">' : ICONS.camera}</button>
+            <div>
+              <button type="button" class="img-btn" id="img-pick-btn2">${f.image ? 'ປ່ຽນຮູບ' : 'ເລືອກຮູບສິນຄ້າ'}</button>
+              ${f.image ? '<button type="button" class="img-remove" id="img-remove-btn">ລຶບຮູບ</button>' : ''}
+            </div>
+            <input type="file" accept="image/*" id="img-input" style="display:none">
+          </div>
+
+          <div class="field">
+            <label>ຊື່ສິນຄ້າ *</label>
+            <input id="f-name" value="${esc(f.name)}" placeholder="ເຊັ່ນ: ເສື້ອຢືດຄໍກົມ" autofocus>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label>ລະຫັດສິນຄ້າ</label>
+              <input id="f-code" value="${esc(f.code)}" placeholder="ບໍ່ບັງຄັບ">
+            </div>
+            <div class="field">
+              <label>ລາຄາ (ກີບ)</label>
+              <input id="f-price" type="number" inputmode="numeric" value="${esc(f.price)}" placeholder="0">
+            </div>
+          </div>
+          <div class="grid2">
+            <div class="field">
+              <label>ຂັ້ນຕ່ຳເຕືອນ (ຕໍ່ຂະໜາດ)</label>
+              <input id="f-minqty" type="number" inputmode="numeric" value="${esc(f.minQty)}" placeholder="3">
+            </div>
+            <div class="field">
+              <label>ໝວດໝູ່ສິນຄ້າ</label>
+              <select id="f-category">
+                <option value="">-- ບໍ່ໄດ້ກຳນົດ --</option>
+                ${CATEGORIES.map(c => `<option value="${esc(c)}" ${f.category===c?'selected':''}>${esc(c)}</option>`).join('')}
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label>ຂະໜາດ ແລະ ຈຳນວນ</label>
+            <div id="variants-container"></div>
+            <button type="button" class="add-size-link" id="add-size-btn">${ICONS.plus} ເພີ່ມຂະໜາດອື່ນ</button>
+          </div>
+
+          <p id="form-error" style="color:var(--danger); font-size:12px; margin:0 0 8px; display:none;"></p>
+          <button type="submit" class="submit-btn">${f.id ? 'ບັນທຶກການແກ້ໄຂ' : 'ເພີ່ມສິນຄ້າ'} ${ICONS.chevronRight}</button>
+        </form>
+      </div>
+    </div>
+  `;
+
+  renderVariants();
+
+  document.getElementById('modal-overlay').addEventListener('click', e=>{ if(e.target.id==='modal-overlay') closeModal(); });
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  document.getElementById('img-pick-btn').addEventListener('click', ()=>document.getElementById('img-input').click());
+  document.getElementById('img-pick-btn2').addEventListener('click', ()=>document.getElementById('img-input').click());
+  const removeBtn = document.getElementById('img-remove-btn');
+  if(removeBtn) removeBtn.addEventListener('click', ()=>{ formState.image=null; renderModal(); });
+  document.getElementById('img-input').addEventListener('change', handleImagePick);
+
+  document.getElementById('f-name').addEventListener('input', e=>{ formState.name = e.target.value; });
+  document.getElementById('f-code').addEventListener('input', e=>{ formState.code = e.target.value; });
+  document.getElementById('f-price').addEventListener('input', e=>{ formState.price = e.target.value; });
+  document.getElementById('f-minqty').addEventListener('input', e=>{ formState.minQty = e.target.value; });
+  document.getElementById('f-category').addEventListener('change', e=>{ formState.category = e.target.value; });
+
+  document.getElementById('add-size-btn').addEventListener('click', ()=>{ addSizeRow(''); });
+
+  document.getElementById('product-form').addEventListener('submit', handleSubmit);
+}
+
+function renderVariants(){
+  const container = document.getElementById('variants-container');
+  container.innerHTML = formState.variants.map(v => {
+    const known = SIZE_OPTIONS.includes(v.size);
+    const extraOpt = (v.size && !known) ? `<option value="${esc(v.size)}" selected>${esc(v.size)}</option>` : '';
+    const opts = `<option value="">-- ຂະໜາດ --</option>` + extraOpt + SIZE_OPTIONS.map(s => `<option value="${esc(s)}" ${v.size===s?'selected':''}>${esc(s)}</option>`).join('');
+    return `
+    <div class="vrow" data-vid="${v.id}">
+      <select data-vfield="size">${opts}</select>
+      <input type="number" inputmode="numeric" value="${esc(v.qty)}" data-vfield="qty" placeholder="ຈຳນວນ">
+      <button type="button" data-remove-variant="${v.id}" ${formState.variants.length<=1?'disabled':''}>${ICONS.trash}</button>
+    </div>
+  `;
+  }).join('');
+
+  container.querySelectorAll('.vrow').forEach(row=>{
+    const vid = row.dataset.vid;
+    row.querySelector('[data-vfield="size"]').addEventListener('change', e=>{
+      const v = formState.variants.find(x=>x.id===vid); if(v) v.size = e.target.value;
+    });
+    row.querySelector('[data-vfield="qty"]').addEventListener('input', e=>{
+      const v = formState.variants.find(x=>x.id===vid); if(v) v.qty = e.target.value;
+    });
+  });
+  container.querySelectorAll('[data-remove-variant]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      if(formState.variants.length<=1) return;
+      formState.variants = formState.variants.filter(v=>v.id!==btn.dataset.removeVariant);
+      renderVariants();
+    });
+  });
+}
+
+function addSizeRow(size){
+  if(size && formState.variants.some(v=>v.size.toLowerCase()===size.toLowerCase())) return;
+  formState.variants.push({ id:uid(), size, qty:'' });
+  renderVariants();
+}
+
+function handleImagePick(e){
+  const file = e.target.files && e.target.files[0];
+  if(!file) return;
+  resizeImage(file).then(dataUrl=>{
+    formState.image = dataUrl;
+    renderModal();
+  }).catch(()=>{ showToast('ເລືອກຮູບບໍ່ສຳເລັດ'); });
+}
+
+function resizeImage(file, maxDim, quality){
+  maxDim = maxDim || 640; quality = quality || 0.75;
+  return new Promise((resolve, reject)=>{
+    const reader = new FileReader();
+    reader.onload = () => {
+      const img = new Image();
+      img.onload = () => {
+        let width = img.width, height = img.height;
+        if(width > height && width > maxDim){ height = Math.round(height*maxDim/width); width = maxDim; }
+        else if(height > maxDim){ width = Math.round(width*maxDim/height); height = maxDim; }
+        const canvas = document.createElement('canvas');
+        canvas.width = width; canvas.height = height;
+        canvas.getContext('2d').drawImage(img, 0, 0, width, height);
+        resolve(canvas.toDataURL('image/jpeg', quality));
+      };
+      img.onerror = reject;
+      img.src = reader.result;
+    };
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function handleSubmit(e){
+  e.preventDefault();
+  const f = formState;
+  const errorEl = document.getElementById('form-error');
+  if(errorEl){ errorEl.style.display = 'none'; errorEl.textContent = ''; }
+  if(!f.name.trim()) return;
+  const price = Math.max(0, parseFloat(f.price) || 0);
+  const minQty = Math.max(0, parseInt(f.minQty,10) || 0);
+  const variants = f.variants
+    .filter(v => v.size.trim() !== '' || f.variants.length === 1)
+    .map(v => ({ id:v.id, size: v.size.trim() || 'ທົ່ວໄປ', qty: Math.max(0, parseInt(v.qty,10) || 0) }));
+
+  const codeTrim = f.code.trim();
+  if(codeTrim){
+    const codeClash = products.some(p => p.id !== f.id && (p.code||'').trim().toLowerCase() === codeTrim.toLowerCase());
+    if(codeClash){
+      if(errorEl){ errorEl.textContent = 'ລະຫັດສິນຄ້າ "' + codeTrim + '" ມີຢູ່ແລ້ວ, ກະລຸນາປ່ຽນ ຫຼື ປ່ອຍຫວ່າງ'; errorEl.style.display = 'block'; }
+      return;
+    }
+  }
+
+  const nameTrim = f.name.trim().toLowerCase();
+  const relatedProducts = products.filter(p => p.id !== f.id && p.name.trim().toLowerCase() === nameTrim);
+  for(const v of variants){
+    const sizeTrim = v.size.trim().toLowerCase();
+    const clashProduct = relatedProducts.find(p => p.variants.some(rv => rv.size.trim().toLowerCase() === sizeTrim));
+    if(clashProduct){
+      if(errorEl){ errorEl.textContent = 'ຂະໜາດ "' + v.size + '" ຊ້ຳກັບສິນຄ້າ "' + clashProduct.name + '" ແລ້ວ (ຊື່ດຽວກັນ), ກະລຸນາປ່ຽນເປັນຂະໜາດອື່ນ'; errorEl.style.display = 'block'; }
+      return;
+    }
+  }
+
+  const payload = { name:f.name.trim(), code:codeTrim, unit:f.unit||'ລາຍການ', price, minQty, category:f.category||'', image:f.image, variants };
+
+  if(f.id){
+    products = products.map(p => p.id===f.id ? { ...p, ...payload } : p);
+    showToast('ແກ້ໄຂສິນຄ້າແລ້ວ');
+  } else {
+    products = [{ id: Date.now().toString(), ...payload }, ...products];
+    showToast('ເພີ່ມສິນຄ້າແລ້ວ');
+  }
+  save();
+  closeModal();
+  renderAll();
+}
+
+/* ---------- DELETE CONFIRM ---------- */
+function confirmDelete(id){ confirmDeleteId = id; renderConfirm(); }
+function cancelDelete(){ confirmDeleteId = null; renderConfirm(); }
+function doDelete(){
+  products = products.filter(p=>p.id!==confirmDeleteId);
+  save();
+  if(detailId === confirmDeleteId) closeDetail();
+  confirmDeleteId = null;
+  renderConfirm();
+  showToast('ລຶບສິນຄ້າແລ້ວ');
+  renderAll();
+}
+function renderConfirm(){
+  const root = document.getElementById('confirm-root');
+  if(!confirmDeleteId){ root.innerHTML=''; return; }
+  const p = products.find(x=>x.id===confirmDeleteId);
+  if(!p){ root.innerHTML=''; return; }
+  root.innerHTML = `
+    <div class="overlay center" id="confirm-overlay">
+      <div class="confirm-box">
+        <p class="title">ລຶບ "${esc(p.name)}"?</p>
+        <p class="desc">ຂໍ້ມູນຈະຖືກລຶບຖາວອນ ແລະ ບໍ່ສາມາດກູ້ຄືນໄດ້</p>
+        <div class="confirm-actions">
+          <button class="btn-cancel" id="cancel-del-btn">ຍົກເລີກ</button>
+          <button class="btn-confirm" id="do-del-btn">ລຶບ</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('confirm-overlay').addEventListener('click', e=>{ if(e.target.id==='confirm-overlay') cancelDelete(); });
+  document.getElementById('cancel-del-btn').addEventListener('click', cancelDelete);
+  document.getElementById('do-del-btn').addEventListener('click', doDelete);
+}
+
+/* ---------- BRAND CUSTOMIZATION (logo + header cover) ---------- */
+const LOGO_KEY = 'khang-sinkha-logo-img';
+const COVER_KEY = 'khang-sinkha-cover-img';
+let logoImg = localStorage.getItem(LOGO_KEY) || null;
+let coverImg = localStorage.getItem(COVER_KEY) || null;
+
+function applyHeaderBrand(){
+  const logoEl = document.querySelector('.logo');
+  if(logoImg){
+    logoEl.style.background = 'none';
+    logoEl.innerHTML = `<img src="${logoImg}" alt="logo">`;
+  } else {
+    logoEl.style.background = 'var(--accent)';
+    logoEl.innerHTML = ICONS.package;
+  }
+  const headerEl = document.querySelector('.header');
+  if(coverImg){
+    headerEl.style.backgroundImage = `linear-gradient(180deg, rgba(28,43,51,.55), rgba(28,43,51,.88)), url('${coverImg}')`;
+  } else {
+    headerEl.style.backgroundImage = '';
+  }
+}
+
+function openBrandModal(){ renderBrandModal(); }
+function closeBrandModal(){ document.getElementById('brand-root').innerHTML=''; }
+
+function renderBrandModal(){
+  const root = document.getElementById('brand-root');
+  root.innerHTML = `
+    <div class="overlay" id="brand-overlay">
+      <div class="modal" id="brand-modal">
+        <div class="modal-head">
+          <h2>ປັບແຕ່ງ Logo ແລະ Header</h2>
+          <button class="icon-x" id="brand-close">${ICONS.x}</button>
+        </div>
+
+        <div class="report-card" style="margin-top:4px;">
+          <p style="font-weight:600; font-size:14px; margin:0 0 4px;">ຮູບພື້ນຫຼັງ Header (Cover)</p>
+          <p class="muted" style="margin:0 0 10px;">ຮູບກວ້າງຈະສວຍທີ່ສຸດ, ລະບົບຈະໃສ່ໂຕນສີເຂັ້ມທັບໃຫ້ໂຕໜັງສືອ່ານໄດ້ຊັດ</p>
+          <button type="button" class="cover-box" id="cover-pick-btn">${coverImg ? '<img src="'+coverImg+'" alt="">' : ICONS.image}</button>
+          <div style="display:flex; gap:8px;">
+            <button type="button" class="img-btn" id="cover-pick-btn2">${coverImg ? 'ປ່ຽນຮູບ' : 'ເລືອກຮູບ Cover'}</button>
+            ${coverImg ? '<button type="button" class="img-btn" id="cover-remove-btn" style="color:var(--danger);">ໃຊ້ຄ່າເລີ່ມຕົ້ນ</button>' : ''}
+          </div>
+          <input type="file" accept="image/*" id="cover-input" style="display:none">
+        </div>
+
+        <div class="report-card">
+          <p style="font-weight:600; font-size:14px; margin:0 0 4px;">Logo</p>
+          <p class="muted" style="margin:0 0 10px;">ຮູບສີ່ຫຼ່ຽມ ຈະຖືກຕັດເປັນສີ່ຫຼ່ຽມມົນອັດຕະໂນມັດ</p>
+          <div class="img-picker">
+            <button type="button" class="img-box" id="logo-pick-btn">${logoImg ? '<img src="'+logoImg+'" alt="">' : ICONS.package}</button>
+            <div>
+              <button type="button" class="img-btn" id="logo-pick-btn2">${logoImg ? 'ປ່ຽນຮູບ' : 'ເລືອກຮູບ Logo'}</button>
+              ${logoImg ? '<button type="button" class="img-remove" id="logo-remove-btn">ໃຊ້ຄ່າເລີ່ມຕົ້ນ</button>' : ''}
+            </div>
+            <input type="file" accept="image/*" id="logo-input" style="display:none">
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('brand-overlay').addEventListener('click', e=>{ if(e.target.id==='brand-overlay') closeBrandModal(); });
+  document.getElementById('brand-close').addEventListener('click', closeBrandModal);
+
+  document.getElementById('cover-pick-btn').addEventListener('click', ()=>document.getElementById('cover-input').click());
+  document.getElementById('cover-pick-btn2').addEventListener('click', ()=>document.getElementById('cover-input').click());
+  document.getElementById('cover-input').addEventListener('change', e=>handleBrandImagePick(e, 'cover'));
+  const coverRemoveBtn = document.getElementById('cover-remove-btn');
+  if(coverRemoveBtn) coverRemoveBtn.addEventListener('click', ()=>{
+    coverImg = null;
+    localStorage.removeItem(COVER_KEY);
+    applyHeaderBrand();
+    renderBrandModal();
+    scheduleAutoSync();
+  });
+
+  document.getElementById('logo-pick-btn').addEventListener('click', ()=>document.getElementById('logo-input').click());
+  document.getElementById('logo-pick-btn2').addEventListener('click', ()=>document.getElementById('logo-input').click());
+  document.getElementById('logo-input').addEventListener('change', e=>handleBrandImagePick(e, 'logo'));
+  const logoRemoveBtn = document.getElementById('logo-remove-btn');
+  if(logoRemoveBtn) logoRemoveBtn.addEventListener('click', ()=>{
+    logoImg = null;
+    localStorage.removeItem(LOGO_KEY);
+    applyHeaderBrand();
+    renderBrandModal();
+    scheduleAutoSync();
+  });
+}
+
+function handleBrandImagePick(e, kind){
+  const file = e.target.files && e.target.files[0];
+  if(!file) return;
+  const opts = kind === 'logo' ? [320, 0.85] : [1000, 0.72];
+  resizeImage(file, opts[0], opts[1]).then(dataUrl=>{
+    try{
+      if(kind === 'logo'){ logoImg = dataUrl; localStorage.setItem(LOGO_KEY, dataUrl); }
+      else { coverImg = dataUrl; localStorage.setItem(COVER_KEY, dataUrl); }
+      applyHeaderBrand();
+      renderBrandModal();
+      scheduleAutoSync();
+    }catch(err){
+      showToast('ຮູບໃຫຍ່ເກີນໄປ, ລອງເລືອກຮູບອື່ນ');
+    }
+  }).catch(()=>{ showToast('ເລືອກຮູບບໍ່ສຳເລັດ'); });
+}
+
+/* ---------- GOOGLE DRIVE SYNC ---------- */
+const GDRIVE_CLIENT_ID_KEY = 'khang-sinkha-gdrive-client-id';
+const GDRIVE_FILE_ID_KEY = 'khang-sinkha-gdrive-file-id';
+const GDRIVE_CONNECTED_KEY = 'khang-sinkha-gdrive-connected';
+const GDRIVE_LAST_SYNC_KEY = 'khang-sinkha-gdrive-last-sync';
+const DRIVE_FILE_NAME = 'khang-sinkha-backup.json';
+const DRIVE_SCOPE = 'https://www.googleapis.com/auth/drive.file https://www.googleapis.com/auth/spreadsheets';
+const SHEET_ID_KEY = 'khang-sinkha-sheet-id';
+const SHEET_LAST_SYNC_KEY = 'khang-sinkha-sheet-last-sync';
+const SHEET_TITLE = 'khang-sinkha-barcode-log';
+
+let tokenClient = null;
+let gdriveToken = null;
+let syncDebounceTimer = null;
+
+function getClientId(){ return localStorage.getItem(GDRIVE_CLIENT_ID_KEY) || ''; }
+
+function loadGsiScript(){
+  return new Promise((resolve, reject)=>{
+    if(window.google && window.google.accounts && window.google.accounts.oauth2){ resolve(); return; }
+    const s = document.createElement('script');
+    s.src = 'https://accounts.google.com/gsi/client';
+    s.async = true; s.defer = true;
+    s.onload = () => resolve();
+    s.onerror = () => reject(new Error('gsi load failed'));
+    document.head.appendChild(s);
+  });
+}
+
+function connectDrive(promptMode){
+  const clientId = getClientId();
+  if(!clientId){ showToast('ກະລຸນາໃສ່ Google Client ID ກ່ອນ'); return Promise.resolve(false); }
+  return loadGsiScript().then(()=> new Promise((resolve)=>{
+    try{
+      tokenClient = google.accounts.oauth2.initTokenClient({
+        client_id: clientId,
+        scope: DRIVE_SCOPE,
+        callback: (resp) => {
+          if(resp && resp.access_token){
+            gdriveToken = { access_token: resp.access_token, expires_at: Date.now() + (resp.expires_in*1000 - 60000) };
+            localStorage.setItem(GDRIVE_CONNECTED_KEY, '1');
+            resolve(true);
+          } else resolve(false);
+        },
+        error_callback: () => resolve(false)
+      });
+      tokenClient.requestAccessToken({ prompt: promptMode === undefined ? '' : promptMode });
+    }catch(e){ resolve(false); }
+  })).catch(()=>{ showToast('ໂຫຼດ Google SDK ບໍ່ສຳເລັດ, ກວດອິນເຕີເນັດ'); return false; });
+}
+
+function isDriveConnected(){ return !!(gdriveToken && gdriveToken.expires_at > Date.now()); }
+
+async function ensureToken(){
+  if(isDriveConnected()) return true;
+  if(!localStorage.getItem(GDRIVE_CONNECTED_KEY)) return false;
+  return await connectDrive('none');
+}
+
+async function driveRequest(url, options){
+  const ok = await ensureToken();
+  if(!ok) throw new Error('no-auth');
+  options = options || {};
+  options.headers = Object.assign({}, options.headers, { Authorization: 'Bearer ' + gdriveToken.access_token });
+  const res = await fetch(url, options);
+  if(!res.ok){ const t = await res.text(); throw new Error('drive-error: '+res.status+' '+t); }
+  return res;
+}
+
+async function findDriveFileId(){
+  let fileId = localStorage.getItem(GDRIVE_FILE_ID_KEY);
+  if(fileId) return fileId;
+  const q = encodeURIComponent(`name='${DRIVE_FILE_NAME}' and trashed=false`);
+  const res = await driveRequest(`https://www.googleapis.com/drive/v3/files?q=${q}&spaces=drive&fields=files(id,name,modifiedTime)`);
+  const data = await res.json();
+  if(data.files && data.files.length){
+    fileId = data.files[0].id;
+    localStorage.setItem(GDRIVE_FILE_ID_KEY, fileId);
+    return fileId;
+  }
+  return null;
+}
+
+async function findOrCreateSheet(){
+  let sheetId = localStorage.getItem(SHEET_ID_KEY);
+  if(sheetId) return sheetId;
+  const q = encodeURIComponent(`name='${SHEET_TITLE}' and trashed=false and mimeType='application/vnd.google-apps.spreadsheet'`);
+  const res = await driveRequest(`https://www.googleapis.com/drive/v3/files?q=${q}&spaces=drive&fields=files(id,name)`);
+  const data = await res.json();
+  if(data.files && data.files.length){
+    sheetId = data.files[0].id;
+    localStorage.setItem(SHEET_ID_KEY, sheetId);
+    return sheetId;
+  }
+  const createRes = await driveRequest('https://sheets.googleapis.com/v4/spreadsheets', {
+    method:'POST',
+    headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify({ properties:{ title: SHEET_TITLE }, sheets:[{ properties:{ title:'Log' } }] })
+  });
+  const createData = await createRes.json();
+  sheetId = createData.spreadsheetId;
+  localStorage.setItem(SHEET_ID_KEY, sheetId);
+  await driveRequest(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Log!A1:B1?valueInputOption=RAW`, {
+    method:'PUT',
+    headers:{ 'Content-Type':'application/json' },
+    body: JSON.stringify({ values:[['ລະຫັດ Barcode','ວັນທີ-ເວລາ ຮັບເຂົ້າ']] })
+  });
+  return sheetId;
+}
+
+async function syncScanLogToSheet(silent){
+  try{
+    let ok = await ensureToken();
+    if(!ok && !silent){
+      ok = await connectDrive('');
+    }
+    if(!ok){ if(!silent) showToast('ຍັງບໍ່ໄດ້ເຊື່ອມຕໍ່ Google'); return; }
+    const sheetId = await findOrCreateSheet();
+    const unsynced = scanLog.filter(r=>!r.syncedToSheet);
+    if(unsynced.length === 0){ if(!silent) showToast('ບໍ່ມີລາຍການໃໝ່ໃຫ້ sync'); return; }
+    const rows = unsynced.map(r => [r.code, new Date(r.scannedAt).toLocaleString('lo-LA')]);
+    await driveRequest(`https://sheets.googleapis.com/v4/spreadsheets/${sheetId}/values/Log!A:B:append?valueInputOption=RAW`, {
+      method:'POST',
+      headers:{ 'Content-Type':'application/json' },
+      body: JSON.stringify({ values: rows })
+    });
+    const unsyncedIds = new Set(unsynced.map(r=>r.id));
+    scanLog = scanLog.map(r => unsyncedIds.has(r.id) ? { ...r, syncedToSheet:true } : r);
+    saveScanLog();
+    localStorage.setItem(SHEET_LAST_SYNC_KEY, new Date().toISOString());
+    if(!silent) showToast('ສົ່ງອອກ Log ໄປ Google Sheet ສຳເລັດ (' + unsynced.length + ' ລາຍການ)');
+    if(tab === 'barcode') renderBarcodeTab();
+  }catch(e){
+    if(!silent) showToast('ສົ່ງອອກບໍ່ສຳເລັດ, ລອງໃໝ່ອີກຄັ້ງ');
+  }
+}
+
+async function syncToDrive(silent){
+  try{
+    const ok = await ensureToken();
+    if(!ok){ if(!silent) showToast('ຍັງບໍ່ໄດ້ເຊື່ອມຕໍ່ Google Drive'); return; }
+    let fileId = await findDriveFileId();
+    const payload = JSON.stringify({ app:'khang-sinkha', version:1, exportedAt:new Date().toISOString(), products, logo:logoImg, cover:coverImg });
+    if(!fileId){
+      const metadata = { name: DRIVE_FILE_NAME, mimeType: 'application/json' };
+      const boundary = '-------khangsinkha' + Date.now();
+      const body =
+        `--${boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n${JSON.stringify(metadata)}\r\n` +
+        `--${boundary}\r\nContent-Type: application/json\r\n\r\n${payload}\r\n--${boundary}--`;
+      const res = await driveRequest('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&fields=id', {
+        method:'POST',
+        headers: { 'Content-Type': `multipart/related; boundary=${boundary}` },
+        body
+      });
+      const data = await res.json();
+      fileId = data.id;
+      localStorage.setItem(GDRIVE_FILE_ID_KEY, fileId);
+    } else {
+      await driveRequest(`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`, {
+        method:'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: payload
+      });
+    }
+    localStorage.setItem(GDRIVE_LAST_SYNC_KEY, new Date().toISOString());
+    if(!silent) showToast('Sync ຂຶ້ນ Google Drive ສຳເລັດ');
+    if(document.getElementById('backup-overlay')) renderBackupModal();
+  } catch(e){
+    if(!silent) showToast('Sync ບໍ່ສຳເລັດ, ລອງໃໝ່ອີກຄັ້ງ');
+  }
+}
+
+async function syncFromDrive(){
+  try{
+    const ok = await ensureToken();
+    if(!ok){ showToast('ຍັງບໍ່ໄດ້ເຊື່ອມຕໍ່ Google Drive'); return; }
+    const fileId = await findDriveFileId();
+    if(!fileId){ showToast('ຍັງບໍ່ມີໄຟລ໌ສຳຮອງໃນ Drive'); return; }
+    const res = await driveRequest(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`);
+    const parsed = await res.json();
+    const list = Array.isArray(parsed) ? parsed : parsed.products;
+    if(!Array.isArray(list)) throw new Error('bad format');
+    pendingImportData = { products:list, logo: Array.isArray(parsed) ? null : (parsed.logo || null), cover: Array.isArray(parsed) ? null : (parsed.cover || null) };
+    renderImportConfirm();
+  } catch(e){
+    showToast('ດຶງຂໍ້ມູນຈາກ Drive ບໍ່ສຳເລັດ');
+  }
+}
+
+function disconnectDrive(){
+  gdriveToken = null;
+  localStorage.removeItem(GDRIVE_CONNECTED_KEY);
+  localStorage.removeItem(GDRIVE_FILE_ID_KEY);
+  showToast('ຍົກເລີກການເຊື່ອມຕໍ່ Google Drive ແລ້ວ');
+  renderBackupModal();
+}
+
+function scheduleAutoSync(){
+  if(!localStorage.getItem(GDRIVE_CONNECTED_KEY)) return;
+  clearTimeout(syncDebounceTimer);
+  syncDebounceTimer = setTimeout(()=>{ syncToDrive(true); }, 2500);
+}
+
+/* ---------- BACKUP / RESTORE ---------- */
+const LAST_BACKUP_KEY = 'khang-sinkha-last-backup';
+let pendingImportData = null;
+
+function openBackupModal(){ renderBackupModal(); }
+function closeBackupModal(){ document.getElementById('backup-root').innerHTML=''; }
+
+function renderBackupModal(){
+  const root = document.getElementById('backup-root');
+  const last = localStorage.getItem(LAST_BACKUP_KEY);
+  const lastText = last ? new Date(last).toLocaleString('lo-LA') : 'ຍັງບໍ່ເຄີຍສຳຮອງ';
+  const clientId = getClientId();
+  const connected = !!localStorage.getItem(GDRIVE_CONNECTED_KEY);
+  const lastSync = localStorage.getItem(GDRIVE_LAST_SYNC_KEY);
+  const lastSyncText = lastSync ? new Date(lastSync).toLocaleString('lo-LA') : 'ຍັງບໍ່ເຄີຍ sync';
+  const isFile = location.protocol === 'file:';
+
+  root.innerHTML = `
+    <div class="overlay" id="backup-overlay">
+      <div class="modal" id="backup-modal">
+        <div class="modal-head">
+          <h2>ສຳຮອງ ແລະ ກູ້ຄືນຂໍ້ມູນ</h2>
+          <button class="icon-x" id="backup-close">${ICONS.x}</button>
+        </div>
+
+        <div class="report-card" style="margin-top:4px;">
+          <p style="font-weight:600; font-size:14px; margin:0 0 4px;">Google Drive</p>
+          ${isFile ? `<p class="muted" style="margin:0 0 10px; line-height:1.5; color:var(--danger);">ໜ້ານີ້ຍັງເປີດແບບໄຟລ໌ໃນເຄື່ອງ (file://) — Google ບໍ່ອະນຸຍາດ login ຈາກໄຟລ໌ local. ຕ້ອງຝາກໄຟລ໌ນີ້ຂຶ້ນເວັບ (https) ກ່ອນ ຈຶ່ງຈະໃຊ້ Drive ໄດ້. ໃນລະຫວ່າງນີ້ໃຊ້ວິທີສຳຮອງເປັນໄຟລ໌ດ້ານລຸ່ມໄປກ່ອນໄດ້.</p>`
+            : connected
+              ? `<p class="muted" style="margin:0 0 10px; line-height:1.5;">ກົດປຸ່ມດຽວ ບໍ່ຕ້ອງດາວໂຫຼດຫຼືອັບໂຫຼດໄຟລ໌ເອງ — ຂໍ້ມູນຈະ sync ອັດຕະໂນມັດຢູ່ແລ້ວທຸກຄັ້ງທີ່ມີການປ່ຽນແປງນຳ</p>
+                 <div style="display:flex; gap:8px; margin-bottom:8px;">
+                   <button type="button" class="submit-btn" id="sync-now-btn" style="margin-top:0; flex:1;">${ICONS.cloud} ສຳຮອງຂໍ້ມູນສູ່ Drive</button>
+                   <button type="button" class="submit-btn" id="sync-pull-btn" style="margin-top:0; flex:1; background:var(--dark-5); color:var(--dark);">${ICONS.upload} ກູ້ຄືນຈາກ Drive</button>
+                 </div>
+                 <p class="muted" style="margin:0 0 8px;">ເຊື່ອມຕໍ່ແລ້ວ &middot; Sync ລ່າສຸດ: ${esc(lastSyncText)}</p>
+                 <button type="button" class="img-remove" id="disconnect-btn">ຍົກເລີກການເຊື່ອມຕໍ່</button>`
+              : `<p class="muted" style="margin:0 0 8px; line-height:1.5;">ເຊື່ອມຕໍ່ຄັ້ງດຽວ ຈາກນັ້ນສຳຮອງ/ກູ້ຄືນໄດ້ດ້ວຍການກົດປຸ່ມດຽວທຸກຄັ້ງ. Origin ຂອງໜ້ານີ້ (ໃສ່ໃນ Authorized JavaScript origins): <b style="color:var(--dark); font-family:monospace;">${esc(location.origin)}</b></p>
+                 <div class="field" style="margin-bottom:8px;">
+                   <label>Google OAuth Client ID</label>
+                   <input id="f-clientid" value="${esc(clientId)}" placeholder="xxxxx.apps.googleusercontent.com">
+                 </div>
+                 <button type="button" class="submit-btn" id="connect-drive-btn" style="margin-top:0;">${ICONS.cloud} ເຊື່ອມຕໍ່ Google Drive</button>`
+          }
+        </div>
+
+        <div class="report-card">
+          <p style="font-weight:600; font-size:14px; margin:0 0 4px;">${connected ? 'ຫຼື ສຳຮອງເປັນໄຟລ໌ (.json)' : 'ສຳຮອງເປັນໄຟລ໌ (.json)'}</p>
+          <p class="muted" style="margin:0 0 10px; line-height:1.5;">ວິທີສຳຮອງດ້ວຍຕົນເອງ — ດາວໂຫຼດເປັນໄຟລ໌ ແລ້ວເລືອກໄຟລ໌ນັ້ນຄືນເພື່ອກູ້ຄືນ (ໃຊ້ໄດ້ເລີຍໂດຍບໍ່ຕ້ອງຕັ້ງຄ່າ Drive)</p>
+          <div style="display:flex; gap:8px; margin-bottom:8px;">
+            <button type="button" class="submit-btn" id="export-btn" style="margin-top:0; flex:1;">${ICONS.cloud} ດາວໂຫຼດໄຟລ໌</button>
+            <button type="button" class="submit-btn" id="import-btn" style="margin-top:0; flex:1; background:var(--dark-5); color:var(--dark);">${ICONS.upload} ເລືອກໄຟລ໌</button>
+          </div>
+          <input type="file" accept="application/json,.json" id="restore-input" style="display:none">
+          <p class="muted" style="margin-top:4px;">ສຳຮອງເປັນໄຟລ໌ລ່າສຸດ: ${esc(lastText)}</p>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('backup-overlay').addEventListener('click', e=>{ if(e.target.id==='backup-overlay') closeBackupModal(); });
+  document.getElementById('backup-close').addEventListener('click', closeBackupModal);
+  document.getElementById('export-btn').addEventListener('click', exportData);
+  document.getElementById('import-btn').addEventListener('click', ()=>document.getElementById('restore-input').click());
+  document.getElementById('restore-input').addEventListener('change', handleImportFile);
+
+  const clientIdInput = document.getElementById('f-clientid');
+  const connectBtn = document.getElementById('connect-drive-btn');
+  if(connectBtn) connectBtn.addEventListener('click', async ()=>{
+    localStorage.setItem(GDRIVE_CLIENT_ID_KEY, clientIdInput.value.trim());
+    connectBtn.textContent = 'ກຳລັງເຊື່ອມຕໍ່...';
+    const ok = await connectDrive('');
+    if(ok){ showToast('ເຊື່ອມຕໍ່ Google Drive ສຳເລັດ'); syncToDrive(true); }
+    else showToast('ເຊື່ອມຕໍ່ບໍ່ສຳເລັດ, ກວດ Client ID ອີກຄັ້ງ');
+    renderBackupModal();
+  });
+
+  const syncNowBtn = document.getElementById('sync-now-btn');
+  if(syncNowBtn) syncNowBtn.addEventListener('click', ()=>syncToDrive(false));
+  const syncPullBtn = document.getElementById('sync-pull-btn');
+  if(syncPullBtn) syncPullBtn.addEventListener('click', syncFromDrive);
+  const disconnectBtn = document.getElementById('disconnect-btn');
+  if(disconnectBtn) disconnectBtn.addEventListener('click', disconnectDrive);
+}
+
+function exportData(){
+  const payload = { app:'khang-sinkha', version:1, exportedAt:new Date().toISOString(), products, logo:logoImg, cover:coverImg };
+  const blob = new Blob([JSON.stringify(payload, null, 2)], {type:'application/json'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  const stamp = new Date().toISOString().slice(0,10);
+  a.href = url; a.download = 'khang-sinkha-backup-'+stamp+'.json';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  localStorage.setItem(LAST_BACKUP_KEY, new Date().toISOString());
+  renderBackupModal();
+  showToast('ດາວໂຫຼດໄຟລ໌ສຳຮອງແລ້ວ');
+}
+
+function handleImportFile(e){
+  const file = e.target.files && e.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = () => {
+    try{
+      const parsed = JSON.parse(reader.result);
+      const list = Array.isArray(parsed) ? parsed : parsed.products;
+      if(!Array.isArray(list)) throw new Error('bad format');
+      const valid = list.every(p => p && typeof p.name === 'string');
+      if(!valid) throw new Error('bad format');
+      pendingImportData = { products:list, logo: Array.isArray(parsed) ? null : (parsed.logo || null), cover: Array.isArray(parsed) ? null : (parsed.cover || null) };
+      renderImportConfirm();
+    }catch(err){
+      showToast('ໄຟລ໌ບໍ່ຖືກຕ້ອງ, ບໍ່ສາມາດນຳເຂົ້າໄດ້');
+    }
+    e.target.value = '';
+  };
+  reader.readAsText(file);
+}
+
+function renderImportConfirm(){
+  const root = document.getElementById('confirm-root');
+  const brandNote = (pendingImportData.logo || pendingImportData.cover) ? ' ພ້ອມທັງ Logo/Cover ທີ່ບັນທຶກໄວ້.' : '';
+  root.innerHTML = `
+    <div class="overlay center" id="import-overlay">
+      <div class="confirm-box">
+        <p class="title">ນຳເຂົ້າຂໍ້ມູນ?</p>
+        <p class="desc">ພົບ ${pendingImportData.products.length} ລາຍການໃນໄຟລ໌ສຳຮອງ.${brandNote} ການນຳເຂົ້າຈະທັບຂໍ້ມູນປັດຈຸບັນທັງໝົດ ແລະ ບໍ່ສາມາດກູ້ຄືນໄດ້.</p>
+        <div class="confirm-actions">
+          <button class="btn-cancel" id="import-cancel-btn">ຍົກເລີກ</button>
+          <button class="btn-confirm" id="import-ok-btn">ນຳເຂົ້າ</button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('import-overlay').addEventListener('click', e=>{ if(e.target.id==='import-overlay'){ pendingImportData=null; root.innerHTML=''; }});
+  document.getElementById('import-cancel-btn').addEventListener('click', ()=>{ pendingImportData=null; root.innerHTML=''; });
+  document.getElementById('import-ok-btn').addEventListener('click', ()=>{
+    products = pendingImportData.products.map(p => ({
+      id: p.id || uid(),
+      name: p.name || '',
+      code: p.code || '',
+      unit: p.unit || 'ລາຍການ',
+      price: Number(p.price) || 0,
+      minQty: Number(p.minQty) || 0,
+      category: p.category || '',
+      image: p.image || null,
+      variants: Array.isArray(p.variants) && p.variants.length
+        ? p.variants.map(v => ({ id:v.id || uid(), size:v.size || 'ທົ່ວໄປ', qty:Number(v.qty) || 0 }))
+        : [{ id:uid(), size:'ທົ່ວໄປ', qty:0 }]
+    }));
+    if(pendingImportData.logo){ logoImg = pendingImportData.logo; localStorage.setItem(LOGO_KEY, logoImg); }
+    if(pendingImportData.cover){ coverImg = pendingImportData.cover; localStorage.setItem(COVER_KEY, coverImg); }
+    save();
+    pendingImportData = null;
+    root.innerHTML = '';
+    closeBackupModal();
+    renderAll();
+    showToast('ນຳເຂົ້າຂໍ້ມູນສຳເລັດ');
+  });
+}
+
+function copyProductCode(id){
+  const p = products.find(x => x.id === id);
+  if(!p || !p.code) return;
+  const code = p.code;
+  const done = ()=> showToast('ກ໋ອບປີ້ລະຫັດ ' + code + ' ແລ້ວ');
+  const fail = ()=>{
+    try{
+      const ta = document.createElement('textarea');
+      ta.value = code;
+      ta.style.position = 'fixed';
+      ta.style.opacity = '0';
+      document.body.appendChild(ta);
+      ta.focus(); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      done();
+    }catch(e){ showToast('ກ໋ອບປີ້ບໍ່ສຳເລັດ'); }
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(code).then(done).catch(fail);
+  } else {
+    fail();
+  }
+}
+
+/* ---------- ACTIONS (delegated) ---------- */
+document.addEventListener('click', e=>{
+  const t = e.target.closest('[data-action]');
+  if(!t) return;
+  const action = t.dataset.action;
+  const id = t.dataset.id;
+  if(action === 'toggle-expand'){
+    expanded[id] = !expanded[id];
+    renderListItems();
+  } else if(action === 'open-detail'){
+    openDetail(id);
+  } else if(action === 'duplicate-product'){
+    openDuplicate(id);
+  } else if(action === 'copy-code'){
+    e.stopPropagation();
+    copyProductCode(id);
+  } else if(action === 'open-cart'){
+    e.stopPropagation();
+    openCartModal(id);
+  } else if(action === 'edit-order'){
+    openEditOrderModal(id);
+  } else if(action === 'accept-order'){
+    acceptOrder(id);
+  } else if(action === 'delete-order'){
+    confirmDeleteOrder(id);
+  } else if(action === 'open-sell'){
+    openSellModal(id);
+  } else if(action === 'open-buy'){
+    openBuyModal(id);
+  } else if(action === 'open-edit'){
+    openEdit(id);
+  } else if(action === 'confirm-delete'){
+    confirmDelete(id);
+  } else if(action === 'adjust-variant'){
+    const vid = t.dataset.vid;
+    const delta = parseInt(t.dataset.delta, 10);
+    products = products.map(p => p.id===id ? { ...p, variants: p.variants.map(v => v.id===vid ? {...v, qty: Math.max(0, v.qty+delta)} : v) } : p);
+    save();
+    renderAll();
+    if(detailId === id) renderDetailSheet();
+  } else if(action === 'delete-scan'){
+    const scanId = t.dataset.scanId;
+    scanLog = scanLog.filter(r=>r.id!==scanId);
+    saveScanLog();
+    renderBarcodeList();
+  }
+});
+
+let fabExpanded = false;
+let fabBusy = false;
+function expandFabs(){
+  if(fabExpanded) return;
+  fabExpanded = true;
+  const anchor = document.querySelector('.fab-anchor');
+  if(anchor) anchor.classList.add('expanded');
+}
+function collapseFabs(){
+  fabExpanded = false;
+  const anchor = document.querySelector('.fab-anchor');
+  if(anchor) anchor.classList.remove('expanded');
+}
+function setFabBusy(busy){
+  fabBusy = busy;
+  const fab = document.getElementById('fab-add');
+  if(fab) fab.disabled = busy;
+}
+
+let homeFabOpen = false;
+function openHomeFabMenu(){
+  homeFabOpen = true;
+  const menu = document.getElementById('home-fab-menu');
+  if(menu) menu.classList.add('open');
+  const fab = document.getElementById('fab-add');
+  if(fab) fab.classList.add('menu-open');
+}
+function closeHomeFabMenu(){
+  homeFabOpen = false;
+  const menu = document.getElementById('home-fab-menu');
+  if(menu) menu.classList.remove('open');
+  const fab = document.getElementById('fab-add');
+  if(fab) fab.classList.remove('menu-open');
+}
+function toggleHomeFabMenu(){
+  if(homeFabOpen) closeHomeFabMenu();
+  else openHomeFabMenu();
+}
+
+function updateFabStyle(){
+  const anchor = document.querySelector('.fab-anchor');
+  if(anchor) anchor.style.display = (tab === 'list' || tab === 'categories') ? '' : 'none';
+  const label = document.getElementById('fab-label');
+  if(label) label.classList.toggle('show', tab === 'categories');
+  const catAddBtn = document.getElementById('fab-cat-add');
+  if(catAddBtn) catAddBtn.classList.toggle('show', tab === 'categories');
+  const manageBtn = document.getElementById('fab-manage-categories');
+  if(manageBtn) manageBtn.classList.toggle('show', tab === 'categories');
+  const manageLabel = document.getElementById('fab-manage-label');
+  if(manageLabel) manageLabel.classList.toggle('show', tab === 'categories');
+  if(tab !== 'categories'){ collapseFabs(); setFabBusy(false); }
+  const homeMenu = document.getElementById('home-fab-menu');
+  if(homeMenu) homeMenu.classList.toggle('show', tab === 'list');
+  if(tab !== 'list') closeHomeFabMenu();
+}
+
+document.getElementById('tab-list-btn').addEventListener('click', ()=>{ tab='list'; renderTabButtons(); renderContent(); updateFabStyle(); });
+document.getElementById('tab-report-btn').addEventListener('click', ()=>{ tab='report'; renderTabButtons(); renderContent(); updateFabStyle(); });
+document.getElementById('tab-barcode-btn').addEventListener('click', ()=>{ tab='barcode'; renderTabButtons(); renderContent(); updateFabStyle(); });
+document.getElementById('bn-home').addEventListener('click', ()=>{ tab='list'; renderTabButtons(); renderBottomNav(); renderContent(); updateFabStyle(); });
+document.getElementById('bn-categories').addEventListener('click', ()=>{ tab='categories'; renderTabButtons(); renderBottomNav(); renderContent(); updateFabStyle(); });
+document.getElementById('bn-report').addEventListener('click', ()=>{ tab='report'; renderTabButtons(); renderBottomNav(); renderContent(); updateFabStyle(); });
+document.getElementById('bn-orders').addEventListener('click', ()=>{ tab='orders'; renderTabButtons(); renderBottomNav(); renderContent(); updateFabStyle(); });
+document.getElementById('fab-add').addEventListener('click', ()=>{
+  if(fabBusy) return;
+  if(tab === 'categories'){
+    if(fabExpanded){ collapseFabs(); } else { expandFabs(); }
+  } else if(tab === 'list'){
+    toggleHomeFabMenu();
+  } else {
+    openAdd();
+  }
+});
+document.getElementById('fab-add').innerHTML = ICONS.plus;
+document.getElementById('home-fab-backdrop').addEventListener('click', closeHomeFabMenu);
+document.getElementById('arc-btn-1').innerHTML = ICONS.plus;
+document.getElementById('arc-btn-1').addEventListener('click', ()=>{ closeHomeFabMenu(); openAdd(); });
+document.getElementById('arc-btn-2').innerHTML = ICONS.barcode;
+document.getElementById('arc-btn-2').addEventListener('click', ()=>{ closeHomeFabMenu(); showToast('ສະແກນ — ກຳລັງພັດທະນາ, ຈະມາໄວໆນີ້'); });
+document.getElementById('arc-btn-3').innerHTML = ICONS.inbox;
+document.getElementById('arc-btn-3').addEventListener('click', ()=>{ closeHomeFabMenu(); showToast('ຮັບອໍເດີ້ — ກຳລັງພັດທະນາ, ຈະມາໄວໆນີ້'); });
+document.getElementById('arc-btn-4').innerHTML = ICONS.cart;
+document.getElementById('arc-btn-4').addEventListener('click', ()=>{ closeHomeFabMenu(); openPurchaseOrderModal(); });
+document.getElementById('arc-btn-5').innerHTML = ICONS.star;
+document.getElementById('arc-btn-5').addEventListener('click', ()=>{ closeHomeFabMenu(); showToast('ຄຸນສົມບັດໃໝ່ — ກຳລັງພັດທະນາ, ຈະມາໄວໆນີ້'); });
+document.getElementById('fab-cat-add').addEventListener('click', ()=>{
+  if(!fabExpanded || fabBusy) return;
+  setFabBusy(true);
+  openCategoryModal();
+});
+document.getElementById('fab-cat-add').innerHTML = ICONS.plus;
+document.getElementById('fab-manage-categories').addEventListener('click', ()=>{
+  if(!fabExpanded || fabBusy) return;
+  setFabBusy(true);
+  openManageCategoriesModal();
+});
+document.getElementById('fab-manage-categories').innerHTML = ICONS.minus;
+updateFabStyle();
+document.getElementById('backup-open-btn').addEventListener('click', openBackupModal);
+document.getElementById('backup-open-btn').innerHTML = ICONS.cloud;
+document.getElementById('brand-open-btn').addEventListener('click', openBrandModal);
+document.getElementById('brand-open-btn').innerHTML = ICONS.image;
+
+/* ---------- MAIN RENDER ---------- */
+function renderAll(){
+  renderStats();
+  renderTabButtons();
+  renderBottomNav();
+  renderContent();
+  applyHeaderBrand();
+}
+renderAll();
+
+/* ---------- PWA: service worker + install prompt ---------- */
+if('serviceWorker' in navigator && location.protocol !== 'file:'){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('service-worker.js').catch(()=>{});
+  });
+}
+
+let deferredInstallPrompt = null;
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredInstallPrompt = e;
+  showInstallBanner();
+});
+window.addEventListener('appinstalled', () => {
+  deferredInstallPrompt = null;
+  const b = document.getElementById('install-banner-root');
+  if(b) b.innerHTML = '';
+});
+
+function showInstallBanner(){
+  if(document.getElementById('install-banner')) return;
+  const root = document.getElementById('install-banner-root');
+  root.innerHTML = `
+    <div id="install-banner" style="position:sticky; top:0; z-index:5; background:var(--accent); color:var(--dark); display:flex; align-items:center; gap:10px; padding:10px 16px; font-size:12px; font-weight:600;">
+      <span style="flex:1;">ຕິດຕັ້ງແອັບນີ້ໃສ່ໜ້າຈໍຫຼັກໄດ້ເລີຍ</span>
+      <button id="install-btn" style="background:var(--dark); color:#fff; border:none; padding:7px 14px; border-radius:999px; font-size:12px; font-weight:600; cursor:pointer; font-family:inherit;">ຕິດຕັ້ງ</button>
+      <button id="install-dismiss-btn" style="background:none; border:none; cursor:pointer; padding:4px; color:var(--dark);">${ICONS.x}</button>
+    </div>
+  `;
+  document.getElementById('install-btn').addEventListener('click', async ()=>{
+    if(!deferredInstallPrompt) return;
+    deferredInstallPrompt.prompt();
+    await deferredInstallPrompt.userChoice;
+    deferredInstallPrompt = null;
+    root.innerHTML = '';
+  });
+  document.getElementById('install-dismiss-btn').addEventListener('click', ()=>{ root.innerHTML=''; });
+}
+
+async function autoPullOnLoad(){
+  try{
+    if(!localStorage.getItem(GDRIVE_CONNECTED_KEY) || location.protocol === 'file:') return;
+    const ok = await ensureToken();
+    if(!ok) return;
+    const fileId = await findDriveFileId();
+    if(!fileId) return;
+    const res = await driveRequest(`https://www.googleapis.com/drive/v3/files/${fileId}?alt=media`);
+    const parsed = await res.json();
+    const remoteTime = parsed.exportedAt ? new Date(parsed.exportedAt).getTime() : 0;
+    const lastSyncStr = localStorage.getItem(GDRIVE_LAST_SYNC_KEY);
+    const localSyncTime = lastSyncStr ? new Date(lastSyncStr).getTime() : 0;
+    if(!remoteTime || remoteTime <= localSyncTime) return;
+
+    const list = Array.isArray(parsed) ? parsed : parsed.products;
+    if(!Array.isArray(list)) return;
+
+    products = list.map(p => ({
+      id: p.id || uid(),
+      name: p.name || '',
+      code: p.code || '',
+      unit: p.unit || 'ລາຍການ',
+      price: Number(p.price) || 0,
+      minQty: Number(p.minQty) || 0,
+      category: p.category || '',
+      image: p.image || null,
+      variants: Array.isArray(p.variants) && p.variants.length
+        ? p.variants.map(v => ({ id:v.id || uid(), size:v.size || 'ທົ່ວໄປ', qty:Number(v.qty) || 0 }))
+        : [{ id:uid(), size:'ທົ່ວໄປ', qty:0 }]
+    }));
+    if(parsed.logo){ logoImg = parsed.logo; localStorage.setItem(LOGO_KEY, logoImg); }
+    if(parsed.cover){ coverImg = parsed.cover; localStorage.setItem(COVER_KEY, coverImg); }
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(products));
+    localStorage.setItem(GDRIVE_LAST_SYNC_KEY, parsed.exportedAt);
+    renderAll();
+    showToast('ດຶງຂໍ້ມູນລ່າສຸດຈາກ Drive ອັດຕະໂນມັດແລ້ວ');
+  }catch(e){ /* best-effort background refresh, ignore failures */ }
+}
+
+if(localStorage.getItem(GDRIVE_CONNECTED_KEY) && location.protocol !== 'file:'){
+  autoPullOnLoad();
+}
+</script>
+</body>
+</html>
