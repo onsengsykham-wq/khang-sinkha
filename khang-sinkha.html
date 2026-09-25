@@ -34,7 +34,7 @@
     -webkit-font-smoothing:antialiased; color:var(--dark);
   }
   #app{max-width:480px; margin:0 auto; min-height:100vh; background:var(--bg); position:relative; padding-bottom:150px; box-shadow:0 0 40px rgba(0,0,0,.06);}
-  .header{background:var(--dark); color:#fff; padding:28px 20px 20px; border-radius:0 0 24px 24px; box-shadow:0 4px 14px rgba(0,0,0,.15); background-size:cover; background-position:center; transition:background .2s;}
+  .header{background:var(--topbar-color, var(--dark)); color:#fff; padding:28px 20px 20px; border-radius:0 0 24px 24px; box-shadow:0 4px 14px rgba(0,0,0,.15); background-size:cover; background-position:center; transition:background .2s;}
   .header-top{display:flex; align-items:center; gap:8px; margin-bottom:16px;}
   .logo{width:36px; height:36px; border-radius:12px; background:var(--accent); display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--dark); overflow:hidden;}
   .logo img{width:100%; height:100%; object-fit:cover; display:block;}
@@ -125,9 +125,12 @@
   .order-icon-btn{background:none; border:none; padding:2px; cursor:pointer; display:flex; align-items:center; justify-content:center; flex-shrink:0;}
   .order-icon-btn svg{width:20px; height:20px;}
   .icon-btn-sm svg{width:14px; height:14px; color:var(--danger);}
-  .detail-img{width:100%; aspect-ratio:1/1; max-height:260px; border-radius:16px; background:var(--dark-5); overflow:hidden; display:flex; align-items:center; justify-content:center; margin-bottom:12px;}
+  .detail-img{position:relative; width:100%; aspect-ratio:1/1; max-height:260px; border-radius:16px; background:var(--dark-5); overflow:hidden; display:flex; align-items:center; justify-content:center; margin-bottom:12px;}
   .detail-img img{width:100%; height:100%; object-fit:cover;}
   .detail-img svg{width:40px; height:40px; color:var(--dark-15);}
+  .detail-lock-btn{position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:64px; height:64px; border-radius:50%; background:rgba(28,43,51,.6); border:none; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 4px 16px rgba(0,0,0,.3); z-index:2;}
+  .detail-lock-btn svg{width:30px; height:30px; color:#fff;}
+  .detail-lock-btn.unlocked{background:rgba(76,122,94,.75);}
   .empty{text-align:center; padding:60px 0;}
   .empty svg{width:36px; height:36px; color:var(--dark-15); margin-bottom:8px;}
   .empty p{font-size:13px; color:var(--dark-50); margin:0;}
@@ -177,7 +180,26 @@
   .row-actions button svg{width:12px; height:12px;}
   .btn-edit{background:var(--dark); color:#fff;}
   .btn-del{background:var(--danger); color:#fff;}
+  .btn-del.locked{background:var(--dark-15); color:var(--dark-40); cursor:not-allowed;}
+  .list-lock-btn{display:flex; align-items:center; gap:8px; width:100%; margin-top:10px; padding:8px 10px; border-radius:10px; border:none; background:var(--dark-5); color:var(--dark-50); font-size:11px; font-weight:600; font-family:inherit; cursor:pointer; text-align:left;}
+  .list-lock-btn.unlocked{background:rgba(76,122,94,.12); color:var(--success);}
+  .list-lock-icon{width:20px; height:20px; border-radius:50%; background:var(--dark-15); display:flex; align-items:center; justify-content:center; flex-shrink:0;}
+  .list-lock-icon svg{width:11px; height:11px; color:#fff;}
+  .list-lock-btn.unlocked .list-lock-icon{background:var(--success);}
   .report-card{background:#fff; border-radius:16px; border:1px solid var(--dark-8); padding:16px; margin-bottom:12px; overflow:hidden;}
+  .orders-search-card{background:var(--dark); border-radius:16px; padding:14px 16px; margin-bottom:12px;}
+  .orders-search-card .search-wrap svg{color:rgba(255,255,255,.5);}
+  .orders-search-card .search-wrap input{background:#fff;}
+  .po-ordernum-chip{display:inline-flex; align-items:center; gap:5px; margin-top:6px; padding:3px 9px; border-radius:8px; border:1px dashed var(--dark-15); background:rgba(255,255,255,.6); color:var(--dark-50); font-size:11px; font-family:inherit; cursor:pointer; max-width:100%; white-space:nowrap; overflow:hidden;}
+  .po-ordernum-chip b{color:var(--dark); font-weight:700;}
+  .po-ordernum-chip svg{width:11px; height:11px; flex-shrink:0;}
+  .po-ordernum-chip.add{color:var(--accent); border-color:var(--accent);}
+  .po-ordernum-edit-row{display:flex; align-items:center; gap:6px;}
+  .po-ordernum-input{flex:1; min-width:0; height:32px; border-radius:8px; border:1px solid var(--dark-15); padding:0 8px; font-size:12px; font-family:inherit; background:#fff;}
+  .po-ordernum-save-btn, .po-ordernum-cancel-btn{width:32px; height:32px; flex-shrink:0; border:none; border-radius:8px; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+  .po-ordernum-save-btn svg, .po-ordernum-cancel-btn svg{width:14px; height:14px;}
+  .po-ordernum-save-btn{background:var(--success); color:#fff;}
+  .po-ordernum-cancel-btn{background:var(--dark-5); color:var(--dark-50);}
   .report-label{font-size:12px; color:var(--dark-50); margin:0 0 4px;}
   .report-value{font-size:24px; font-weight:700; font-family:monospace; margin:0;}
   .report-value small{font-size:13px; font-weight:400; color:var(--dark-50); font-family:inherit;}
@@ -187,7 +209,7 @@
   .report-card-header .report-head{margin-bottom:0; color:#fff; font-weight:600; font-size:14px;}
   .report-card-header .report-head svg{color:var(--accent);}
   .report-card-header p{color:#fff; margin:0; font-size:14px; font-weight:600;}
-  .report-card-header .pdf-btn{background:#9AC93B; color:var(--dark);}
+  .report-card-header .pdf-btn{background:var(--btn-color, #9AC93B); color:var(--dark);}
   .report-card-header .header-select{background:rgba(255,255,255,.15); color:#fff; border:none; border-radius:8px; padding:4px 4px; font-size:10px; font-weight:600; font-family:inherit; outline:none; max-width:78px; flex-shrink:1;}
   .report-card-header .header-select option{color:var(--dark);}
   .report-card-header-row{display:flex; align-items:center; gap:6px; min-width:0; flex:1 1 auto;}
@@ -237,7 +259,7 @@
   .home-fab-menu.open .arc-btn.arc-3{transform:translate(-50%, -95px) scale(1); transition-delay:.10s;}
   .home-fab-menu.open .arc-btn.arc-4{transform:translate(calc(-50% + 67px), -67px) scale(1); transition-delay:.06s;}
   .home-fab-menu.open .arc-btn.arc-5{transform:translate(calc(-50% + 95px), 0) scale(1); transition-delay:.02s;}
-  .bottom-nav{position:fixed; left:0; right:0; bottom:0; max-width:480px; margin:0 auto; background:var(--dark); border-radius:22px 22px 0 0; box-shadow:0 -6px 20px rgba(0,0,0,.10); border-top:2px solid var(--accent); padding:9px 10px calc(9px + env(safe-area-inset-bottom)); display:flex; align-items:flex-start; justify-content:space-between; z-index:17;}
+  .bottom-nav{position:fixed; left:0; right:0; bottom:0; max-width:480px; margin:0 auto; background:var(--bottombar-color, var(--dark)); border-radius:22px 22px 0 0; box-shadow:0 -6px 20px rgba(0,0,0,.10); border-top:2px solid var(--accent); padding:9px 10px calc(9px + env(safe-area-inset-bottom)); display:flex; align-items:flex-start; justify-content:space-between; z-index:17;}
   .bn-item{background:none; border:none; display:flex; flex-direction:column; align-items:center; gap:3px; padding:5px 2px; cursor:pointer; color:rgba(255,255,255,.65); font-family:inherit; flex:1; min-width:0;}
   .bn-item svg{width:21px; height:21px;}
   .bn-item span{font-size:9.5px; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:100%;}
@@ -289,6 +311,21 @@
   .img-box svg{width:22px; height:22px; color:var(--dark-15);}
   .img-btn{font-size:12px; font-weight:600; color:var(--dark); background:var(--dark-5); border:none; padding:8px 12px; border-radius:10px; cursor:pointer; font-family:inherit;}
   .img-remove{display:block; margin-top:6px; font-size:11px; color:var(--danger); background:none; border:none; cursor:pointer; padding:0; font-family:inherit;}
+  .settings-menu{display:flex; flex-direction:column; gap:8px; margin-top:4px;}
+  .settings-item{display:flex; align-items:center; gap:12px; width:100%; background:#fff; border:1px solid var(--dark-8); border-radius:14px; padding:13px 14px; font-size:14px; font-weight:600; color:var(--dark); font-family:inherit; cursor:pointer; text-align:left;}
+  .settings-item:active{background:var(--dark-5);}
+  .settings-item span:nth-child(2){flex:1;}
+  .settings-item-ic{width:26px; height:26px; display:flex; align-items:center; justify-content:center; flex-shrink:0; color:var(--dark-50);}
+  .settings-item-ic svg{width:20px; height:20px;}
+  .settings-item-ic img{width:20px; height:20px; object-fit:contain;}
+  .settings-swatch{width:22px; height:22px; border-radius:50%; border:2px solid var(--dark-10); flex-shrink:0;}
+  .settings-item-arrow{width:16px; height:16px; color:var(--dark-15); flex-shrink:0;}
+  .settings-item-arrow svg{width:16px; height:16px;}
+  .colorpick-sv{width:100%; height:170px; border-radius:14px; display:block; touch-action:none; cursor:crosshair;}
+  .colorpick-hue{width:100%; height:22px; border-radius:999px; display:block; margin-top:12px; touch-action:none; cursor:pointer;}
+  .colorpick-result-row{display:flex; align-items:center; gap:12px; margin-top:16px;}
+  .colorpick-swatch{width:44px; height:44px; border-radius:12px; border:2px solid var(--dark-10); flex-shrink:0; box-shadow:inset 0 0 0 1px rgba(0,0,0,.05);}
+  .colorpick-hex-input{width:100%; background:#fff; border:1px solid var(--dark-15); border-radius:10px; padding:9px 10px; font-size:14px; font-family:monospace; font-weight:700; letter-spacing:.5px; text-transform:uppercase; outline:none; color:var(--dark);}
   .cover-box{width:100%; aspect-ratio:16/6; border-radius:14px; background:var(--dark); border:2px dashed var(--dark-15); display:flex; align-items:center; justify-content:center; overflow:hidden; cursor:pointer; padding:0; margin-bottom:8px;}
   .cover-box img{width:100%; height:100%; object-fit:cover;}
   .cover-box svg{width:22px; height:22px; color:rgba(255,255,255,.3);}
@@ -303,7 +340,7 @@
   .vrow button:disabled{opacity:.3; cursor:default;}
   .add-size-link{font-size:12px; font-weight:600; color:var(--dark-60); background:none; border:none; margin-top:10px; display:flex; align-items:center; gap:4px; cursor:pointer; padding:0; font-family:inherit;}
   .add-size-link svg{width:13px; height:13px;}
-  .submit-btn{width:100%; background:var(--dark); color:#fff; border:none; border-radius:12px; padding:13px; font-size:14px; font-weight:600; margin-top:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; font-family:inherit;}
+  .submit-btn{width:100%; background:var(--btn-color, var(--dark)); color:#fff; border:none; border-radius:12px; padding:13px; font-size:14px; font-weight:600; margin-top:8px; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:6px; font-family:inherit;}
   .submit-btn svg{width:16px; height:16px;}
   .confirm-box{background:#fff; border-radius:16px; padding:20px; width:100%; max-width:320px; max-height:88vh; overflow-y:auto; -webkit-overflow-scrolling:touch;}
   .confirm-box p{margin:0;}
@@ -407,7 +444,7 @@
   }
 
   /* ---------- PDF EXPORT (print) ---------- */
-  .pdf-btn{ display:flex; align-items:center; gap:5px; background:#9AC93B; color:var(--dark); border:none; padding:7px 12px; border-radius:10px; font-size:11px; font-weight:600; cursor:pointer; font-family:inherit; flex-shrink:0; white-space:nowrap; }
+  .pdf-btn{ display:flex; align-items:center; gap:5px; background:var(--btn-color, #9AC93B); color:var(--dark); border:none; padding:7px 12px; border-radius:10px; font-size:11px; font-weight:600; cursor:pointer; font-family:inherit; flex-shrink:0; white-space:nowrap; }
   .pdf-btn svg{ width:13px; height:13px; }
   .print-only{ display:none; }
   .print-header{ display:flex; align-items:center; gap:14px; margin-bottom:16px; padding-bottom:12px; border-bottom:2px solid #1C2B33; }
@@ -471,7 +508,6 @@
         <p>ຈັດການສະຕັອກຕາມຂະໜາດ</p>
       </div>
       <div class="header-actions">
-        <button class="header-icon-btn" id="brand-open-btn"></button>
         <button class="header-icon-btn" id="backup-open-btn"></button>
       </div>
     </div>
@@ -511,7 +547,7 @@
   <button type="button" class="arc-btn arc-2" id="arc-btn-2" title="ສະແກນ"></button>
   <button type="button" class="arc-btn arc-3" id="arc-btn-3" title="ລາຍການຈັດຊື້"></button>
   <button type="button" class="arc-btn arc-4" id="arc-btn-4" title="ສັ່ງຊື້ສິນຄ້າ"></button>
-  <button type="button" class="arc-btn arc-5" id="arc-btn-5" title="ອື່ນໆ"></button>
+  <button type="button" class="arc-btn arc-5" id="arc-btn-5" title="ຕັ້ງຄ່າ"></button>
 </div>
 
 <div id="report-fab-menu" class="home-fab-menu">
@@ -541,6 +577,7 @@
 <div id="scanner-root"></div>
 <div id="category-modal-root"></div>
 <div id="manage-categories-root"></div>
+<div id="settings-root"></div>
 <div id="sell-root"></div>
 <div id="buy-root"></div>
 <div id="cart-root"></div>
@@ -572,9 +609,18 @@ try{ purchaseOrders = JSON.parse(localStorage.getItem(PURCHASE_ORDERS_KEY) || '[
 function savePurchaseOrders(){ try{ localStorage.setItem(PURCHASE_ORDERS_KEY, JSON.stringify(purchaseOrders)); }catch(e){} scheduleAutoSync(); }
 
 const CUSTOMER_ORDERS_KEY = 'khang-sinkha-customer-orders-v1';
+const CUSTOMER_ORDER_RETENTION_DAYS = 30; // ບິນຈະຢູ່ໃນລະບົບໄດ້ພຽງ 30 ວັນ ເພື່ອປ້ອງກັນບໍ່ໃຫ້ຖານຂໍ້ມູນໃຫຍ່ ແລະ ໂຫຼດຊ້າ
 let customerOrders = [];
 try{ customerOrders = JSON.parse(localStorage.getItem(CUSTOMER_ORDERS_KEY) || '[]'); }catch(e){ customerOrders = []; }
 function saveCustomerOrders(){ try{ localStorage.setItem(CUSTOMER_ORDERS_KEY, JSON.stringify(customerOrders)); }catch(e){} scheduleAutoSync(); }
+/* ລຶບບິນທີ່ເກົ່າກວ່າ 30 ວັນອອກຈາກລະບົບອັດຕະໂນມັດ (ອີງໃສ່ createdAt) — ເອີ້ນຄັ້ງນຶ່ງຕອນໂຫຼດແອັບ ແລະ ອີກຄັ້ງທຸກຄັ້ງທີ່ເປີດໜ້າ "ອໍເດີ້ມື້ນີ້"
+   ເພື່ອໃຫ້ຂໍ້ມູນຖືກລ້າງຢູ່ສະເໝີເຖິງແມ່ນຈະເປີດແອັບຄ້າງໄວ້ເປັນເວລາດົນ */
+function pruneOldCustomerOrders(){
+  const cutoff = Date.now() - CUSTOMER_ORDER_RETENTION_DAYS*24*60*60*1000;
+  const before = customerOrders.length;
+  customerOrders = customerOrders.filter(o => !o.createdAt || new Date(o.createdAt).getTime() >= cutoff);
+  if(customerOrders.length !== before) saveCustomerOrders();
+}
 function findPendingOrder(code, size){
   return purchaseOrders.find(o => o.code === code && o.size === size);
 }
@@ -619,7 +665,8 @@ const ICONS = {
   boxIn: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="12" width="16" height="9" rx="1"/><path d="M4 12 2 8"/><path d="M20 12l2-4"/><line x1="12" y1="3" x2="12" y2="12"/><polyline points="8 8 12 12 16 8"/></svg>',
   save: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>',
   lockClosed: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>',
-  lockOpen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>'
+  lockOpen: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></svg>',
+  send: '<svg viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"><path d="M22 2 2 10.2c-.66.27-.66 1.2.01 1.46l6.6 2.53 2.53 6.6c.26.67 1.19.67 1.46.01L22 2Z"/><path d="M22 2 10.6 13.4" stroke-linecap="round"/></svg>'
 };
 
 function uid(){ return Date.now().toString(36) + Math.random().toString(36).slice(2,7); }
@@ -676,9 +723,11 @@ function localDateStr(d){
   return `${y}-${m}-${day}`;
 }
 let ordersFilterDate = localDateStr();
+let ordersSearch = ''; // ຄົ້ນຫາອໍເດີ້ (ໜ້າ "ອໍເດີ້ມື້ນີ້") ດ້ວຍເບີໂທ ຫຼື ຊື່ລູກຄ້າເທົ່ານັ້ນ
 let categoryDetailName = null;
 let poListSearch = '';
 let poListCategoryFilter = '';
+let poEditingOrderNumId = null; // id ຂອງລາຍການຈັດຊື້ທີ່ກຳລັງແກ້ໄຂ "ໝາຍເລກຄຳສັ່ງຊື້" ຢູ່ (null = ບໍ່ມີ)
 
 const SCANLOG_KEY = 'khang-sinkha-scanlog-v1';
 let scanLog = [];
@@ -1063,7 +1112,7 @@ function renderCartModal(){
         <p id="cart-error" style="color:var(--danger); font-size:12px; margin:8px 0 0; display:none;"></p>
         <div class="confirm-actions" style="margin-top:16px;">
           <button class="btn-cancel" id="cart-cancel-btn">ຍົກເລີກ</button>
-          <button class="btn-confirm" id="cart-save-btn" style="background:var(--dark); color:#fff;">ບັນທຶກ</button>
+          <button class="btn-confirm" id="cart-save-btn" style="background:var(--btn-color, var(--dark)); color:#fff;">ບັນທຶກ</button>
         </div>
       </div>
     </div>
@@ -1189,7 +1238,7 @@ function renderAddCartModal(){
         <p id="addcart-error" style="color:var(--danger); font-size:12px; margin:8px 0 0; display:none;"></p>
         <div class="confirm-actions" style="margin-top:16px;">
           <button class="btn-cancel" id="addcart-cancel-btn">ຍົກເລີກ</button>
-          <button class="btn-confirm" id="addcart-save-btn" style="background:var(--dark); color:#fff;">ບັນທຶກ</button>
+          <button class="btn-confirm" id="addcart-save-btn" style="background:var(--btn-color, var(--dark)); color:#fff;">ບັນທຶກ</button>
         </div>
       </div>
     </div>
@@ -1295,18 +1344,73 @@ function getOrderTotal(o){
 }
 
 /* ---------- ORDERS TAB (ອໍເດີ້ມື້ນີ້) ---------- */
+/* ຄົ້ນຫາອໍເດີ້ (ordersSearch) ໃຊ້ໄດ້ສະເພາະເບີໂທ ແລະ ຊື່ລູກຄ້າເທົ່ານັ້ນ — ເມື່ອບໍ່ໄດ້ຄົ້ນຫາ (q ຫວ່າງ) ຈະສະແດງສະເພາະວັນທີ່ເລືອກໄວ້,
+   ແຕ່ເມື່ອພິມຄົ້ນຫາ ຈະຄົ້ນຫາຂ້າມວັນທີໄດ້ (ບໍ່ຈຳກັດສະເພາະວັນທີ່ເລືອກ) ຍ້ອນຫຼັງໄດ້ບໍ່ເກີນ CUSTOMER_ORDER_RETENTION_DAYS (30 ວັນ)
+   ຊຶ່ງເປັນຂອບເຂດດຽວກັນກັບອາຍຸການເກັບຮັກສາບິນຢູ່ແລ້ວ (pruneOldCustomerOrders ລຶບບິນເກົ່າກວ່ານັ້ນອອກ). */
+function getFilteredOrders(){
+  const q = ordersSearch.trim().toLowerCase();
+  if(!q){
+    return customerOrders.filter(o => o.createdAt && localDateStr(o.createdAt) === ordersFilterDate);
+  }
+  const cutoff = Date.now() - CUSTOMER_ORDER_RETENTION_DAYS*24*60*60*1000;
+  return customerOrders
+    .filter(o => o.createdAt && new Date(o.createdAt).getTime() >= cutoff)
+    .filter(o => (o.phone||'').toLowerCase().includes(q) || (o.customerName||'').toLowerCase().includes(q));
+}
+
 function renderOrdersTab(){
+  pruneOldCustomerOrders();
   const content = document.getElementById('content');
   const dateObj = new Date(ordersFilterDate + 'T00:00:00');
   const dateLabel = dateObj.toLocaleDateString('lo-LA', { day:'2-digit', month:'2-digit', year:'numeric' });
-  const filtered = customerOrders.filter(o => o.createdAt && localDateStr(o.createdAt) === ordersFilterDate);
-  const billCount = filtered.length;
-  const itemCount = filtered.reduce((s,o)=> s + getOrderRealQty(o), 0);
-  const freeShipCount = filtered.filter(o => getOrderRealQty(o) > 1).length;
+  const dateFiltered = customerOrders.filter(o => o.createdAt && localDateStr(o.createdAt) === ordersFilterDate);
+  const billCount = dateFiltered.length;
+  const itemCount = dateFiltered.reduce((s,o)=> s + getOrderRealQty(o), 0);
+  const freeShipCount = dateFiltered.filter(o => getOrderRealQty(o) > 1).length;
+
+  content.innerHTML = `
+    <div class="report-card">
+      <div class="report-card-header">
+        <div class="report-card-header-row">
+          <span>ອໍເດີ້ປະຈຳວັນທີ:</span>
+          <span style="position:relative; display:inline-flex; align-items:center;">
+            <span id="orders-date-label" style="text-decoration:underline; text-underline-offset:3px; white-space:nowrap;">${esc(dateLabel)}</span>
+            <input type="date" id="orders-date-input" value="${ordersFilterDate}" style="position:absolute; inset:0; opacity:0; width:100%; height:100%; cursor:pointer; border:none;">
+          </span>
+        </div>
+        <button type="button" class="pdf-btn" id="orders-export-btn">${ICONS.pdf} ສົ່ງອອກ</button>
+      </div>
+      <p style="margin:10px 2px 0; font-weight:700; color:var(--dark); font-size:14px; line-height:1.6;">ຍອດຂາຍ <span style="color:#F40008; font-weight:800;">${billCount}</span> ບິນ, ລວມ <span style="color:#F40008; font-weight:800;">${itemCount}</span> ລາຍການ, ສົ່ງຟຣີ <span style="color:#F40008; font-weight:800;">${freeShipCount}</span> ບິນ</p>
+    </div>
+    <div class="orders-search-card">
+      <div class="search-wrap" style="margin-bottom:0;">${ICONS.search}<input id="orders-search-input" placeholder="ຄົ້ນຫາຕາມເບີໂທ ຫຼື ຊື່ລູກຄ້າ..." value="${esc(ordersSearch)}"></div>
+      <p style="margin:8px 2px 0; font-size:11px; color:rgba(255,255,255,.65);">ຄົ້ນຫາຍ້ອນຫຼັງໄດ້ບໍ່ເກີນ ${CUSTOMER_ORDER_RETENTION_DAYS} ວັນ (ບິນຈະຖືກລຶບອອກຈາກລະບົບອັດຕະໂນມັດເມື່ອຄົບ ${CUSTOMER_ORDER_RETENTION_DAYS} ວັນ)</p>
+    </div>
+    <div id="orders-list-root"></div>
+  `;
+  document.getElementById('orders-search-input').addEventListener('input', e=>{
+    ordersSearch = e.target.value;
+    renderOrdersList();
+  });
+  document.getElementById('orders-date-input').addEventListener('change', e=>{
+    ordersFilterDate = e.target.value || localDateStr();
+    renderOrdersTab();
+  });
+  document.getElementById('orders-export-btn').addEventListener('click', ()=>printOrdersReport(getFilteredOrders(), dateLabel));
+  renderOrdersList();
+}
+
+function renderOrdersList(){
+  const root = document.getElementById('orders-list-root');
+  if(!root) return;
+  const filtered = getFilteredOrders();
+  const q = ordersSearch.trim().toLowerCase();
 
   let listHtml;
   if(filtered.length === 0){
-    listHtml = `<div class="empty">${ICONS.receipt}<p>ບໍ່ມີອໍເດີ້ໃນວັນທີນີ້</p></div>`;
+    listHtml = q
+      ? `<div class="empty">${ICONS.search}<p>ບໍ່ພົບອໍເດີ້ທີ່ຄົ້ນຫາ (ພາຍໃນ ${CUSTOMER_ORDER_RETENTION_DAYS} ວັນຫຼ້າສຸດ)</p></div>`
+      : `<div class="empty">${ICONS.receipt}<p>ບໍ່ມີອໍເດີ້ໃນວັນທີນີ້</p></div>`;
   } else {
     const sorted = [...filtered].sort((a,b)=> new Date(b.updatedAt) - new Date(a.updatedAt));
     listHtml = sorted.map(o => {
@@ -1315,12 +1419,14 @@ function renderOrdersTab(){
       const hasDiscount = getOrderDiscountPerUnit(realQty) > 0;
       return `
       <div class="report-card" style="margin-bottom:12px; padding:0; overflow:hidden;">
-        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; background:#DBB994; padding:16px;">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:8px; background:var(--order-header-color, #DBB994); padding:16px;">
           <div style="min-width:0;">
             <p style="font-weight:700; font-size:15px; margin:0; display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
               <span>${esc(o.customerName)}</span>
               ${freeShip ? `<span style="background:rgba(154,201,59,.85); color:var(--dark); font-size:9px; font-weight:700; padding:2px 7px; border-radius:999px; white-space:nowrap;">ສົ່ງຟຣີ</span>` : ''}
+              ${q ? `<span style="background:var(--dark); color:#fff; font-size:9px; font-weight:700; padding:2px 7px; border-radius:999px; white-space:nowrap;">${esc(new Date(o.createdAt).toLocaleDateString('lo-LA', { day:'2-digit', month:'2-digit', year:'numeric' }))}</span>` : ''}
               ${carrierLogoHtml(o.shippingCarrier)}
+              <button type="button" class="order-icon-btn" style="color:#2F6FED; padding:0; width:22px; height:22px; flex-shrink:0;" data-action="share-order" data-id="${o.id}" title="ແຊຣ໌ບິນ">${ICONS.send}</button>
             </p>
             <p class="muted" style="margin:2px 0 0; color:var(--dark);">${esc(o.phone)}</p>
             ${(o.shippingCarrier || o.shippingBranch) ? `<p style="margin:2px 0 0; font-size:11px; font-weight:600; color:var(--dark);">${esc(o.shippingCarrier || '')}${o.shippingCarrier && o.shippingBranch ? ' - ' : ''}${esc(o.shippingBranch || '')}</p>` : ''}
@@ -1339,7 +1445,7 @@ function renderOrdersTab(){
             ${hasDiscount ? `<span style="background:#7B4B24; color:#fff; font-size:9px; font-weight:700; padding:2px 7px; border-radius:999px; white-space:nowrap;">ໄດ້ຮັບສ່ວນຫຼຸດ</span>` : ''}
           </div>
         </div>
-        <div style="padding:10px 16px 16px; background:#F8E3C4;">
+        <div style="padding:10px 16px 16px; background:var(--order-body-color, #F8E3C4);">
           ${o.items.map(it => `
             <div class="stock-item">
               <span style="color:var(--dark); font-weight:700;">${esc(it.productName)} (${esc(it.size)})</span>
@@ -1351,28 +1457,7 @@ function renderOrdersTab(){
     `;
     }).join('');
   }
-
-  content.innerHTML = `
-    <div class="report-card">
-      <div class="report-card-header">
-        <div class="report-card-header-row">
-          <span>ອໍເດີ້ປະຈຳວັນທີ:</span>
-          <span style="position:relative; display:inline-flex; align-items:center;">
-            <span id="orders-date-label" style="text-decoration:underline; text-underline-offset:3px; white-space:nowrap;">${esc(dateLabel)}</span>
-            <input type="date" id="orders-date-input" value="${ordersFilterDate}" style="position:absolute; inset:0; opacity:0; width:100%; height:100%; cursor:pointer; border:none;">
-          </span>
-        </div>
-        <button type="button" class="pdf-btn" id="orders-export-btn">${ICONS.pdf} ສົ່ງອອກ</button>
-      </div>
-      <p style="margin:10px 2px 0; font-weight:700; color:var(--dark); font-size:14px; line-height:1.6;">ຍອດຂາຍ <span style="color:#F40008; font-weight:800;">${billCount}</span> ບິນ, ລວມ <span style="color:#F40008; font-weight:800;">${itemCount}</span> ລາຍການ, ສົ່ງຟຣີ <span style="color:#F40008; font-weight:800;">${freeShipCount}</span> ບິນ</p>
-    </div>
-    ${listHtml}
-  `;
-  document.getElementById('orders-date-input').addEventListener('change', e=>{
-    ordersFilterDate = e.target.value || localDateStr();
-    renderOrdersTab();
-  });
-  document.getElementById('orders-export-btn').addEventListener('click', ()=>printOrdersReport(filtered, dateLabel));
+  root.innerHTML = listHtml;
 }
 
 function printOrdersReport(ordersList, dateLabel){
@@ -1695,12 +1780,17 @@ function variantRowsHtml(p){
 }
 
 function expandHtml(p){
+  const unlocked = isDetailDeleteUnlocked(p.id);
   return `
     <div class="expand-panel">
       ${variantRowsHtml(p)}
+      <button type="button" class="list-lock-btn ${unlocked?'unlocked':''}" data-action="toggle-product-lock" data-id="${p.id}">
+        <span class="list-lock-icon">${unlocked?ICONS.lockOpen:ICONS.lockClosed}</span>
+        <span>${unlocked?'ປົດລ໋ອກແລ້ວ (ແຕະ 2 ຄັ້ງເພື່ອລ໋ອກຄືນ)':'ລ໋ອກຢູ່ — ແຕະ 2 ຄັ້ງເພື່ອປົດລ໋ອກ'}</span>
+      </button>
       <div class="row-actions">
         <button class="btn-edit" data-action="open-edit" data-id="${p.id}">${ICONS.pencil} ແກ້ໄຂ</button>
-        <button class="btn-del" data-action="confirm-delete" data-id="${p.id}">${ICONS.trash} ລຶບ</button>
+        <button class="btn-del ${unlocked?'':'locked'}" data-action="confirm-delete" data-id="${p.id}">${ICONS.trash} ລຶບ</button>
       </div>
     </div>
   `;
@@ -1979,7 +2069,7 @@ function confirmQuickScanAction(){
 let poState = null;
 
 function openPurchaseOrderModal(){
-  poState = { code:'', product:null, size:'', qty:'' };
+  poState = { code:'', product:null, size:'', qty:'', orderNumber:'' };
   renderPurchaseOrderModal();
 }
 function closePurchaseOrderModal(){ poState = null; document.getElementById('po-root').innerHTML = ''; }
@@ -2054,6 +2144,10 @@ function renderPurchaseOrderModal(){
           <label>ຈຳນວນທີ່ຕ້ອງການສັ່ງຊື້ *</label>
           <input id="po-qty" type="number" inputmode="numeric" min="1" value="${esc(s.qty)}" placeholder="0" ${matched?'':'disabled'}>
         </div>
+        <div class="field" style="margin-top:12px;">
+          <label>ໝາຍເລກຄຳສັ່ງຊື້ (ບໍ່ບັງຄັບ)</label>
+          <input id="po-order-number" type="text" value="${esc(s.orderNumber||'')}" placeholder="ເຊັ່ນ: PO-2026-001">
+        </div>
         <p id="po-error" style="color:var(--danger); font-size:12px; margin:4px 0 0; display:none;"></p>
         <div class="confirm-actions" style="margin-top:16px;">
           <button type="button" class="btn-cancel" id="po-cancel-btn">ຍົກເລີກ</button>
@@ -2070,6 +2164,7 @@ function renderPurchaseOrderModal(){
   const sizeSel = document.getElementById('po-size-select');
   if(sizeSel) sizeSel.addEventListener('change', e=>{ poState.size = e.target.value; });
   document.getElementById('po-qty').addEventListener('input', e=>{ poState.qty = e.target.value; });
+  document.getElementById('po-order-number').addEventListener('input', e=>{ poState.orderNumber = e.target.value; });
   document.getElementById('po-save-btn').addEventListener('click', confirmPurchaseOrder);
 }
 
@@ -2087,7 +2182,7 @@ function confirmPurchaseOrder(){
      ເພື່ອໃຫ້ເຫັນວັນ-ເວລາ ແລະ ຈຳນວນຂອງແຕ່ລະຄັ້ງແຍກກັນ */
   purchaseOrders = [...purchaseOrders, {
     id: uid(), code, productId: s.product.id, productName: base, color, size: s.size,
-    qty: n, createdAt: new Date().toISOString()
+    qty: n, orderNumber: (s.orderNumber||'').trim(), createdAt: new Date().toISOString()
   }];
   savePurchaseOrders();
   closePurchaseOrderModal();
@@ -2108,7 +2203,7 @@ function removePendingOrder(code, size){
 function openPurchaseOrderListModal(){
   renderPurchaseOrderListModal();
 }
-function closePurchaseOrderListModal(){ document.getElementById('po-list-root').innerHTML = ''; }
+function closePurchaseOrderListModal(){ poEditingOrderNumId = null; document.getElementById('po-list-root').innerHTML = ''; }
 
 /* ຫາໝວດໝູ່ຂອງລາຍການຈັດຊື້ນຶ່ງ ໂດຍອີງໃສ່ສິນຄ້າທີ່ມັນອ້າງອີງເຖິງ (ຜ່ານ productId ກ່ອນ, ຖ້າບໍ່ພົບໃຫ້ລອງທຽບລະຫັດ) */
 function getPurchaseOrderCategory(o){
@@ -2143,6 +2238,45 @@ function renderPurchaseOrderListModal(){
   document.getElementById('po-list-close').addEventListener('click', closePurchaseOrderListModal);
   document.getElementById('po-list-search').addEventListener('input', e=>{ poListSearch = e.target.value; renderPurchaseOrderRows(); });
   document.getElementById('po-list-category-filter').addEventListener('change', e=>{ poListCategoryFilter = e.target.value; renderPurchaseOrderRows(); });
+  renderPurchaseOrderRows();
+}
+
+/* ໝາຍເລກຄຳສັ່ງຊື້ (PO number) — ຫ້ອງຂໍ້ມູນເສີມ ບໍ່ບັງຄັບ, ແກ້ໄຂ/ບັນທຶກໄດ້ທຸກເວລາຈາກລາຍການໃນ list ນີ້ */
+function purchaseOrderNumHtml(o){
+  if(poEditingOrderNumId === o.id){
+    return `
+      <div class="po-ordernum-edit-row" style="margin-top:6px;">
+        <input type="text" class="po-ordernum-input" id="po-ordernum-input-${esc(o.id)}" value="${esc(o.orderNumber||'')}" placeholder="ໝາຍເລກຄຳສັ່ງຊື້ (ບໍ່ບັງຄັບ)">
+        <button type="button" class="po-ordernum-save-btn" data-po-ordernum-save="${esc(o.id)}" title="ບັນທຶກ">${ICONS.check}</button>
+        <button type="button" class="po-ordernum-cancel-btn" data-po-ordernum-cancel="${esc(o.id)}" title="ຍົກເລີກ">${ICONS.x}</button>
+      </div>
+    `;
+  }
+  if(o.orderNumber){
+    return `<button type="button" class="po-ordernum-chip" data-po-ordernum-edit="${esc(o.id)}" title="ແກ້ໄຂໝາຍເລກຄຳສັ່ງຊື້">ໝາຍເລກຄຳສັ່ງຊື້: <b>${esc(o.orderNumber)}</b> ${ICONS.pencil}</button>`;
+  }
+  return `<button type="button" class="po-ordernum-chip add" data-po-ordernum-edit="${esc(o.id)}">+ ໃສ່ໝາຍເລກຄຳສັ່ງຊື້</button>`;
+}
+
+function editPurchaseOrderNumber(id){
+  poEditingOrderNumId = id;
+  renderPurchaseOrderRows();
+  const inp = document.getElementById('po-ordernum-input-'+id);
+  if(inp){ inp.focus(); inp.select(); }
+}
+
+function savePurchaseOrderNumber(id){
+  const inp = document.getElementById('po-ordernum-input-'+id);
+  const val = inp ? inp.value.trim() : '';
+  purchaseOrders = purchaseOrders.map(o => o.id === id ? { ...o, orderNumber: val } : o);
+  savePurchaseOrders();
+  poEditingOrderNumId = null;
+  renderPurchaseOrderRows();
+  showToast(val ? 'ບັນທຶກໝາຍເລກຄຳສັ່ງຊື້ແລ້ວ' : 'ລຶບໝາຍເລກຄຳສັ່ງຊື້ແລ້ວ');
+}
+
+function cancelEditPurchaseOrderNumber(){
+  poEditingOrderNumId = null;
   renderPurchaseOrderRows();
 }
 
@@ -2183,6 +2317,7 @@ function renderPurchaseOrderRows(){
             <p style="margin:0;"><span style="display:inline-block; background:#2F6FED; color:#fff; font-weight:700; font-size:15px; padding:3px 9px; border-radius:8px;">${esc(o.productName)}${o.color && o.color !== '-' ? ' ('+esc(o.color)+')' : ''}</span></p>
             <p class="muted" style="margin:6px 0 0;">${o.code?('#'+esc(o.code)+' &middot; '):''}ຂະໜາດ ${esc(o.size)}</p>
             <p class="muted" style="margin:2px 0 0;">${esc(new Date(o.createdAt).toLocaleString('lo-LA'))}</p>
+            ${purchaseOrderNumHtml(o)}
           </div>
           <div style="display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0;">
             <div style="display:flex; align-items:center; gap:10px;">
@@ -2209,6 +2344,35 @@ function renderPurchaseOrderRows(){
   });
   document.querySelectorAll('[data-po-partial-id]').forEach(btn=>{
     btn.addEventListener('click', ()=>{ openPartialReceiveModal(btn.dataset.poPartialId); });
+  });
+  document.querySelectorAll('[data-po-ordernum-edit]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ editPurchaseOrderNumber(btn.dataset.poOrdernumEdit); });
+  });
+  document.querySelectorAll('[data-po-ordernum-save]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ savePurchaseOrderNumber(btn.dataset.poOrdernumSave); });
+  });
+  document.querySelectorAll('[data-po-ordernum-cancel]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{ cancelEditPurchaseOrderNumber(); });
+  });
+  document.querySelectorAll('.po-ordernum-input').forEach(inp=>{
+    inp.addEventListener('keydown', e=>{
+      if(e.key === 'Enter'){ e.preventDefault(); savePurchaseOrderNumber(inp.id.replace('po-ordernum-input-','')); }
+      else if(e.key === 'Escape'){ e.preventDefault(); cancelEditPurchaseOrderNumber(); }
+    });
+  });
+  fitOrderNumChips();
+}
+
+/* ຫົດຂະໜາດຕົວໜັງສືຂອງປ້າຍ "ໝາຍເລກຄຳສັ່ງຊື້" ອັດຕະໂນມັດ ເມື່ອຂໍ້ມູນຍາວເກີນພື້ນທີ່ທີ່ມີ, ແທນການຕັດຄຳ/ຂຶ້ນແຖວໃໝ່ —
+   ວັດແທ້ຄວາມກວ້າງຈິງຫຼັງ render ແລ້ວ ຫຼຸດ font-size ເທື່ອລະໜ່ວຍຈົນກວ່າຂໍ້ຄວາມຈະພໍດີໃນແຖວດຽວ (ຢ່າງໜ້ອຍ 7px) */
+function fitOrderNumChips(){
+  document.querySelectorAll('.po-ordernum-chip:not(.add)').forEach(chip=>{
+    let size = 11;
+    chip.style.fontSize = size + 'px';
+    while(chip.scrollWidth > chip.clientWidth && size > 7){
+      size -= 1;
+      chip.style.fontSize = size + 'px';
+    }
   });
 }
 
@@ -2329,14 +2493,34 @@ function confirmPartialReceive(){
 }
 
 /* ---------- PRODUCT DETAIL SHEET (grid view tap) ---------- */
-function openDetail(id){ detailId = id; renderDetailSheet(); }
-function closeDetail(){ detailId = null; document.getElementById('detail-root').innerHTML=''; }
+/* ລ໋ອກປຸ່ມ "ລຶບ" ສິນຄ້າ ເພື່ອປ້ອງກັນການລຶບຂໍ້ມູນໂດຍບັງເອີນ — ໃຊ້ຮ່ວມກັນທັງໜ້າລາຍລະອຽດສິນຄ້າ (detail sheet, ຮູບກຸນແຈຢູ່ກາງຮູບສິນຄ້າ)
+   ແລະ ແຖວລາຍການໃນ list view (ຮູບກຸນແຈເປັນປຸ່ມ pill ຢູ່ໃນ expand panel) — ລ໋ອກໄວ້ໂດຍຄ່າເລີ່ມຕົ້ນທຸກຄັ້ງທີ່ເປີດ,
+   ຕ້ອງແຕະຮູບໜ່ວຍກຸນແຈ 2 ຄັ້ງຕິດກັນເພື່ອປົດລ໋ອກ (ຄວາມຈຳຊົ່ວຄາວ ບໍ່ໄດ້ບັນທຶກລົງ localStorage). */
+let detailDeleteUnlocked = {}; // id -> true ໃນຂະນະທີ່ປົດລ໋ອກຢູ່
+let detailLockLastTapAt = {};  // id -> timestamp ຂອງການແຕະຄັ້ງກ່ອນ (ສຳລັບກວດ double-tap)
+function isDetailDeleteUnlocked(id){ return !!detailDeleteUnlocked[id]; }
+function handleDetailLockTap(id){
+  const now = Date.now();
+  const last = detailLockLastTapAt[id] || 0;
+  if(now - last < 400){
+    detailLockLastTapAt[id] = 0;
+    if(isDetailDeleteUnlocked(id)){ delete detailDeleteUnlocked[id]; }
+    else { detailDeleteUnlocked[id] = true; showToast('ປົດລ໋ອກແລ້ວ, ສາມາດລຶບຂໍ້ມູນໄດ້'); }
+    if(detailId === id) renderDetailSheet();
+  } else {
+    detailLockLastTapAt[id] = now;
+  }
+}
+
+function openDetail(id){ detailId = id; delete detailDeleteUnlocked[id]; renderDetailSheet(); }
+function closeDetail(){ if(detailId) delete detailDeleteUnlocked[detailId]; detailId = null; document.getElementById('detail-root').innerHTML=''; }
 function renderDetailSheet(){
   const root = document.getElementById('detail-root');
   if(!detailId){ root.innerHTML=''; return; }
   const raw = products.find(x=>x.id===detailId);
   if(!raw){ detailId=null; root.innerHTML=''; return; }
   const p = withTotals(raw);
+  const unlocked = isDetailDeleteUnlocked(p.id);
   root.innerHTML = `
     <div class="overlay" id="detail-overlay">
       <div class="modal" id="detail-modal">
@@ -2344,7 +2528,10 @@ function renderDetailSheet(){
           <h2>${esc(p.name)}</h2>
           <button class="icon-x" id="detail-close">${ICONS.x}</button>
         </div>
-        <div class="detail-img">${p.image ? '<img src="'+p.image+'" alt="">' : ICONS.image}</div>
+        <div class="detail-img">
+          ${p.image ? '<img src="'+p.image+'" alt="">' : ICONS.image}
+          <button type="button" class="detail-lock-btn ${unlocked?'unlocked':''}" id="detail-lock-btn" title="${unlocked?'ປົດລ໋ອກຢູ່ (ແຕະ 2 ຄັ້ງເພື່ອລ໋ອກຄືນ)':'ລ໋ອກຢູ່ (ແຕະ 2 ຄັ້ງເພື່ອປົດລ໋ອກ)'}">${unlocked?ICONS.lockOpen:ICONS.lockClosed}</button>
+        </div>
         <p class="muted" style="margin:0 0 12px; font-size:12px;">${p.code?('#'+esc(p.code)+' &middot; '):''}${p.price>0?(Number(p.price).toLocaleString()+' ກີບ'):''}</p>
         <div>${variantRowsHtml(p)}</div>
         <div class="row-actions" style="margin-top:14px;">
@@ -2353,13 +2540,14 @@ function renderDetailSheet(){
         </div>
         <div class="row-actions" style="margin-top:8px;">
           <button class="btn-edit" data-action="open-edit" data-id="${p.id}">${ICONS.pencil} ແກ້ໄຂ</button>
-          <button class="btn-del" data-action="confirm-delete" data-id="${p.id}">${ICONS.trash} ລຶບ</button>
+          <button class="btn-del ${unlocked?'':'locked'}" data-action="confirm-delete" data-id="${p.id}">${ICONS.trash} ລຶບ</button>
         </div>
       </div>
     </div>
   `;
   document.getElementById('detail-overlay').addEventListener('click', e=>{ if(e.target.id==='detail-overlay') closeDetail(); });
   document.getElementById('detail-close').addEventListener('click', closeDetail);
+  document.getElementById('detail-lock-btn').addEventListener('click', ()=> handleDetailLockTap(p.id));
 }
 
 /* ---------- REPORT TAB ---------- */
@@ -4058,7 +4246,7 @@ async function generateProductShareImage(p){
   ctx.fillStyle = '#12213A';
   ctx.fillRect(0, 0, W, HEADER_H);
   try{
-    const logoImg = await loadImageAsync(STORE_LOGO);
+    const logoImg = await loadImageAsync(effectiveStoreLogo());
     ctx.save();
     roundRectPath(ctx, 30, 25, 80, 80, 40);
     ctx.clip();
@@ -4194,6 +4382,185 @@ async function doShareImage(){
   try{
     if(navigator.canShare && navigator.canShare({ files: [file] })){
       await navigator.share({ files: [file], title: p ? p.name : '', text: p ? p.name : '' });
+    } else {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = fileName;
+      document.body.appendChild(a); a.click(); a.remove();
+      setTimeout(()=>URL.revokeObjectURL(url), 4000);
+      showToast('ອຸປະກອນນີ້ບໍ່ຮອງຮັບການແຊຣ໌ໂດຍກົງ, ບັນທຶກຮູບໄວ້ໃຫ້ແລ້ວ');
+    }
+  }catch(e){
+    if(e && e.name === 'AbortError') return;
+    console.error(e);
+    showToast('ເກີດຂໍ້ຜິດພາດ, ລອງໃໝ່ພາຍຫຼັງ');
+  }
+}
+
+/* ---------- ແຊຣ໌ບິນອໍເດີ້ (ໜ້າ "ອໍເດີ້ມື້ນີ້") ອອກ social network ---------- */
+async function generateOrderShareImage(o){
+  const W = 900, PAD = 40;
+  const headerColor = (getComputedStyle(document.documentElement).getPropertyValue('--order-header-color') || '').trim() || '#DBB994';
+  const bodyColor = (getComputedStyle(document.documentElement).getPropertyValue('--order-body-color') || '').trim() || '#F8E3C4';
+  const realQty = getOrderRealQty(o);
+  const freeShip = realQty > 1;
+  const discount = getOrderDiscount(o);
+  const hasShip = !!(o.shippingCarrier || o.shippingBranch);
+  const hasDiscount = discount > 0;
+  const HEADER_TOP_H = 120;
+  const BILL_HEAD_H = 164 + (hasShip ? 32 : 0) + (hasDiscount ? 26 : 0);
+  const itemRowH = 54;
+  const ITEMS_H = o.items.length * itemRowH + 30;
+  const FOOTER_H = 70;
+  const H = HEADER_TOP_H + BILL_HEAD_H + ITEMS_H + FOOTER_H;
+
+  const canvas = document.createElement('canvas');
+  canvas.width = W; canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  ctx.fillStyle = '#F6F4EF';
+  ctx.fillRect(0, 0, W, H);
+
+  /* ໂລໂກ້ຮ້ານ */
+  ctx.fillStyle = '#12213A';
+  ctx.fillRect(0, 0, W, HEADER_TOP_H);
+  try{
+    const logoImg = await loadImageAsync(effectiveStoreLogo());
+    ctx.save();
+    roundRectPath(ctx, 30, 20, 80, 80, 40);
+    ctx.clip();
+    ctx.drawImage(logoImg, 30, 20, 80, 80);
+    ctx.restore();
+  }catch(e){}
+  ctx.fillStyle = '#fff';
+  ctx.font = '700 30px "Noto Sans Lao", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText('MEN SHOP', 130, 57);
+  ctx.font = '400 16px "Noto Sans Lao", sans-serif';
+  ctx.fillStyle = 'rgba(255,255,255,.75)';
+  ctx.fillText('ໃບອໍເດີ້ສັ່ງຊື້', 130, 85);
+
+  let y = HEADER_TOP_H;
+  ctx.fillStyle = headerColor;
+  ctx.fillRect(0, y, W, BILL_HEAD_H);
+  let ty = y + 46;
+  ctx.fillStyle = '#1C2B33';
+  ctx.font = '800 32px "Noto Sans Lao", sans-serif';
+  ctx.textAlign = 'left';
+  ctx.fillText(o.customerName, PAD, ty);
+  if(freeShip){
+    const label = 'ສົ່ງຟຣີ';
+    ctx.font = '700 18px "Noto Sans Lao", sans-serif';
+    const tw = ctx.measureText(label).width + 24;
+    ctx.fillStyle = '#9AC93B';
+    roundRectPath(ctx, W-PAD-tw, ty-28, tw, 34, 17);
+    ctx.fill();
+    ctx.fillStyle = '#1C2B33';
+    ctx.textAlign = 'center';
+    ctx.fillText(label, W-PAD-tw/2, ty-4);
+    ctx.textAlign = 'left';
+  }
+  ty += 42;
+  ctx.font = '400 22px "Noto Sans Lao", sans-serif';
+  ctx.fillStyle = '#4B4438';
+  ctx.fillText(o.phone, PAD, ty);
+  if(hasShip){
+    ty += 32;
+    ctx.font = '700 20px "Noto Sans Lao", sans-serif';
+    ctx.fillStyle = '#1C2B33';
+    ctx.fillText(`${o.shippingCarrier||''}${o.shippingCarrier && o.shippingBranch ? ' - ' : ''}${o.shippingBranch||''}`, PAD, ty);
+  }
+  ty += 46;
+  ctx.font = '800 44px monospace';
+  ctx.fillStyle = '#12213A';
+  ctx.fillText(getOrderTotal(o).toLocaleString() + ' ກີບ', PAD, ty);
+  if(hasDiscount){
+    ty += 26;
+    ctx.font = '700 16px "Noto Sans Lao", sans-serif';
+    ctx.fillStyle = '#7B4B24';
+    ctx.fillText('(ໄດ້ຮັບສ່ວນຫຼຸດແລ້ວ)', PAD, ty);
+  }
+
+  y += BILL_HEAD_H;
+  ctx.fillStyle = bodyColor;
+  ctx.fillRect(0, y, W, ITEMS_H);
+  let iy = y + 40;
+  o.items.forEach(it=>{
+    ctx.font = '700 22px "Noto Sans Lao", sans-serif';
+    ctx.fillStyle = '#1C2B33';
+    ctx.textAlign = 'left';
+    ctx.fillText(`${it.productName} (${it.size})`, PAD, iy);
+    ctx.font = '700 22px monospace';
+    ctx.textAlign = 'right';
+    ctx.fillText('x'+it.qty, W-PAD, iy);
+    ctx.textAlign = 'left';
+    iy += itemRowH;
+  });
+
+  ctx.strokeStyle = '#E0DACD';
+  ctx.beginPath(); ctx.moveTo(PAD, y+ITEMS_H); ctx.lineTo(W-PAD, y+ITEMS_H); ctx.stroke();
+  ctx.fillStyle = '#8A8477';
+  ctx.font = '400 18px "Noto Sans Lao", sans-serif';
+  ctx.textAlign = 'center';
+  ctx.fillText('ຂອບໃຈທີ່ອຸດໜູນ — ສົນໃຈສັ່ງຊື້ ທັກແຊັດມາຫາພວກເຮົາ', W/2, y+ITEMS_H+45);
+  ctx.textAlign = 'left';
+
+  return new Promise(resolve => canvas.toBlob(resolve, 'image/png', 0.95));
+}
+
+let orderShareImageState = null;
+async function openOrderSharePreview(id){
+  const o = customerOrders.find(x=>x.id===id);
+  if(!o) return;
+  const root = document.getElementById('share-preview-root');
+  if(!root) return;
+  root.innerHTML = `
+    <div class="share-preview-overlay" id="order-share-preview-overlay">
+      <div class="share-preview-box">
+        <div class="share-preview-loading">ກຳລັງສ້າງຮູບ...</div>
+      </div>
+    </div>
+  `;
+  document.getElementById('order-share-preview-overlay').addEventListener('click', e=>{
+    if(e.target.id === 'order-share-preview-overlay') closeOrderSharePreview();
+  });
+  try{
+    const blob = await generateOrderShareImage(o);
+    if(!blob){ closeOrderSharePreview(); showToast('ເກີດຂໍ້ຜິດພາດ, ລອງໃໝ່ພາຍຫຼັງ'); return; }
+    const url = URL.createObjectURL(blob);
+    orderShareImageState = { id, blob, url };
+    const box = document.querySelector('#share-preview-root .share-preview-box');
+    if(!box) return;
+    box.innerHTML = `
+      <button type="button" class="share-preview-close" id="order-share-preview-close">${ICONS.x}</button>
+      <img src="${url}" class="share-preview-img" alt="">
+      <div class="share-preview-actions">
+        <button type="button" class="share-preview-btn" id="order-share-preview-share-btn">${ICONS.upload} ແຊຣ໌ອອກໄປ</button>
+      </div>
+    `;
+    document.getElementById('order-share-preview-close').addEventListener('click', closeOrderSharePreview);
+    document.getElementById('order-share-preview-share-btn').addEventListener('click', doShareOrderImage);
+  }catch(e){
+    console.error(e);
+    closeOrderSharePreview();
+    showToast('ເກີດຂໍ້ຜິດພາດ, ລອງໃໝ່ພາຍຫຼັງ');
+  }
+}
+function closeOrderSharePreview(){
+  const root = document.getElementById('share-preview-root');
+  if(root) root.innerHTML = '';
+  if(orderShareImageState && orderShareImageState.url) URL.revokeObjectURL(orderShareImageState.url);
+  orderShareImageState = null;
+}
+async function doShareOrderImage(){
+  if(!orderShareImageState) return;
+  const { blob, id } = orderShareImageState;
+  const o = customerOrders.find(x=>x.id===id);
+  const fileName = ((o && o.customerName) || 'order').replace(/[^a-zA-Z0-9ກ-໙_-]/g, '_') + '.png';
+  const file = new File([blob], fileName, { type: 'image/png' });
+  try{
+    if(navigator.canShare && navigator.canShare({ files: [file] })){
+      await navigator.share({ files: [file], title: o ? o.customerName : '', text: o ? o.customerName : '' });
     } else {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
@@ -4438,11 +4805,13 @@ function renderConfirm(){
   root.innerHTML = `
     <div class="overlay center" id="confirm-overlay">
       <div class="confirm-box">
-        <p class="title">ລຶບ "${esc(p.name)}"?</p>
-        <p class="desc">ຂໍ້ມູນຈະຖືກລຶບຖາວອນ ແລະ ບໍ່ສາມາດກູ້ຄືນໄດ້</p>
+        <div class="modal-head" style="margin-bottom:10px;">
+          <p class="title" style="margin:0;">ທ່ານຕ້ອງການລຶບຂໍ້ມູນນີ້ແທ້ບໍ?</p>
+          <button class="icon-x" id="cancel-del-btn">${ICONS.x}</button>
+        </div>
+        <p class="desc">"${esc(p.name)}" ຈະຖືກລຶບຖາວອນ ແລະ ບໍ່ສາມາດກູ້ຄືນໄດ້</p>
         <div class="confirm-actions">
-          <button class="btn-cancel" id="cancel-del-btn">ຍົກເລີກ</button>
-          <button class="btn-confirm" id="do-del-btn">ລຶບ</button>
+          <button class="btn-confirm" id="do-del-btn">ຕົກລົງ</button>
         </div>
       </div>
     </div>
@@ -4558,6 +4927,331 @@ function handleBrandImagePick(e, kind){
     }
   }).catch(()=>{ showToast('ເລືອກຮູບບໍ່ສຳເລັດ'); });
 }
+
+/* ---------- ການຕັ້ງຄ່າ: ຮູບປຸ່ມກົດ + ສີ theme/ປຸ່ມ/ແຖບເທິງ/ແຖບລຸ່ມ ---------- */
+const BUTTON_LOGO_KEY = 'khang-sinkha-button-logo-img';
+let buttonLogoImg = localStorage.getItem(BUTTON_LOGO_KEY) || null;
+function effectiveStoreLogo(){ return buttonLogoImg || STORE_LOGO; }
+function effectiveHomeFabLogo(){ return buttonLogoImg || HOME_FAB_LOGO; }
+
+const THEME_COLOR_KEY = 'khang-sinkha-theme-color';
+const BTN_COLOR_KEY = 'khang-sinkha-btn-color';
+const TOPBAR_COLOR_KEY = 'khang-sinkha-topbar-color';
+const BOTTOMBAR_COLOR_KEY = 'khang-sinkha-bottombar-color';
+const ORDER_HEADER_COLOR_KEY = 'khang-sinkha-order-header-color';
+const ORDER_BODY_COLOR_KEY = 'khang-sinkha-order-body-color';
+
+function applyCustomColors(){
+  const rootStyle = document.documentElement.style;
+  const theme = localStorage.getItem(THEME_COLOR_KEY);
+  const btn = localStorage.getItem(BTN_COLOR_KEY);
+  const topbar = localStorage.getItem(TOPBAR_COLOR_KEY);
+  const bottombar = localStorage.getItem(BOTTOMBAR_COLOR_KEY);
+  const orderHeader = localStorage.getItem(ORDER_HEADER_COLOR_KEY);
+  const orderBody = localStorage.getItem(ORDER_BODY_COLOR_KEY);
+  if(theme){ rootStyle.setProperty('--accent', theme); } else { rootStyle.removeProperty('--accent'); }
+  if(btn){ rootStyle.setProperty('--btn-color', btn); } else { rootStyle.removeProperty('--btn-color'); }
+  if(topbar){ rootStyle.setProperty('--topbar-color', topbar); } else { rootStyle.removeProperty('--topbar-color'); }
+  if(bottombar){ rootStyle.setProperty('--bottombar-color', bottombar); } else { rootStyle.removeProperty('--bottombar-color'); }
+  if(orderHeader){ rootStyle.setProperty('--order-header-color', orderHeader); } else { rootStyle.removeProperty('--order-header-color'); }
+  if(orderBody){ rootStyle.setProperty('--order-body-color', orderBody); } else { rootStyle.removeProperty('--order-body-color'); }
+}
+
+function openSettingsModal(){ renderSettingsModal(); }
+function closeSettingsModal(){ document.getElementById('settings-root').innerHTML=''; }
+
+function renderSettingsModal(){
+  const root = document.getElementById('settings-root');
+  root.innerHTML = `
+    <div class="overlay" id="settings-overlay">
+      <div class="modal" id="settings-modal">
+        <div class="modal-head">
+          <h2>ຕັ້ງຄ່າ</h2>
+          <button class="icon-x" id="settings-close">${ICONS.x}</button>
+        </div>
+        <div class="settings-menu">
+          <button type="button" class="settings-item" id="settings-brand-btn">
+            <span class="settings-item-ic">${ICONS.image}</span>
+            <span>ປັບແຕ່ງ Logo ແລະ Header</span>
+            <span class="settings-item-arrow">${ICONS.chevronRight || ''}</span>
+          </button>
+          <button type="button" class="settings-item" id="settings-btnlogo-btn">
+            <span class="settings-item-ic">${ICONS.dataManage}</span>
+            <span>ປ່ຽນຮູບປຸ່ມກົດ</span>
+            <span class="settings-item-arrow">${ICONS.chevronRight || ''}</span>
+          </button>
+          <button type="button" class="settings-item" id="settings-theme-btn">
+            <span class="settings-item-ic settings-swatch" style="background:${localStorage.getItem(THEME_COLOR_KEY) || '#E8A33D'};"></span>
+            <span>ປ່ຽນສີ theme</span>
+            <span class="settings-item-arrow">${ICONS.chevronRight || ''}</span>
+          </button>
+          <button type="button" class="settings-item" id="settings-btncolor-btn">
+            <span class="settings-item-ic settings-swatch" style="background:${localStorage.getItem(BTN_COLOR_KEY) || '#9AC93B'};"></span>
+            <span>ປ່ຽນສີປຸ່ມ</span>
+            <span class="settings-item-arrow">${ICONS.chevronRight || ''}</span>
+          </button>
+          <button type="button" class="settings-item" id="settings-topbar-btn">
+            <span class="settings-item-ic settings-swatch" style="background:${localStorage.getItem(TOPBAR_COLOR_KEY) || '#1C2B33'};"></span>
+            <span>ປ່ຽນສີແຖບດ້ານເທິງ</span>
+            <span class="settings-item-arrow">${ICONS.chevronRight || ''}</span>
+          </button>
+          <button type="button" class="settings-item" id="settings-bottombar-btn">
+            <span class="settings-item-ic settings-swatch" style="background:${localStorage.getItem(BOTTOMBAR_COLOR_KEY) || '#1C2B33'};"></span>
+            <span>ປ່ຽນສີແຖບດ້ານລຸ່ມ</span>
+            <span class="settings-item-arrow">${ICONS.chevronRight || ''}</span>
+          </button>
+          <button type="button" class="settings-item" id="settings-orderheader-btn">
+            <span class="settings-item-ic settings-swatch" style="background:${localStorage.getItem(ORDER_HEADER_COLOR_KEY) || '#DBB994'};"></span>
+            <span>ປ່ຽນສີຫົວບິນ (ອໍເດີ້ມື້ນີ້)</span>
+            <span class="settings-item-arrow">${ICONS.chevronRight || ''}</span>
+          </button>
+          <button type="button" class="settings-item" id="settings-orderbody-btn">
+            <span class="settings-item-ic settings-swatch" style="background:${localStorage.getItem(ORDER_BODY_COLOR_KEY) || '#F8E3C4'};"></span>
+            <span>ປ່ຽນສີເນື້ອໃນບິນ (ອໍເດີ້ມື້ນີ້)</span>
+            <span class="settings-item-arrow">${ICONS.chevronRight || ''}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('settings-overlay').addEventListener('click', e=>{ if(e.target.id==='settings-overlay') closeSettingsModal(); });
+  document.getElementById('settings-close').addEventListener('click', closeSettingsModal);
+  document.getElementById('settings-brand-btn').addEventListener('click', ()=>{ closeSettingsModal(); openBrandModal(); });
+  document.getElementById('settings-btnlogo-btn').addEventListener('click', ()=>{ closeSettingsModal(); openButtonLogoModal(); });
+  document.getElementById('settings-theme-btn').addEventListener('click', ()=>{ closeSettingsModal(); openColorPickerModal(THEME_COLOR_KEY, 'ປ່ຽນສີ theme', '#E8A33D'); });
+  document.getElementById('settings-btncolor-btn').addEventListener('click', ()=>{ closeSettingsModal(); openColorPickerModal(BTN_COLOR_KEY, 'ປ່ຽນສີປຸ່ມ', '#9AC93B'); });
+  document.getElementById('settings-topbar-btn').addEventListener('click', ()=>{ closeSettingsModal(); openColorPickerModal(TOPBAR_COLOR_KEY, 'ປ່ຽນສີແຖບດ້ານເທິງ', '#1C2B33'); });
+  document.getElementById('settings-bottombar-btn').addEventListener('click', ()=>{ closeSettingsModal(); openColorPickerModal(BOTTOMBAR_COLOR_KEY, 'ປ່ຽນສີແຖບດ້ານລຸ່ມ', '#1C2B33'); });
+  document.getElementById('settings-orderheader-btn').addEventListener('click', ()=>{ closeSettingsModal(); openColorPickerModal(ORDER_HEADER_COLOR_KEY, 'ປ່ຽນສີຫົວບິນ (ອໍເດີ້ມື້ນີ້)', '#DBB994'); });
+  document.getElementById('settings-orderbody-btn').addEventListener('click', ()=>{ closeSettingsModal(); openColorPickerModal(ORDER_BODY_COLOR_KEY, 'ປ່ຽນສີເນື້ອໃນບິນ (ອໍເດີ້ມື້ນີ້)', '#F8E3C4'); });
+}
+
+/* ---- ໜ້າຕ່າງເລືອກຮູບ "ປຸ່ມກົດ" (ປ່ຽນ STORE_LOGO / HOME_FAB_LOGO ທັງໝົດພ້ອມກັນ) ---- */
+function openButtonLogoModal(){ renderButtonLogoModal(); }
+function closeButtonLogoModal(){ document.getElementById('settings-root').innerHTML=''; }
+
+function renderButtonLogoModal(){
+  const root = document.getElementById('settings-root');
+  root.innerHTML = `
+    <div class="overlay" id="btnlogo-overlay">
+      <div class="modal" id="btnlogo-modal">
+        <div class="modal-head">
+          <h2>ປ່ຽນຮູບປຸ່ມກົດ</h2>
+          <button class="icon-x" id="btnlogo-close">${ICONS.x}</button>
+        </div>
+        <div class="report-card" style="margin-top:4px;">
+          <p style="font-weight:600; font-size:14px; margin:0 0 4px;">ຮູບໂລໂກ້ປຸ່ມໃຫຍ່</p>
+          <p class="muted" style="margin:0 0 10px;">ໃຊ້ກັບປຸ່ມກົດວົງມົນທຸກໜ້າ (ປຸ່ມ + ໜ້າຫຼັກ/ໝວດໝູ່ ແລະ ປຸ່ມຍອດຂາຍລວມ), ປ່ຽນບາດດຽວອັບເດດທຸກໜ້າ</p>
+          <div class="img-picker">
+            <button type="button" class="img-box" id="btnlogo-pick-btn"><img src="${effectiveStoreLogo()}" alt=""></button>
+            <div>
+              <button type="button" class="img-btn" id="btnlogo-pick-btn2">ປ່ຽນຮູບ</button>
+              ${buttonLogoImg ? '<button type="button" class="img-remove" id="btnlogo-remove-btn">ໃຊ້ຄ່າເລີ່ມຕົ້ນ</button>' : ''}
+            </div>
+            <input type="file" accept="image/*" id="btnlogo-input" style="display:none">
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('btnlogo-overlay').addEventListener('click', e=>{ if(e.target.id==='btnlogo-overlay') closeButtonLogoModal(); });
+  document.getElementById('btnlogo-close').addEventListener('click', closeButtonLogoModal);
+  document.getElementById('btnlogo-pick-btn').addEventListener('click', ()=>document.getElementById('btnlogo-input').click());
+  document.getElementById('btnlogo-pick-btn2').addEventListener('click', ()=>document.getElementById('btnlogo-input').click());
+  document.getElementById('btnlogo-input').addEventListener('change', handleButtonLogoPick);
+  const removeBtn = document.getElementById('btnlogo-remove-btn');
+  if(removeBtn) removeBtn.addEventListener('click', ()=>{
+    buttonLogoImg = null;
+    localStorage.removeItem(BUTTON_LOGO_KEY);
+    updateFabStyle();
+    setupDailyTotalBtnImg();
+    renderButtonLogoModal();
+    scheduleAutoSync();
+  });
+}
+
+function handleButtonLogoPick(e){
+  const file = e.target.files && e.target.files[0];
+  if(!file) return;
+  resizeImage(file, 320, 0.85).then(dataUrl=>{
+    try{
+      buttonLogoImg = dataUrl;
+      localStorage.setItem(BUTTON_LOGO_KEY, dataUrl);
+      updateFabStyle();
+      setupDailyTotalBtnImg();
+      renderButtonLogoModal();
+      scheduleAutoSync();
+    }catch(err){
+      showToast('ຮູບໃຫຍ່ເກີນໄປ, ລອງເລືອກຮູບອື່ນ');
+    }
+  }).catch(()=>{ showToast('ເລືອກຮູບບໍ່ສຳເລັດ'); });
+}
+
+/* ---- ໜ້າຕ່າງເລືອກສີແບບກຳນົດເອງ (gradient picker, ໃຊ້ຮ່ວມກັນທຸກຄຳສັ່ງປ່ຽນສີ) ---- */
+function hexToRgb(hex){
+  hex = (hex||'').replace('#','').trim();
+  if(hex.length === 3) hex = hex.split('').map(c=>c+c).join('');
+  const num = parseInt(hex, 16);
+  if(isNaN(num) || hex.length !== 6) return {r:0,g:0,b:0};
+  return { r:(num>>16)&255, g:(num>>8)&255, b:num&255 };
+}
+function rgbToHex(r,g,b){
+  return '#' + [r,g,b].map(v=>Math.max(0,Math.min(255,Math.round(v))).toString(16).padStart(2,'0')).join('').toUpperCase();
+}
+function rgbToHsv(r,g,b){
+  r/=255; g/=255; b/=255;
+  const max=Math.max(r,g,b), min=Math.min(r,g,b), d=max-min;
+  let h=0;
+  if(d!==0){
+    if(max===r) h = 60*(((g-b)/d)%6);
+    else if(max===g) h = 60*((b-r)/d+2);
+    else h = 60*((r-g)/d+4);
+  }
+  if(h<0) h+=360;
+  const s = max===0 ? 0 : d/max;
+  const v = max;
+  return { h, s:s*100, v:v*100 };
+}
+function hsvToRgb(h,s,v){
+  s/=100; v/=100;
+  const c = v*s, x = c*(1-Math.abs((h/60)%2-1)), m = v-c;
+  let r,g,b;
+  if(h<60){ r=c; g=x; b=0; } else if(h<120){ r=x; g=c; b=0; } else if(h<180){ r=0; g=c; b=x; }
+  else if(h<240){ r=0; g=x; b=c; } else if(h<300){ r=x; g=0; b=c; } else { r=c; g=0; b=x; }
+  return { r:(r+m)*255, g:(g+m)*255, b:(b+m)*255 };
+}
+
+let colorPickerState = null; /* {h,s,v} of the color currently being picked */
+
+function openColorPickerModal(storageKey, title, defaultColor){
+  const root = document.getElementById('settings-root');
+  const current = localStorage.getItem(storageKey) || defaultColor;
+  const rgb = hexToRgb(current);
+  colorPickerState = rgbToHsv(rgb.r, rgb.g, rgb.b);
+  root.innerHTML = `
+    <div class="overlay" id="colorpick-overlay">
+      <div class="modal" id="colorpick-modal">
+        <div class="modal-head">
+          <h2>ເລືອກສີ</h2>
+          <button class="icon-x" id="colorpick-close">${ICONS.x}</button>
+        </div>
+        <div class="report-card" style="margin-top:4px;">
+          <p style="font-weight:600; font-size:14px; margin:0 0 10px;">${title}</p>
+          <canvas id="colorpick-sv" width="280" height="170" class="colorpick-sv"></canvas>
+          <canvas id="colorpick-hue" width="280" height="22" class="colorpick-hue"></canvas>
+          <div class="colorpick-result-row">
+            <div class="colorpick-swatch" id="colorpick-swatch"></div>
+            <div style="flex:1; min-width:0;">
+              <p class="muted" style="margin:0 0 4px;">ສີທີ່ເລືອກໄວ້</p>
+              <input type="text" id="colorpick-hex-input" class="colorpick-hex-input" maxlength="7" value="${current.toUpperCase()}">
+            </div>
+          </div>
+          <div style="display:flex; gap:8px; margin-top:16px;">
+            <button type="button" class="img-btn" id="colorpick-reset-btn" style="flex:1; color:var(--danger);">ໃຊ້ຄ່າເລີ່ມຕົ້ນ</button>
+            <button type="button" class="img-btn" id="colorpick-cancel-btn" style="flex:1;">ຍົກເລີກ</button>
+            <button type="button" class="submit-btn" id="colorpick-save-btn" style="flex:1; margin-top:0;">ຕົກລົງ</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+
+  const svCanvas = document.getElementById('colorpick-sv');
+  const hueCanvas = document.getElementById('colorpick-hue');
+  const svCtx = svCanvas.getContext('2d');
+  const hueCtx = hueCanvas.getContext('2d');
+  const hexInput = document.getElementById('colorpick-hex-input');
+  const swatchEl = document.getElementById('colorpick-swatch');
+
+  function drawHueBar(){
+    const w = hueCanvas.width, h = hueCanvas.height;
+    const grad = hueCtx.createLinearGradient(0,0,w,0);
+    for(let i=0;i<=360;i+=30) grad.addColorStop(i/360, `hsl(${i},100%,50%)`);
+    hueCtx.fillStyle = grad;
+    hueCtx.fillRect(0,0,w,h);
+    const x = colorPickerState.h/360*w;
+    hueCtx.save();
+    hueCtx.strokeStyle = '#fff'; hueCtx.lineWidth = 3;
+    hueCtx.beginPath(); hueCtx.moveTo(x,0); hueCtx.lineTo(x,h); hueCtx.stroke();
+    hueCtx.strokeStyle = 'rgba(0,0,0,.35)'; hueCtx.lineWidth = 1;
+    hueCtx.beginPath(); hueCtx.moveTo(x,0); hueCtx.lineTo(x,h); hueCtx.stroke();
+    hueCtx.restore();
+  }
+  function drawSvSquare(){
+    const w = svCanvas.width, h = svCanvas.height;
+    svCtx.fillStyle = `hsl(${colorPickerState.h},100%,50%)`;
+    svCtx.fillRect(0,0,w,h);
+    const whiteGrad = svCtx.createLinearGradient(0,0,w,0);
+    whiteGrad.addColorStop(0,'#fff'); whiteGrad.addColorStop(1,'rgba(255,255,255,0)');
+    svCtx.fillStyle = whiteGrad; svCtx.fillRect(0,0,w,h);
+    const blackGrad = svCtx.createLinearGradient(0,0,0,h);
+    blackGrad.addColorStop(0,'rgba(0,0,0,0)'); blackGrad.addColorStop(1,'#000');
+    svCtx.fillStyle = blackGrad; svCtx.fillRect(0,0,w,h);
+    const cx = colorPickerState.s/100*w, cy = (1-colorPickerState.v/100)*h;
+    svCtx.save();
+    svCtx.beginPath(); svCtx.arc(cx,cy,7,0,Math.PI*2);
+    svCtx.strokeStyle = '#fff'; svCtx.lineWidth = 2.5; svCtx.stroke();
+    svCtx.beginPath(); svCtx.arc(cx,cy,7,0,Math.PI*2);
+    svCtx.strokeStyle = 'rgba(0,0,0,.4)'; svCtx.lineWidth = 1; svCtx.stroke();
+    svCtx.restore();
+  }
+  function currentHex(){
+    const rgb = hsvToRgb(colorPickerState.h, colorPickerState.s, colorPickerState.v);
+    return rgbToHex(rgb.r, rgb.g, rgb.b);
+  }
+  function updatePreview(){
+    const hex = currentHex();
+    swatchEl.style.background = hex;
+    hexInput.value = hex;
+  }
+  function redrawAll(){ drawSvSquare(); drawHueBar(); updatePreview(); }
+
+  function pointFromEvent(canvas, e){
+    const rect = canvas.getBoundingClientRect();
+    const x = Math.max(0, Math.min(rect.width, e.clientX - rect.left));
+    const y = Math.max(0, Math.min(rect.height, e.clientY - rect.top));
+    return { x: x/rect.width, y: y/rect.height };
+  }
+  function bindDrag(canvas, onMove){
+    let dragging = false;
+    const handle = (e)=>{ onMove(pointFromEvent(canvas, e)); redrawAll(); };
+    canvas.addEventListener('pointerdown', e=>{ dragging = true; canvas.setPointerCapture(e.pointerId); handle(e); });
+    canvas.addEventListener('pointermove', e=>{ if(dragging) handle(e); });
+    canvas.addEventListener('pointerup', ()=>{ dragging = false; });
+    canvas.addEventListener('pointercancel', ()=>{ dragging = false; });
+  }
+  bindDrag(svCanvas, pt=>{ colorPickerState.s = pt.x*100; colorPickerState.v = (1-pt.y)*100; });
+  bindDrag(hueCanvas, pt=>{ colorPickerState.h = pt.x*360; });
+
+  hexInput.addEventListener('input', ()=>{
+    const v = hexInput.value.trim();
+    if(/^#?[0-9a-fA-F]{6}$/.test(v)){
+      const rgb = hexToRgb(v);
+      colorPickerState = rgbToHsv(rgb.r, rgb.g, rgb.b);
+      drawSvSquare(); drawHueBar();
+      swatchEl.style.background = currentHex();
+    }
+  });
+
+  redrawAll();
+
+  document.getElementById('colorpick-overlay').addEventListener('click', e=>{ if(e.target.id==='colorpick-overlay') closeColorPickerModal(); });
+  document.getElementById('colorpick-close').addEventListener('click', closeColorPickerModal);
+  document.getElementById('colorpick-cancel-btn').addEventListener('click', closeColorPickerModal);
+  document.getElementById('colorpick-reset-btn').addEventListener('click', ()=>{
+    localStorage.removeItem(storageKey);
+    applyCustomColors();
+    closeColorPickerModal();
+    scheduleAutoSync();
+  });
+  document.getElementById('colorpick-save-btn').addEventListener('click', ()=>{
+    localStorage.setItem(storageKey, currentHex());
+    applyCustomColors();
+    closeColorPickerModal();
+    scheduleAutoSync();
+  });
+}
+function closeColorPickerModal(){ document.getElementById('settings-root').innerHTML=''; colorPickerState = null; }
 
 /* ---------- GOOGLE DRIVE SYNC ---------- */
 const GDRIVE_CLIENT_ID_KEY = 'khang-sinkha-gdrive-client-id';
@@ -5316,6 +6010,12 @@ document.addEventListener('click', e=>{
   const id = t.dataset.id;
   if(action === 'toggle-expand'){
     expanded[id] = !expanded[id];
+    delete detailDeleteUnlocked[id]; /* ລ໋ອກປຸ່ມ "ລຶບ" ຄືນທຸກຄັ້ງທີ່ເປີດ/ປິດແຖວນີ້ */
+    if(tab === 'categories' && categoryDetailName){ renderCategoryListItems(categoryDetailName); }
+    else { renderListItems(); }
+  } else if(action === 'toggle-product-lock'){
+    e.stopPropagation();
+    handleDetailLockTap(id);
     if(tab === 'categories' && categoryDetailName){ renderCategoryListItems(categoryDetailName); }
     else { renderListItems(); }
   } else if(action === 'open-category'){
@@ -5346,6 +6046,9 @@ document.addEventListener('click', e=>{
     acceptOrder(id);
   } else if(action === 'delete-order'){
     confirmDeleteOrder(id);
+  } else if(action === 'share-order'){
+    e.stopPropagation();
+    openOrderSharePreview(id);
   } else if(action === 'open-sell'){
     openSellModal(id);
   } else if(action === 'open-buy'){
@@ -5353,7 +6056,11 @@ document.addEventListener('click', e=>{
   } else if(action === 'open-edit'){
     openEdit(id);
   } else if(action === 'confirm-delete'){
-    confirmDelete(id);
+    if(!isDetailDeleteUnlocked(id)){
+      showToast('ລ໋ອກຢູ່ — ແຕະຮູບໜ່ວຍກຸນແຈ 2 ຄັ້ງຕິດກັນເພື່ອປົດລ໋ອກກ່ອນລຶບ');
+    } else {
+      confirmDelete(id);
+    }
   } else if(action === 'adjust-variant'){
     const vid = t.dataset.vid;
     const delta = parseInt(t.dataset.delta, 10);
@@ -5448,10 +6155,10 @@ function updateFabStyle(){
   if(fabBtn){
     if(tab === 'categories'){
       fabBtn.classList.add('logo-fab');
-      fabBtn.innerHTML = `<img src="${STORE_LOGO}" alt="ໝວດໝູ່">`;
+      fabBtn.innerHTML = `<img src="${effectiveStoreLogo()}" alt="ໝວດໝູ່">`;
     } else if(tab === 'list'){
       fabBtn.classList.add('logo-fab');
-      fabBtn.innerHTML = `<img src="${HOME_FAB_LOGO}" alt="ເມນູ">`;
+      fabBtn.innerHTML = `<img src="${effectiveHomeFabLogo()}" alt="ເມນູ">`;
     } else {
       fabBtn.classList.remove('logo-fab');
       fabBtn.innerHTML = ICONS.plus;
@@ -5494,7 +6201,7 @@ document.getElementById('arc-btn-3').addEventListener('click', ()=>{ closeHomeFa
 document.getElementById('arc-btn-4').innerHTML = ICONS.cart;
 document.getElementById('arc-btn-4').addEventListener('click', ()=>{ closeHomeFabMenu(); openPurchaseOrderModal(); });
 document.getElementById('arc-btn-5').innerHTML = ICONS.dataManage;
-document.getElementById('arc-btn-5').addEventListener('click', ()=>{ closeHomeFabMenu(); showToast('ຄຸນສົມບັດໃໝ່ — ກຳລັງພັດທະນາ, ຈະມາໄວໆນີ້'); });
+document.getElementById('arc-btn-5').addEventListener('click', ()=>{ closeHomeFabMenu(); openSettingsModal(); });
 document.getElementById('report-fab-backdrop').addEventListener('click', closeReportFabMenu);
 document.getElementById('report-arc-btn-1').innerHTML = `<img src="${ICON_QUOTE_VIEW}" alt="ອອກໃບສະເໜີລາຄາ">`;
 document.getElementById('report-arc-btn-1').addEventListener('click', ()=>{ closeReportFabMenu(); openQuoteModal(); });
@@ -5521,11 +6228,10 @@ document.getElementById('fab-manage-categories').innerHTML = ICONS.minus;
 updateFabStyle();
 document.getElementById('backup-open-btn').addEventListener('click', openBackupModal);
 document.getElementById('backup-open-btn').innerHTML = ICONS.cloud;
-document.getElementById('brand-open-btn').addEventListener('click', openBrandModal);
-document.getElementById('brand-open-btn').innerHTML = ICONS.image;
 
 /* ---------- MAIN RENDER ---------- */
 function renderAll(){
+  applyCustomColors();
   renderStats();
   renderTabButtons();
   renderBottomNav();
@@ -5533,13 +6239,19 @@ function renderAll(){
   applyHeaderBrand();
   updateFabStyle();
 }
+pruneOldCustomerOrders(); /* ລ້າງບິນທີ່ເກົ່າກວ່າ 30 ວັນອອກ ກ່ອນສະແດງຜົນຄັ້ງທຳອິດ */
 renderAll();
 
 /* ---------- ປຸ່ມໂລໂກ້ຮ້ານ: ສະແດງຍອດຂາຍລວມທຸກບິນປະຈຳວັນ (pop up ໂຕໜັງສືລ້ວນໆ, ບໍ່ມີກ່ອງພື້ນຫຼັງ) ---------- */
+function setupDailyTotalBtnImg(){
+  const btn = document.getElementById('daily-total-btn');
+  if(!btn) return;
+  btn.innerHTML = `<img src="${effectiveStoreLogo()}" alt="ຍອດຂາຍລວມມື້ນີ້">`;
+}
 (function setupDailyTotalBtn(){
   const btn = document.getElementById('daily-total-btn');
   if(!btn) return;
-  btn.innerHTML = `<img src="${STORE_LOGO}" alt="ຍອດຂາຍລວມມື້ນີ້">`;
+  setupDailyTotalBtnImg();
   btn.addEventListener('click', ()=>{
     /* ໜ້າ "ລາຍງານ": ປຸ່ມນີ້ເປີດ/ປິດເມນູຮູບວົງມົນ 5 ປຸ່ມຍ່ອຍ (ຄືກັນກັບໜ້າຫຼັກ) */
     if(tab === 'report'){ toggleReportFabMenu(); return; }
